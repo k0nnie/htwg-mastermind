@@ -5,25 +5,25 @@ import org.scalatest.junit.JUnitRunner
 import org.scalatest.{Matchers, WordSpec}
 
 @RunWith(classOf[JUnitRunner])
-class CellSpec extends WordSpec with Matchers {
+class PegSpec extends WordSpec with Matchers {
 
-  "A Cell" when {
+  "A Peg" when {
     "not set to any value " should {
-      val emptyCell = Cell(0)
-      "have value 0" in {
-        emptyCell.value should be(0)
+      val emptyPeg = Peg("0")
+      "be an empty string" in {
+        emptyPeg.color should be("0")
       }
       "not be set" in {
-        emptyCell.isSet should be(false)
+        emptyPeg.emptyColor(Color("g")) should be(false)
       }
     }
     "set to a specific value" should {
-      val nonEmptyCell = Cell(5)
+      val nonEmptyPeg = Peg("g")
       "return that value" in {
-        nonEmptyCell.value should be(5)
+        nonEmptyPeg.color should be("g")
       }
       "be set" in {
-        nonEmptyCell.isSet should be(true)
+        nonEmptyPeg.emptyColor(Color(" ")) should be(true)
       }
     }
   }
