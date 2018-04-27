@@ -27,21 +27,21 @@ case class Board(rounds: Vector[Round], solution: Vector[Color]) {
     hints
   }
 
-  override def toString: String = {
-    val size = 8
-    val tries = 7
-    val numberOfPegs = 4
-    val numberOfPegsHint = 4
-    val lineseparator = ("+-" + ("--" * numberOfPegsHint)) + "+-" + ("--" * numberOfPegs) + "+\n"
-
-    val line = ("| " + ("x " * numberOfPegsHint)) + ("| " + ("x " * numberOfPegs)) + "|\n"
-    var box = "\n" + (lineseparator + line) * tries + lineseparator
-    for {
-      row <- 0 until 2 * tries
-      col <- 0 until 6
-    } box = box.replaceFirst("x", "y")
-    box
-  }
+//  override def toString: String = {
+//    val size = 8
+//    val tries = 7
+//    val numberOfPegs = 4
+//    val numberOfPegsHint = 4
+//    val lineseparator = ("+-" + ("--" * numberOfPegsHint)) + "+-" + ("--" * numberOfPegs) + "+\n"
+//
+//    val line = ("| " + ("x " * numberOfPegsHint)) + ("| " + ("x " * numberOfPegs)) + "|\n"
+//    var box = "\n" + (lineseparator + line) * tries + lineseparator
+//    for {
+//      row <- 0 until 2 * tries
+//      col <- 0 until 6
+//    } box = box.replaceFirst("x", "y")
+//    box
+//  }
 }
 
 
