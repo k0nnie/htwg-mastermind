@@ -2,6 +2,7 @@ package de.htwg.se.mastermind
 
 import de.htwg.se.mastermind.aview.Tui
 import de.htwg.se.mastermind.model._
+import scala.io.StdIn._
 
 object Mastermind {
 

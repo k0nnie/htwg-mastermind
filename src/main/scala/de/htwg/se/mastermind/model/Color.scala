@@ -14,7 +14,6 @@ case class Color(shortColName: String) {
     case "y" => "yellow"
     case "g" => "green"
     case "w" => "white"
-    case "b" => "black"
     case "p" => "pink"
     case "0" => "empty"
     case _ => ""
