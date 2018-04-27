@@ -1,21 +1,22 @@
 package de.htwg.se.mastermind
 
 import de.htwg.se.mastermind.aview.Tui
-import de.htwg.se.mastermind.model.Grid
-
-import scala.io.StdIn.readLine
+import de.htwg.se.mastermind.model._
+import scala.io.StdIn._
 
 object Mastermind {
-  var grid = new Grid(9)
+
+  var testGrid = new Board(Vector(Color("r"), Color("g"), Color("b"), Color("p"))) // test solution
   val tui = new Tui
 
   def main(args: Array[String]): Unit = {
     var input: String = ""
-
+    var index = 0
     do {
-      println("Grid : " + grid.toString)
+      println("Grid : " + testGrid.toString)
       input = readLine()
-      grid = tui.processInputLine(input, grid)
-    } while (input != "q")
+      testGrid = tui.processInputLine(input, testGrid, index)
+      index += 1
+    } while (input != "q" && index < 7)
   }
 }
