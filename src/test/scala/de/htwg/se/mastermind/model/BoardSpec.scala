@@ -7,7 +7,7 @@ import org.scalatest.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class BoardSpec extends WordSpec with Matchers {
   "A Board is the playingfield of Mastermind. A Board" when {
-    "when newly created" should {
+    "newly created" should {
       val emptyBoard = new Board()
       "contain a solution" in {
         emptyBoard.solution.nonEmpty should be(true)
@@ -16,7 +16,7 @@ class BoardSpec extends WordSpec with Matchers {
         emptyBoard.solution.size should be(4)
       }
     }
-    "when played first round" should {
+    "played first round" should {
       val emptyBoard = new Board()
       val colVec = Vector[Color](Color("g"), Color("g"), Color("g"), Color("g"))
       val nonEmptyBoard = emptyBoard.replaceRound(0, colVec)
@@ -24,7 +24,7 @@ class BoardSpec extends WordSpec with Matchers {
         nonEmptyBoard.rounds(0).turn.toString should be("Turn(Vector(g, g, g, g))")
       }
     }
-    "when called with a given solution" should {
+    "called with a given solution" should {
       val solution = Vector[Color](Color("r"), Color("g"), Color("b"), Color("v"))
       val boardWithSolution = Board(Vector.fill(8)(new Round()), solution)
       val colVec = Vector[Color](Color("g"), Color("g"), Color("g"), Color("g"))
@@ -39,6 +39,32 @@ class BoardSpec extends WordSpec with Matchers {
         val newInput = Vector[Color](Color("r"), Color("r"), Color("r"), Color("r"))
         val newRound = boardWithSolution.replaceRound(1, newInput)
         newRound.rounds(1).turnHint.pegs.toString() should be("Vector(+,  ,  ,  )")
+      }
+    }
+    "with rounds and solution constructor params" should {
+      val round = new Round()
+      val rounds = Vector(round, round, round, round)
+      val board = new Board(rounds)
+      "have four rounds" in {
+        board.rounds.size should be(4)
+      }
+    }
+    "with default constructor" should {
+      val round = new Round()
+      val rounds = Vector(round, round, round, round)
+      val solution = Vector[Color](Color("r"), Color("g"), Color("b"), Color("v"))
+      val board = Board(rounds, solution)
+      "should have four rounds" in {
+        board.rounds.size should be(4)
+      }
+      "have a solution with four pegs" in {
+        board.solution.size should be(4)
+      }
+    }
+    "printed on console" should {
+      val board = new Board()
+      "have this output" in {
+        board.toString.startsWith("\n+---------+---------+") should be(true)
       }
     }
   }
