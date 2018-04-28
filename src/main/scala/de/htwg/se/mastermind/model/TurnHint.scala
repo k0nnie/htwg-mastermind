@@ -1,9 +1,8 @@
 package de.htwg.se.mastermind.model
 
 case class TurnHint(pegs: Vector[Peg[ColorHint]]) {
-//  def isSet: Boolean = color.isInstanceOf[Color] && position != 0
 
-  def this() = this(Vector.fill(4)(new Peg[ColorHint](ColorHint("0"))))
+  def this() = this(Vector.fill(4)(new Peg[ColorHint](new ColorHint())))
 
   val size: Int = pegs.size
 

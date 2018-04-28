@@ -2,7 +2,7 @@ package de.htwg.se.mastermind.model
 
 case class Turn(pegs: Vector[Peg[Color]]) {
 
-  def this() = this(Vector.fill(4)(new Peg[Color](Color("0"))))
+  def this() = this(Vector.fill(4)(new Peg[Color](new Color())))
 
   val size: Int = pegs.size
 

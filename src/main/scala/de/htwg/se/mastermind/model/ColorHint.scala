@@ -1,21 +1,25 @@
 package de.htwg.se.mastermind.model
 
-case class ColorHint(colName: String) {
+case class ColorHint(name: String) {
 
-  def checkName(colName: String) : String = colName match {
-    case "x" => "rightColAndPos"
-    case "o" => "rightCol"
-    case "0" => "0"
-    case _ => ""
-  }
+  def this() = this("0") // empty value
 
   def getAvailableColors: Seq[String] = Seq(
     "rightColAndPos", "rightCol", "0"
   )
 
-  def isValidHintColor(name: String) : Boolean = getAvailableColors.contains(name)
+  def fullName : String = name match {
+    case "+" => "rightColAndPos"
+    case "o" => "rightCol"
+    case "0" => "empty"
+    case _ => ""
+  }
 
-  val name: String = checkName(colName)
+  override def toString: String = name match {
+    case "rightColAndPos" => "+"
+    case "rightCol" => "o"
+    case _ => " "
+  }
 
-  isValidHintColor(name)
+  def isValidColor(name: String) : Boolean = getAvailableColors.contains(name)
 }

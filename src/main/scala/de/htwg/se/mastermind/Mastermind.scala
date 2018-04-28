@@ -6,10 +6,13 @@ import scala.io.StdIn._
 
 object Mastermind {
 
-  var testGrid = new Board(Vector(Color("r"), Color("g"), Color("b"), Color("p"))) // test solution
+  var testGrid = new Board() // test solution
   val tui = new Tui
 
   def main(args: Array[String]): Unit = {
+    println("This is Mastermind.")
+    println("Available colors: r, b, y, g, w, p, o, v")
+    println("Each color occurs only once in a solution.")
     var input: String = ""
     var index = 0
     do {
