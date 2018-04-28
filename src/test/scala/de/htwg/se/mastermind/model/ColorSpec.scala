@@ -7,7 +7,7 @@ import org.scalatest.{Matchers, WordSpec}
 @RunWith(classOf[JUnitRunner])
 class ColorSpec extends WordSpec with Matchers {
   "A Color" when {
-    "have a name from the sequence" should {
+    "having a valid name" should {
       val redColor = Color("r")
       "return that value" in {
         redColor.getAvailableColors should contain("r")
@@ -22,7 +22,22 @@ class ColorSpec extends WordSpec with Matchers {
     "is a valid color" should {
       val pinkColor = Color("p")
       "have a long color name" in {
-        pinkColor.colorName should be("pink")
+        pinkColor.fullName should be("pink")
+      }
+    }
+    "getting a random color" should {
+      val randomColor = Color("0").randomColorString()
+      "not be empty anymore" in {
+        randomColor should not be "0"
+      }
+    }
+    "being empty" should {
+      val emptyColor = new Color()
+      "contain a zero as value" in {
+        emptyColor.name should be("0")
+      }
+      "have a full name \"empty\""  in {
+        emptyColor.fullName should be("empty")
       }
     }
   }
