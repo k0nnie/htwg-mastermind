@@ -14,9 +14,11 @@ class ColorHintSpec extends WordSpec with Matchers {
       }
     }
     "is empty" should {
-      val emptyCol = ColorHint("0")
-      "return that value" in {
-        emptyCol.fullName should be("empty")
+      "have a full name" in {
+        new ColorHint().fullName should be("empty")
+      }
+      "have zero as name" in {
+        new ColorHint().name should be("0")
       }
     }
     "is valid" should {
@@ -32,11 +34,14 @@ class ColorHintSpec extends WordSpec with Matchers {
       }
     }
     "when not valid" should {
-      val notValidColor = Color("notvalid")
+      val notValidColor = ColorHint("notvalid")
       "not be valid" in {
         notValidColor.isValidColor(notValidColor.name) should be(false)
       }
-      "return an empty string" in {
+      "return a whitespace as name when formatted as string" in {
+        notValidColor.toString should be(" ")
+      }
+      "return an empty string as full name" in {
         notValidColor.fullName should be("")
       }
     }

@@ -40,5 +40,11 @@ class ColorSpec extends WordSpec with Matchers {
         emptyColor.fullName should be("empty")
       }
     }
+    "being initialized" should {
+      val color = Color("y")
+      "have a name" in {
+        color.name should be("y")
+      }
+    }
   }
 }
