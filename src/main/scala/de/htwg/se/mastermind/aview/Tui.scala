@@ -1,22 +1,15 @@
 package de.htwg.se.mastermind.aview
 
-import de.htwg.se.mastermind.model.{Grid,GridCreator,Solver}
+import de.htwg.se.mastermind.model.{Board, Color}
 
 class Tui {
-
-  def processInputLine(input: String, grid:Grid):Grid = {
+  def processInputLine[A](input: String, board:Board, index: Int):Board = {
     input match {
-      case "q" => grid
-      case "n"=> new Grid(9)
-      case "r" => new GridCreator(9).createRandom(16)
-      case "s" =>
-        val (success, solvedGrid) = new Solver(grid).solve;
-        if (success) println("Puzzle solved")else println("This puzzle could not be solved!")
-        solvedGrid
+      case "q" => board
       case _ => {
-        input.toList.filter(c => c != ' ').map(c => c.toString.toInt) match {
-          case row :: column :: value :: Nil => grid.set(row, column, value)
-          case _ => grid
+        input.toList.filter(c => c != ' ').map(c => c.toString) match {
+          case color1 :: color2 :: color3 :: color4 :: Nil => board.replaceRound(index, Vector(Color(color1),Color(color2),Color(color3),Color(color4)))
+          case _ => board
         }
       }
     }

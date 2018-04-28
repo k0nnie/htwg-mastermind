@@ -1,8 +1,10 @@
 package de.htwg.se.mastermind.model
 
-case class Peg(color: Color, position: Int) {
-  def isSet: Boolean = color.isInstanceOf[Color] && position != 0
-  //override def toString: String = value.toString.replace('0', ' ')
-  def col : Color = color
-  def pos : Int = position
+case class Peg[A](color: A) {
+
+  def emptyColor(color: Color): Boolean = color.name.equals(" ")
+
+  override def toString: String = color.toString.replace('0', ' ')
+
+  def updateColor(color: A): Peg[A] = Peg(color)
 }
