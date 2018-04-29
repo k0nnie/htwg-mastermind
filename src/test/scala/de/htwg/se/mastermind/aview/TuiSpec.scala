@@ -16,8 +16,8 @@ class TuiSpec extends WordSpec with Matchers {
       controller.board.rounds should be(new Board().rounds)
     }
     "set a turn on input 'rgbp'" in {
-      tui.processInputLine("123", 0)
-      controller.board.rounds(0).turn.pegString should be("Vector( ,  ,  ,  )")
+      tui.processInputLine("rgbp", 0)
+      controller.board.rounds(0).turn.pegString should be("Vector(r, g, b, p)")
     }
   }
 }
