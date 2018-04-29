@@ -1,13 +1,15 @@
 package de.htwg.se.mastermind
 
 import de.htwg.se.mastermind.aview.Tui
+import de.htwg.se.mastermind.controller.Controller
 import de.htwg.se.mastermind.model._
 import scala.io.StdIn._
 
 object Mastermind {
 
-  var testGrid = new Board() // test solution
-  val tui = new Tui
+  val controller = new Controller(new Board())
+  val tui = new Tui(controller)
+  controller.notifyObservers
 
   def main(args: Array[String]): Unit = {
     println("This is Mastermind.")
@@ -16,9 +18,8 @@ object Mastermind {
     var input: String = ""
     var index = 0
     do {
-      println("Grid : " + testGrid.toString)
       input = readLine()
-      testGrid = tui.processInputLine(input, testGrid, index)
+      tui.processInputLine(input, index)
       index += 1
     } while (input != "q" && index < 7)
   }

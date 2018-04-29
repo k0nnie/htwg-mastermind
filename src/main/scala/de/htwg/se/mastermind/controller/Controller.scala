@@ -1,33 +1,19 @@
 package de.htwg.se.mastermind.controller
 
-import de.htwg.se.mastermind.model.Board
+import de.htwg.se.mastermind.model.{Board, Color}
 import de.htwg.se.mastermind.util.Observable
 
-class Controller(var grid:Board) extends Observable{
-  def createEmptyGrid(size: Int):Unit = {
-    //grid = new Grid(size)
+class Controller(var board: Board) extends Observable {
+  def createEmptyBoard(): Unit = {
+    board = new Board()
     notifyObservers
   }
 
-  def createRandomGrid(size: Int, randomCells:Int):Unit = {
-    //grid = new GridCreator(size).createRandom(randomCells)
+  def boardToString: String = board.toString
+
+  def replaceRound(index: Int, colVec: Vector[Color]): Unit = {
+    board = board.replaceRound(index, colVec)
     notifyObservers
   }
-
-  def gridToString: String = grid.toString
-
-  def set(row: Int, col: Int, value: Int):Unit = {
-    //grid = grid.set(row, col, value)
-    notifyObservers
-  }
-
-//  def solve: Boolean = {
-//
-//    val (success, g) = new Solver(grid).solve
-//    grid = g
-//    notifyObservers
-//    success
-//  }
-
 }
 
