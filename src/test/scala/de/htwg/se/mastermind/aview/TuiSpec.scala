@@ -19,5 +19,20 @@ class TuiSpec extends WordSpec with Matchers {
       tui.processInputLine("rgbp", 0)
       controller.board.rounds(0).turn.pegs.toString() should be("Vector(r, g, b, p)")
     }
+    "for now accept wrong console input of four or more chars" in {
+      tui.processInputLine("ssss", 0)
+      controller.board.rounds(0).turn.pegs.toString() should be("Vector(s, s, s, s)")
+      tui.processInputLine("sssss", 0)
+      controller.board.rounds(0).turn.pegs.toString() should be("Vector(s, s, s, s)")
+    }
+    "for now do nothing with wrong console input of less than four chars" in {
+      tui.processInputLine("s", 1)
+      controller.board.rounds(1).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
+      tui.processInputLine("ss", 1)
+      controller.board.rounds(1).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
+      tui.processInputLine("sss", 1)
+      controller.board.rounds(1).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
+
+    }
   }
 }
