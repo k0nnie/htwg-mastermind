@@ -5,36 +5,29 @@ import scala.util.Random
 
 case class Board(rounds: Vector[Round], solution: Vector[Color]) {
 
-  def this() = this(Vector.fill(8)(new Round()), Board.randomSolution)
+  def this() = this(Vector.fill(Board.NumberOfRounds)(new Round()), Board.randomSolution)
 
   def this(rounds: Vector[Round]) = this(rounds, Board.randomSolution)
 
-  def replaceRound(index: Int, colVec: Vector[Color]) : Board = {
+  def replaceRound(index: Int, colVec: Vector[Color]): Board = {
     val hints = createHints(solution, colVec)
     copy(rounds.updated(index, rounds(index).replacePegs(colVec, hints)), solution)
   }
 
   def createHints(solution: Vector[Color], colVec: Vector[Color]): Vector[ColorHint] = {
     var hints = Vector.empty[ColorHint]
-    var set = Set.empty[String]
+    var hintSet = Set.empty[String]
 
-    for {
-      i <- colVec.indices
-      j <- solution.indices
-    } {
-      val isEqual = colVec(i).name.equals(solution(j).name)
-      if (isEqual) {
-        if (i == j) {
-          if (!set.contains(colVec(i).name)) {
-            hints = hints :+ ColorHint("rightColAndPos")
-            set = set + colVec(i).name
-          }
-        } else {
-          if (!set.contains(colVec(i).name)) {
-            hints = hints :+ ColorHint("rightCol")
-            set = set + colVec(i).name
-          }
-        }
+    for {i <- colVec.indices} {
+      if (solution(i).name == colVec(i).name) {
+        hints = ColorHint("rightColAndPos") +: hints
+        hintSet = hintSet + colVec(i).name
+      }
+    }
+    for {i <- colVec.indices} {
+      if (!hintSet.contains(colVec(i).name) && solution.contains(colVec(i))) {
+        hintSet = hintSet + colVec(i).name
+        hints = hints :+ ColorHint("rightCol")
       }
     }
     while (hints.size.<(Board.NumberOfPegs)) {
@@ -49,8 +42,8 @@ case class Board(rounds: Vector[Round], solution: Vector[Color]) {
     var box = "\n" + (lineSeparator + line) * Board.NumberOfRounds + lineSeparator
 
     for {
-      row <- 0 to Board.NumberOfRounds
-      col <- 0 to Board.NumberOfRounds
+      row <- 0 until Board.NumberOfRounds
+      col <- 0 until Board.NumberOfPegs * 2
     } {
       if (col < Board.NumberOfPegs) {
         box = box.replaceFirst("x", rounds(row).turn.pegs(col).color.toString)
@@ -59,6 +52,11 @@ case class Board(rounds: Vector[Round], solution: Vector[Color]) {
       }
     }
     box
+  }
+
+  def solutionToString: String = {
+    val solutionString = "solution: " + solution.mkString(", ")
+    solutionString
   }
 }
 

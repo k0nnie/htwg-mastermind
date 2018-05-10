@@ -19,12 +19,6 @@ class ColorSpec extends WordSpec with Matchers {
         redColor.isValidColor("r")
       }
     }
-    "is a valid color" should {
-      val pinkColor = Color("p")
-      "have a long color name" in {
-        pinkColor.fullName should be("pink")
-      }
-    }
     "getting a random color" should {
       val randomColor = Color("0").randomColorString()
       "not be empty anymore" in {
@@ -35,9 +29,6 @@ class ColorSpec extends WordSpec with Matchers {
       val emptyColor = new Color()
       "contain a zero as value" in {
         emptyColor.name should be("0")
-      }
-      "have a full name \"empty\""  in {
-        emptyColor.fullName should be("empty")
       }
     }
     "being initialized" should {

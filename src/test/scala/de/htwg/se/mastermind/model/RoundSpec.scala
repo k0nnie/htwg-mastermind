@@ -11,13 +11,13 @@ class RoundSpec extends WordSpec with Matchers {
     "empty " should {
       val emptyRound = Round(new Turn(), new TurnHint())
       "have an empty turn" in {
-        emptyRound.turn.pegString should be("Vector( ,  ,  ,  )")
+        emptyRound.turn.pegs.toString() should be("Vector( ,  ,  ,  )")
       }
       "have that turn size" in {
         emptyRound.turnSize should be(4)
       }
       "have an empty Vector of turnHint" in {
-        emptyRound.turnHint.pegString should be("Vector( ,  ,  ,  )")
+        emptyRound.turnHint.pegs.toString() should be("Vector( ,  ,  ,  )")
       }
       "have that turnHint size" in {
         emptyRound.turnHintSize should be(4)
@@ -26,7 +26,7 @@ class RoundSpec extends WordSpec with Matchers {
     "set to a valid peg color" should {
       val nonEmptyTurn = Turn(Vector(Peg[Color](Color("g"))))
       "return that vector" in {
-        nonEmptyTurn.pegString should be("Vector(g)")
+        nonEmptyTurn.pegs.toString() should be("Vector(g)")
       }
     }
   }

@@ -8,13 +8,6 @@ case class ColorHint(name: String) {
     "rightColAndPos", "rightCol", "0"
   )
 
-  def fullName : String = name match {
-    case "+" => "rightColAndPos"
-    case "o" => "rightCol"
-    case "0" => "empty"
-    case _ => ""
-  }
-
   override def toString: String = name match {
     case "rightColAndPos" => "+"
     case "rightCol" => "o"

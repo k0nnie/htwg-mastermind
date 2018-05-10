@@ -10,19 +10,6 @@ case class Color(name: String) {
     "r", "b", "y", "g", "w", "p", "o", "v"
   )
 
-  val fullName : String = name match {
-    case "r" => "red"
-    case "b" => "blue"
-    case "y" => "yellow"
-    case "g" => "green"
-    case "w" => "white"
-    case "p" => "pink"
-    case "o" => "orange"
-    case "v" => "violet"
-    case "0" => "empty"
-    case _ => ""
-  }
-
   def isValidColor(name: String): Boolean = getAvailableColors.contains(name)
 
   override def toString: String = name match {

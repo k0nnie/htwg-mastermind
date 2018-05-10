@@ -15,5 +15,6 @@ class Controller(var board: Board) extends Observable {
     board = board.replaceRound(index, colVec)
     notifyObservers
   }
-}
 
+  def solutionToString(): String = board.solutionToString
+}
