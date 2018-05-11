@@ -1,7 +1,7 @@
 package de.htwg.se.mastermind.aview
 
 import de.htwg.se.mastermind.controller.Controller
-import de.htwg.se.mastermind.model.Color
+import de.htwg.se.mastermind.model.{Board, Color}
 import de.htwg.se.mastermind.util.Observer
 
 class Tui(controller: Controller) extends Observer {
@@ -16,6 +16,9 @@ class Tui(controller: Controller) extends Observer {
           case color1 :: color2 :: color3 :: color4 :: Nil => controller.replaceRound(index, Vector(Color(color1), Color(color2), Color(color3), Color(color4)))
           case _ =>
         }
+    }
+    if (index == Board.NumberOfRounds - 1) {
+      println(controller.solutionToString())
     }
   }
 

@@ -11,13 +11,13 @@ class TurnSpec extends WordSpec with Matchers {
     "empty " should {
       val emptyTurn = new Turn()
       "have a vector with four empty pegs" in {
-        emptyTurn.pegString should be("Vector( ,  ,  ,  )")
+        emptyTurn.pegs.toString() should be("Vector( ,  ,  ,  )")
       }
     }
     "set to a valid peg color" should {
       val nonEmptyTurn = Turn(Vector(Peg[Color](Color("g"))))
       "return that vector" in {
-        nonEmptyTurn.pegString should be("Vector(g)")
+        nonEmptyTurn.pegs.toString() should be("Vector(g)")
       }
     }
     "replacing colors " should {
