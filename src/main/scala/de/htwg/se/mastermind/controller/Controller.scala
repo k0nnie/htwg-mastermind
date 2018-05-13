@@ -17,4 +17,10 @@ class Controller(var board: Board) extends Observable {
   }
 
   def solutionToString(): String = board.solutionToString
+
+  def gameSolved(index: Int): Unit = {
+    board.solutionToString
+    println("game solved!")
+    System.exit(0)
+  }
 }
