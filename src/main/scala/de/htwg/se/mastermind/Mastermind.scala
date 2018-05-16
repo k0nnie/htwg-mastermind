@@ -21,6 +21,6 @@ object Mastermind {
       input = readLine()
       tui.processInputLine(input, index)
       index += 1
-    } while (input != "q" && index < Board.NumberOfRounds)
+    } while (input != "q" && index < Board.NumberOfRounds && !controller.gameSolved)
   }
 }

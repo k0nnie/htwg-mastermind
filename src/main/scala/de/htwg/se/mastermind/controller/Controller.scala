@@ -4,6 +4,9 @@ import de.htwg.se.mastermind.model.{Board, Color}
 import de.htwg.se.mastermind.util.Observable
 
 class Controller(var board: Board) extends Observable {
+
+  var gameSolved = false
+
   def createEmptyBoard(): Unit = {
     board = new Board()
     notifyObservers
@@ -20,7 +23,9 @@ class Controller(var board: Board) extends Observable {
 
   def gameSolved(index: Int): Unit = {
     board.solutionToString
-    println("game solved!")
-    System.exit(0)
+    println("game solved after " + index + " rounds!")
+    gameSolved = true
   }
+
+  def isSolved(index: Int): Boolean = this.board.rounds(index).turnHint.pegs.toString().equals("Vector(+, +, +, +)")
 }

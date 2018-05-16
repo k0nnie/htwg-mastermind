@@ -20,7 +20,7 @@ class Tui(controller: Controller) extends Observer {
     if (index == Board.NumberOfRounds - 1) {
       println(controller.solutionToString())
     }
-    if (controller.board.rounds(index).turnHint.pegs.toString().equals("Vector(+, +, +, +)")) {
+    if (controller.isSolved(index)) {
       controller.gameSolved(index)
     }
   }
