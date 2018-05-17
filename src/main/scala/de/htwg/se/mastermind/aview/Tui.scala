@@ -20,6 +20,9 @@ class Tui(controller: Controller) extends Observer {
     if (index == Board.NumberOfRounds - 1) {
       println(controller.solutionToString())
     }
+    if (controller.isSolved(index)) {
+      controller.gameSolved(index)
+    }
   }
 
   override def update: Unit = println(controller.boardToString)

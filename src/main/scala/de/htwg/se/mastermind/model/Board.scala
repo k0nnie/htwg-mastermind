@@ -63,7 +63,7 @@ case class Board(rounds: Vector[Round], solution: Vector[Color]) {
 object Board {
 
   val NumberOfPegs = 4
-  val NumberOfRounds = 7
+  val NumberOfRounds = 10
 
   def randomSolution: Vector[Color] = {
     val random = new Random

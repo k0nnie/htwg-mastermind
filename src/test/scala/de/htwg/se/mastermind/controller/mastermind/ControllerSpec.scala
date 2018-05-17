@@ -27,13 +27,21 @@ class ControllerSpec extends WordSpec with Matchers {
       "notify its Observer after creation" in {
         controller.createEmptyBoard()
         observer.updated should be(true)
-        controller.board.rounds.size should be(7)
+        controller.board.rounds.size should be(Board.NumberOfRounds)
       }
       "notify its Observer after replacing a round" in {
         val colVec = Vector[Color](Color("r"), Color("r"), Color("r"), Color("r"))
         controller.replaceRound(0, colVec)
         observer.updated should be(true)
         controller.board.rounds(0).turn.pegs.toString() should be("Vector(r, r, r, r)")
+      }
+      "not finish the game when not yet solved" in {
+        controller.isSolved(0) should be(false)
+      }
+      "print out a solution and that game is solved" in {
+        controller.gameSolved(0)
+        controller.gameSolved should be(true)
+
       }
     }
   }
