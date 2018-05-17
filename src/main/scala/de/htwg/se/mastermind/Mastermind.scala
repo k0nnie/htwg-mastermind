@@ -17,10 +17,13 @@ object Mastermind {
     println("Each color occurs only once in a solution.")
     var input: String = ""
     var index = 0
+    var list = input.toList.filter(c => c != ' ').map(c => c.toString)
+
     do {
+
       input = readLine()
       tui.processInputLine(input, index)
       index += 1
-    } while (input != "q" && index < 7)
+    } while (input != "q" && index < Board.NumberOfRounds)
   }
 }
