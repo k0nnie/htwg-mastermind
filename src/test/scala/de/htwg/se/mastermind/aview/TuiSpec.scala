@@ -28,18 +28,18 @@ class TuiSpec extends WordSpec with Matchers {
       controller2.solutionToString() should be("solution: w, o, v, b")
     }
     "for now accept wrong console input of four or more chars" in {
-      tui.processInputLine("ssss", 0) should be()
-      //controller.board.rounds(0).turn.pegs.toString() should be("Vector(s, s, s, s)")
-      tui.processInputLine("sssss", 0) should be()
-      //controller.board.rounds(0).turn.pegs.toString() should be("Bitte geben Sie 4 Farbe")
+      tui.processInputLine("ssss", 0)
+      controller.board.rounds(0).turn.pegs.toString() should be("Vector(r, g, b, p)")
+      tui.processInputLine("sssss", 0)
+      controller.board.rounds(0).turn.pegs.toString() should be("Vector(r, g, b, p)")
     }
     "for now do nothing with wrong console input of less than four chars" in {
-      tui.processInputLine("s", 1) should be()
-      //controller.board.rounds(1).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
-      tui.processInputLine("ss", 1) should be()
-      //controller.board.rounds(1).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
-      tui.processInputLine("sss", 1) should be()
-      //controller.board.rounds(1).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
+      tui.processInputLine("s", 1)
+      controller.board.rounds(1).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
+      tui.processInputLine("ss", 1)
+      controller.board.rounds(1).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
+      tui.processInputLine("sss", 1)
+      controller.board.rounds(1).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
     }
   }
 }

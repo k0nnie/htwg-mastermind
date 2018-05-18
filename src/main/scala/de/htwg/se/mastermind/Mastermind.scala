@@ -13,17 +13,22 @@ object Mastermind {
 
   def main(args: Array[String]): Unit = {
     println("This is Mastermind.")
+    println("Please choose 4 colors to start!")
     println("Available colors: r, b, y, g, w, p, o, v")
     println("Each color occurs only once in a solution.")
     var input: String = ""
     var index = 0
-    var list = input.toList.filter(c => c != ' ').map(c => c.toString)
 
     do {
 
-      input = readLine()
-      tui.processInputLine(input, index)
-      index += 1
+      var validInput = true
+      while (validInput && index < Board.NumberOfRounds) {
+        input = readLine()
+        validInput = tui.processInputLine(input, index)
+        if (validInput) {
+          index += 1
+        }
+      }
     } while (input != "q" && index < Board.NumberOfRounds)
   }
 }

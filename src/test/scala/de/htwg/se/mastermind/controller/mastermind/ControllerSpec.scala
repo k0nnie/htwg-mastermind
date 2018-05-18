@@ -35,6 +35,13 @@ class ControllerSpec extends WordSpec with Matchers {
         observer.updated should be(true)
         controller.board.rounds(0).turn.pegs.toString() should be("Vector(r, r, r, r)")
       }
+      "return false if game is not solved yet" in {
+        val colVec = Vector[Color](Color("w"), Color("o"), Color("v"), Color("b"))
+        controller.replaceRound(1, colVec)
+        controller.gameSolved should be (false)
+        controller.gameSolved(1)
+        controller.gameSolved should be (true)
+      }
     }
   }
 }
