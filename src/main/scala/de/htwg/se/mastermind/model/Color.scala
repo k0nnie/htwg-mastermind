@@ -10,7 +10,7 @@ case class Color(name: String) {
     "r", "b", "y", "g", "w", "p", "o", "v"
   )
 
-  def isValidColor(name: String): Boolean = getAvailableColors.contains(name)
+  def isValidColor: Boolean = getAvailableColors.contains(name)
 
   override def toString: String = name match {
     case "0" => " "

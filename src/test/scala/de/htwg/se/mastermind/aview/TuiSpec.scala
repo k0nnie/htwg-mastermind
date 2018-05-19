@@ -29,9 +29,9 @@ class TuiSpec extends WordSpec with Matchers {
     }
     "for now accept wrong console input of four or more chars" in {
       tui.processInputLine("ssss", 0)
-      controller.board.rounds(0).turn.pegs.toString() should be("Vector(s, s, s, s)")
+      controller.board.rounds(0).turn.pegs.toString() should be("Vector(r, g, b, p)")
       tui.processInputLine("sssss", 0)
-      controller.board.rounds(0).turn.pegs.toString() should be("Vector(s, s, s, s)")
+      controller.board.rounds(0).turn.pegs.toString() should be("Vector(r, g, b, p)")
     }
     "for now do nothing with wrong console input of less than four chars" in {
       tui.processInputLine("s", 1)

@@ -16,7 +16,7 @@ class ColorSpec extends WordSpec with Matchers {
     "is valid" should {
       val redColor = Color("r")
       "be true" in {
-        redColor.isValidColor("r")
+        redColor.isValidColor
       }
     }
     "getting a random color" should {

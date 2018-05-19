@@ -8,13 +8,17 @@ class Tui(controller: Controller) extends Observer {
 
   controller.add(this)
 
-  def processInputLine(input: String, index: Int): Unit = {
+  var isValid = true
+
+  def processInputLine(input: String, index: Int): Boolean = {
+    //index + 1
     input match {
       case "n" => controller.createEmptyBoard()
+      case "q" =>
       case _ =>
         input.toList.filter(c => c != ' ').map(c => c.toString) match {
-          case color1 :: color2 :: color3 :: color4 :: Nil => controller.replaceRound(index, Vector(Color(color1), Color(color2), Color(color3), Color(color4)))
-          case _ =>
+          case color1 :: color2 :: color3 :: color4 :: Nil => isValid = controller.checkInput(index, Vector(Color(color1), Color(color2), Color(color3), Color(color4)))
+          case _ => isValid = false
         }
     }
     if (index == Board.NumberOfRounds - 1) {
@@ -23,7 +27,7 @@ class Tui(controller: Controller) extends Observer {
     if (controller.isSolved(index)) {
       controller.gameSolved(index)
     }
+    isValid
   }
-
   override def update: Unit = println(controller.boardToString)
 }
