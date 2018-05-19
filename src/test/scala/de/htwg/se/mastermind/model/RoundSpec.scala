@@ -24,9 +24,9 @@ class RoundSpec extends WordSpec with Matchers {
       }
     }
     "set to a valid peg color" should {
-      val nonEmptyTurn = Turn(Vector(Peg[Color](Color("g"))))
+      val nonEmptyTurn = Turn(Vector(Peg[Color](Color("2"))))
       "return that vector" in {
-        nonEmptyTurn.pegs.toString() should be("Vector(g)")
+        nonEmptyTurn.pegs.toString() should be("Vector(2)")
       }
     }
   }

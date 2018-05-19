@@ -14,23 +14,23 @@ class PegSpec extends WordSpec with Matchers {
         emptyPeg.color should be("0")
       }
       "not be set" in {
-        emptyPeg.emptyColor(Color("g")) should be(false)
+        emptyPeg.emptyColor(Color("2")) should be(false)
       }
       "should contain a free space when using toString" in {
         emptyPeg.toString should be(" ")
       }
     }
     "set to a specific value" should {
-      val nonEmptyPeg = Peg("g")
+      val nonEmptyPeg = Peg("2")
       "return that value" in {
-        nonEmptyPeg.color should be("g")
+        nonEmptyPeg.color should be("2")
       }
       "be set" in {
         nonEmptyPeg.emptyColor(Color(" ")) should be(true)
       }
       "updatd with a new color" in {
-        val updatedPeg = nonEmptyPeg.updateColor("p")
-        updatedPeg.color should be("p")
+        val updatedPeg = nonEmptyPeg.updateColor("7")
+        updatedPeg.color should be("7")
       }
     }
   }

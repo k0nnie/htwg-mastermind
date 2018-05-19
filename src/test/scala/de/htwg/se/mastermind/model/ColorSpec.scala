@@ -8,15 +8,15 @@ import org.scalatest.{Matchers, WordSpec}
 class ColorSpec extends WordSpec with Matchers {
   "A Color" when {
     "having a valid name" should {
-      val redColor = Color("r")
+      val colorOne = Color("1")
       "return that value" in {
-        redColor.getAvailableColors should contain("r")
+        colorOne.getAvailableColors should contain("1")
       }
     }
     "is valid" should {
-      val redColor = Color("r")
+      val colorOne = Color("1")
       "be true" in {
-        redColor.isValidColor
+        colorOne.isValidColor
       }
     }
     "getting a random color" should {
@@ -32,9 +32,9 @@ class ColorSpec extends WordSpec with Matchers {
       }
     }
     "being initialized" should {
-      val color = Color("y")
+      val color = Color("8")
       "have a name" in {
-        color.name should be("y")
+        color.name should be("8")
       }
     }
   }

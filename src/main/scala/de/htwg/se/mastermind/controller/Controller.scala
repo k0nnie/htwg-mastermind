@@ -33,7 +33,7 @@ class Controller(var board: Board) extends Observable {
       notifyObservers
     } else {
       println("Wrong console input. Try again!")
-      println("Available colors: r, b, y, g, w, p, o, v")
+      println("Available colors: 1, 2, 3, 4, 5, 6, 7, 8")
     }
     isValid
   }
@@ -43,7 +43,7 @@ class Controller(var board: Board) extends Observable {
 
   def gameSolved(index: Int): Unit = {
     board.solutionToString
-    println("game solved after " + (index-1) + " rounds!")
+    println("game solved after " + (index + 1) + " rounds!")
     gameSolved = true
   }
 

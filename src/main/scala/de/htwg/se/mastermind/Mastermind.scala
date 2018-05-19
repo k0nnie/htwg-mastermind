@@ -14,7 +14,7 @@ object Mastermind {
   def main(args: Array[String]): Unit = {
     println("This is Mastermind.")
     println("Please choose 4 colors to start!")
-    println("Available colors: r, b, y, g, w, p, o, v")
+    println("Available colors: 1, 2, 3, 4, 5, 6, 7, 8")
     println("Each color occurs only once in a solution.")
     var input: String = ""
     var index = 0
