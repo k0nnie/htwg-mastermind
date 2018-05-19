@@ -29,7 +29,5 @@ class Tui(controller: Controller) extends Observer {
     }
     isValid
   }
-
-
   override def update: Unit = println(controller.boardToString)
 }

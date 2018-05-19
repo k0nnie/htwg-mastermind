@@ -8,7 +8,7 @@ import scala.io.StdIn._
 object Mastermind {
 
   val controller = new Controller(new Board())
-  val tui = new Tui(controller)
+  val tui: Tui = new Tui(controller)
   controller.notifyObservers
 
   def main(args: Array[String]): Unit = {
@@ -20,7 +20,6 @@ object Mastermind {
     var index = 0
 
     do {
-
       var validInput = true
       while (validInput && index < Board.NumberOfRounds) {
         input = readLine()

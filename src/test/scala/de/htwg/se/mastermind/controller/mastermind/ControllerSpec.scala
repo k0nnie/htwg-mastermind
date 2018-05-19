@@ -27,7 +27,7 @@ class ControllerSpec extends WordSpec with Matchers {
       "notify its Observer after creation" in {
         controller.createEmptyBoard()
         observer.updated should be(true)
-        controller.board.rounds.size should be(7)
+        controller.board.rounds.size should be(Board.NumberOfRounds)
       }
       "notify its Observer after replacing a round" in {
         val colVec = Vector[Color](Color("r"), Color("r"), Color("r"), Color("r"))
