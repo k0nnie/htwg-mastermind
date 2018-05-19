@@ -21,11 +21,11 @@ class TurnSpec extends WordSpec with Matchers {
       }
     }
     "replacing colors " should {
-      val pegs = Vector(Peg(Color("y")), Peg(Color("v")), Peg(Color("o")), Peg(Color("w")))
+      val pegs = Vector(Peg(Color("8")), Peg(Color("4")), Peg(Color("6")), Peg(Color("5")))
       val turn = Turn(pegs)
       "replace empty pegs" in {
-        turn.replaceColors(Vector(Color("g"), Color("b"), Color("y"), Color("p")))
-        turn.pegs.toString() should be("Vector(y, v, o, w)")
+        turn.replaceColors(Vector(Color("2"), Color("3"), Color("8"), Color("7")))
+        turn.pegs.toString() should be("Vector(8, 4, 6, 5)")
       }
     }
   }

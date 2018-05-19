@@ -7,7 +7,7 @@ case class Color(name: String) {
   def this() = this("0") // empty value
 
   def getAvailableColors: Seq[String] = Seq(
-    "r", "b", "y", "g", "w", "p", "o", "v"
+    "1", "2", "3", "4", "5", "6", "7", "8"
   )
 
   def isValidColor: Boolean = getAvailableColors.contains(name)

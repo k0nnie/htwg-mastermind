@@ -11,7 +11,7 @@ import org.scalatest.{Matchers, WordSpec}
 class ControllerSpec extends WordSpec with Matchers {
   "A Controller" when {
     "observed by an Observer" should {
-      val solution = Vector[Color](Color("w"), Color("o"), Color("v"), Color("b"))
+      val solution = Vector[Color](Color("5"), Color("6"), Color("7"), Color("8"))
       val rounds = Vector.fill(Board.NumberOfRounds)(new Round())
       val board = Board(rounds, solution)
       val controller = new Controller(board)
@@ -21,7 +21,7 @@ class ControllerSpec extends WordSpec with Matchers {
         override def update: Unit = updated = true
       }
       "print out this solution on console" in {
-        controller.solutionToString() should be("solution: w, o, v, b")
+        controller.solutionToString() should be("solution: 5, 6, 7, 8")
       }
       controller.add(observer)
       "notify its Observer after creation" in {
@@ -30,13 +30,13 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.board.rounds.size should be(Board.NumberOfRounds)
       }
       "notify its Observer after replacing a round" in {
-        val colVec = Vector[Color](Color("r"), Color("r"), Color("r"), Color("r"))
+        val colVec = Vector[Color](Color("1"), Color("1"), Color("1"), Color("1"))
         controller.replaceRound(0, colVec)
         observer.updated should be(true)
-        controller.board.rounds(0).turn.pegs.toString() should be("Vector(r, r, r, r)")
+        controller.board.rounds(0).turn.pegs.toString() should be("Vector(1, 1, 1, 1)")
       }
       "return false if game is not solved yet" in {
-        val colVec = Vector[Color](Color("w"), Color("o"), Color("v"), Color("b"))
+        val colVec = Vector[Color](Color("5"), Color("6"), Color("7"), Color("8"))
         controller.replaceRound(1, colVec)
         controller.gameSolved should be (false)
         controller.gameSolved(1)
