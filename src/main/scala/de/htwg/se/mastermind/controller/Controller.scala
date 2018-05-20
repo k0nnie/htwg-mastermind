@@ -1,33 +1,51 @@
 package de.htwg.se.mastermind.controller
 
-import de.htwg.se.mastermind.model.Board
+import de.htwg.se.mastermind.model.{Board, Color}
 import de.htwg.se.mastermind.util.Observable
 
-class Controller(var grid:Board) extends Observable{
-  def createEmptyGrid(size: Int):Unit = {
-    //grid = new Grid(size)
+class Controller(var board: Board) extends Observable {
+
+  var gameSolved = false
+
+  def createEmptyBoard(): Unit = {
+    board = new Board()
     notifyObservers
   }
 
-  def createRandomGrid(size: Int, randomCells:Int):Unit = {
-    //grid = new GridCreator(size).createRandom(randomCells)
+  def boardToString: String = board.toString
+
+  def replaceRound(index: Int, colVec: Vector[Color]): Unit = {
+    board = board.replaceRound(index, colVec)
     notifyObservers
   }
 
-  def gridToString: String = grid.toString
+  def checkInput(index: Int, colVec: Vector[Color]): Boolean = {
+    var isValid = true
+    val validNumOfChars = Board.NumberOfPegs
 
-  def set(row: Int, col: Int, value: Int):Unit = {
-    //grid = grid.set(row, col, value)
-    notifyObservers
+    for (color <- colVec) {
+      if (!color.isValidColor) {
+        isValid = false
+      }
+    }
+    if (isValid) {
+      board = board.replaceRound(index, colVec)
+      notifyObservers
+    } else {
+      println("Wrong console input. Try again!")
+      println("Available colors: 1, 2, 3, 4, 5, 6, 7, 8")
+    }
+    isValid
   }
 
-//  def solve: Boolean = {
-//
-//    val (success, g) = new Solver(grid).solve
-//    grid = g
-//    notifyObservers
-//    success
-//  }
 
+  def solutionToString(): String = board.solutionToString
+
+  def gameSolved(index: Int): Unit = {
+    board.solutionToString
+    println("game solved after " + (index + 1) + " rounds!")
+    gameSolved = true
+  }
+
+  def isSolved(index: Int): Boolean = this.board.rounds(index).turnHint.pegs.toString().equals("Vector(+, +, +, +)")
 }
-
