@@ -18,7 +18,7 @@ class ControllerSpec extends WordSpec with Matchers {
       val observer = new Observer {
         var updated: Boolean = false
         def isUpdated: Boolean = updated
-        override def update: Unit = updated = true
+        override def update(): Unit = updated = true
       }
       "print out this solution on console" in {
         controller.solutionToString() should be("solution: 5, 6, 7, 8")
@@ -41,6 +41,13 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.gameSolved should be (false)
         controller.gameSolved(1)
         controller.gameSolved should be (true)
+      }
+      "clear a round if needed" in {
+        controller.clearRound(0).rounds(0).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
+      }
+      "remove an observer" in {
+        controller.remove(observer)
+        controller.subscribers.contains(observer) should be(false)
       }
     }
   }

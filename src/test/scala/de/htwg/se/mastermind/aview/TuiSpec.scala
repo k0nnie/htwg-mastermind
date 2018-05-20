@@ -19,6 +19,15 @@ class TuiSpec extends WordSpec with Matchers {
       tui.processInputLine("1234", 0)
       controller.board.rounds(0).turn.pegs.toString() should be("Vector(1, 2, 3, 4)")
     }
+    "undo a step back on input 'z'" in {
+      tui.processInputLine("2345", 1)
+      controller.undo()
+      controller.board.rounds(1).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
+    }
+    "redo a step back on input 'y'" in {
+      controller.redo()
+      controller.board.rounds(1).turn.pegs.toString() should be("Vector(2, 3, 4, 5)")
+    }
     "display solution after last round" in {
       val solution = Vector[Color](Color("5"), Color("6"), Color("7"), Color("8"))
       val rounds = Vector.fill(Board.NumberOfRounds)(new Round())
@@ -34,12 +43,12 @@ class TuiSpec extends WordSpec with Matchers {
       controller.board.rounds(0).turn.pegs.toString() should be("Vector(1, 2, 3, 4)")
     }
     "for now do nothing with wrong console input of less than four chars" in {
-      tui.processInputLine("s", 1)
-      controller.board.rounds(1).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
-      tui.processInputLine("ss", 1)
-      controller.board.rounds(1).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
-      tui.processInputLine("sss", 1)
-      controller.board.rounds(1).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
+      tui.processInputLine("s", 2)
+      controller.board.rounds(2).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
+      tui.processInputLine("ss", 2)
+      controller.board.rounds(2).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
+      tui.processInputLine("sss", 2)
+      controller.board.rounds(2).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
     }
   }
 }

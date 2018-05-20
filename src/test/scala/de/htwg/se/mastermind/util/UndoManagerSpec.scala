@@ -35,5 +35,13 @@ class UndoManagerSpec extends WordSpec with Matchers {
       undoManager.redoStep()
       command.state should be(1)
     }
+    "do nothing when stack is empty" in {
+      val command = new incrCommand
+      command.state should be(0)
+      undoManager.undoStep()
+      command.state should be(0)
+      undoManager.redoStep()
+      command.state should be(0)
+    }
   }
 }
