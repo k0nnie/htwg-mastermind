@@ -31,13 +31,13 @@ class ControllerSpec extends WordSpec with Matchers {
       }
       "notify its Observer after replacing a round" in {
         val colVec = Vector[Color](Color("1"), Color("1"), Color("1"), Color("1"))
-        controller.replaceRound(0, colVec)
+        controller.checkInputAndSetRound(0, colVec)
         observer.updated should be(true)
         controller.board.rounds(0).turn.pegs.toString() should be("Vector(1, 1, 1, 1)")
       }
       "return false if game is not solved yet" in {
         val colVec = Vector[Color](Color("5"), Color("6"), Color("7"), Color("8"))
-        controller.replaceRound(1, colVec)
+        controller.checkInputAndSetRound(1, colVec)
         controller.gameSolved should be (false)
         controller.gameSolved(1)
         controller.gameSolved should be (true)

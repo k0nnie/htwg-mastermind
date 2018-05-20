@@ -14,6 +14,12 @@ case class Board(rounds: Vector[Round], solution: Vector[Color]) {
     copy(rounds.updated(index, rounds(index).replacePegs(colVec, hints)), solution)
   }
 
+  def emptyRound(index: Int): Board = {
+    val colVec = new Color().emptyColVec
+    val hints = createHints(solution, colVec)
+    copy(rounds.updated(index, rounds(index).replacePegs(colVec, hints)), solution)
+  }
+
   def createHints(solution: Vector[Color], colVec: Vector[Color]): Vector[ColorHint] = {
     var hints = Vector.empty[ColorHint]
     var hintSet = Set.empty[String]
@@ -63,7 +69,7 @@ case class Board(rounds: Vector[Round], solution: Vector[Color]) {
 object Board {
 
   val NumberOfPegs = 4
-  val NumberOfRounds = 7
+  val NumberOfRounds = 10
 
   def randomSolution: Vector[Color] = {
     val random = new Random

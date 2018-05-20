@@ -1,11 +1,12 @@
 package de.htwg.se.mastermind.controller
 
 import de.htwg.se.mastermind.model.{Board, Color}
-import de.htwg.se.mastermind.util.Observable
+import de.htwg.se.mastermind.util.{Observable, UndoManager}
 
 class Controller(var board: Board) extends Observable {
 
   var gameSolved = false
+  private val undoManager = new UndoManager
 
   def createEmptyBoard(): Unit = {
     board = new Board()
@@ -14,12 +15,11 @@ class Controller(var board: Board) extends Observable {
 
   def boardToString: String = board.toString
 
-  def replaceRound(index: Int, colVec: Vector[Color]): Unit = {
-    board = board.replaceRound(index, colVec)
-    notifyObservers
+  def clearRound(index: Int): Board = {
+    board.emptyRound(index)
   }
 
-  def checkInput(index: Int, colVec: Vector[Color]): Boolean = {
+  def checkInputAndSetRound(index: Int, colVec: Vector[Color]): Boolean = {
     var isValid = true
     val validNumOfChars = Board.NumberOfPegs
 
@@ -29,7 +29,7 @@ class Controller(var board: Board) extends Observable {
       }
     }
     if (isValid) {
-      board = board.replaceRound(index, colVec)
+      undoManager.doStep(new SetCommand(index, colVec, this))
       notifyObservers
     } else {
       println("Wrong console input. Try again!")
@@ -37,7 +37,6 @@ class Controller(var board: Board) extends Observable {
     }
     isValid
   }
-
 
   def solutionToString(): String = board.solutionToString
 
@@ -48,4 +47,16 @@ class Controller(var board: Board) extends Observable {
   }
 
   def isSolved(index: Int): Boolean = this.board.rounds(index).turnHint.pegs.toString().equals("Vector(+, +, +, +)")
+
+  def undo(): Boolean = {
+    undoManager.undoStep()
+    notifyObservers
+    false
+  }
+
+  def redo(): Boolean = {
+    undoManager.redoStep()
+    notifyObservers
+    false
+  }
 }

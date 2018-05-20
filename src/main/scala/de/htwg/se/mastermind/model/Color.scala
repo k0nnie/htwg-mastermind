@@ -24,4 +24,9 @@ case class Color(name: String) {
     val result = colors(random_index)
     result.toString
   }
+
+  def emptyColVec: Vector[Color] = {
+    val emptyColVec = for (i <- 1 to Board.NumberOfPegs) yield new Color()
+    emptyColVec.toVector
+  }
 }
