@@ -21,11 +21,11 @@ class TuiSpec extends WordSpec with Matchers {
     }
     "undo a step back on input 'z'" in {
       tui.processInputLine("2345", 1)
-      controller.undo()
+      controller.undo() should be(false)
       controller.board.rounds(1).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
     }
     "redo a step back on input 'y'" in {
-      controller.redo()
+      controller.redo() should be(false)
       controller.board.rounds(1).turn.pegs.toString() should be("Vector(2, 3, 4, 5)")
     }
     "display solution after last round" in {
