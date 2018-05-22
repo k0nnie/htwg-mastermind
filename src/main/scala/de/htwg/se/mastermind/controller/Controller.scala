@@ -10,7 +10,7 @@ class Controller(var board: Board) extends Observable {
 
   def createEmptyBoard(): Unit = {
     board = new Board()
-    notifyObservers
+    notifyObservers()
   }
 
   def boardToString: String = board.toString
@@ -30,7 +30,7 @@ class Controller(var board: Board) extends Observable {
     }
     if (isValid) {
       undoManager.doStep(new SetCommand(index, colVec, this))
-      notifyObservers
+      notifyObservers()
     } else {
       println("Wrong console input. Try again!")
       println("Available colors: 1, 2, 3, 4, 5, 6, 7, 8")
@@ -50,13 +50,13 @@ class Controller(var board: Board) extends Observable {
 
   def undo(): Boolean = {
     undoManager.undoStep()
-    notifyObservers
+    notifyObservers()
     false
   }
 
   def redo(): Boolean = {
     undoManager.redoStep()
-    notifyObservers
+    notifyObservers()
     false
   }
 }
