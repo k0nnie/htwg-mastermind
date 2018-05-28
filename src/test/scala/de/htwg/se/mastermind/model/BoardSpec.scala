@@ -116,6 +116,11 @@ class BoardSpec extends WordSpec with Matchers {
       "have four hints for right color and position" in {
         newBoard.createHints(solution, colVec).toString() should be("Vector(+, +, +, +)")
       }
+      "give back an empty round if necessary" in {
+        val boardWithEmptyFirstRound = boardWithSolution.emptyRound(0)
+        boardWithEmptyFirstRound.rounds(0).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
+      }
     }
+
   }
 }

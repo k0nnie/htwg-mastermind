@@ -18,7 +18,7 @@ class ControllerSpec extends WordSpec with Matchers {
       val observer = new Observer {
         var updated: Boolean = false
         def isUpdated: Boolean = updated
-        override def update: Unit = updated = true
+        override def update(): Unit = updated = true
       }
       "print out this solution on console" in {
         controller.solutionToString() should be("solution: 5, 6, 7, 8")
@@ -31,16 +31,23 @@ class ControllerSpec extends WordSpec with Matchers {
       }
       "notify its Observer after replacing a round" in {
         val colVec = Vector[Color](Color("1"), Color("1"), Color("1"), Color("1"))
-        controller.replaceRound(0, colVec)
+        controller.checkInputAndSetRound(0, colVec)
         observer.updated should be(true)
         controller.board.rounds(0).turn.pegs.toString() should be("Vector(1, 1, 1, 1)")
       }
       "return false if game is not solved yet" in {
         val colVec = Vector[Color](Color("5"), Color("6"), Color("7"), Color("8"))
-        controller.replaceRound(1, colVec)
+        controller.checkInputAndSetRound(1, colVec)
         controller.gameSolved should be (false)
         controller.gameSolved(1)
         controller.gameSolved should be (true)
+      }
+      "clear a round if needed" in {
+        controller.clearRound(0).rounds(0).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
+      }
+      "remove an observer" in {
+        controller.remove(observer)
+        controller.subscribers.contains(observer) should be(false)
       }
     }
   }

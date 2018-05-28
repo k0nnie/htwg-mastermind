@@ -9,7 +9,7 @@ object Mastermind {
 
   val controller = new Controller(new Board())
   val tui: Tui = new Tui(controller)
-  controller.notifyObservers
+  controller.notifyObservers()
 
   def main(args: Array[String]): Unit = {
     println("This is Mastermind.")
@@ -21,13 +21,14 @@ object Mastermind {
 
     do {
       var validInput = true
-      while (validInput && index < Board.NumberOfRounds) {
+
+      while (validInput && index < Board.NumberOfRounds && !controller.gameSolved) {
         input = readLine()
         validInput = tui.processInputLine(input, index)
         if (validInput) {
           index += 1
         }
       }
-    } while (input != "q" && index < Board.NumberOfRounds)
+    } while (input != "q" && index < Board.NumberOfRounds && !controller.gameSolved)
   }
 }

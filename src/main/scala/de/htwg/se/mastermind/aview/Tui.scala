@@ -8,16 +8,17 @@ class Tui(controller: Controller) extends Observer {
 
   controller.add(this)
 
-  var isValid = true
-
   def processInputLine(input: String, index: Int): Boolean = {
-    //index + 1
+
+    var isValid = true
+
     input match {
       case "n" => controller.createEmptyBoard()
-      case "q" =>
+      case "z" => isValid = controller.undo()
+      case "y" => isValid = controller.redo()
       case _ =>
         input.toList.filter(c => c != ' ').map(c => c.toString) match {
-          case color1 :: color2 :: color3 :: color4 :: Nil => isValid = controller.checkInput(index, Vector(Color(color1), Color(color2), Color(color3), Color(color4)))
+          case color1 :: color2 :: color3 :: color4 :: Nil => isValid = controller.checkInputAndSetRound(index, Vector(Color(color1), Color(color2), Color(color3), Color(color4)))
           case _ => isValid = false
         }
     }
@@ -29,5 +30,6 @@ class Tui(controller: Controller) extends Observer {
     }
     isValid
   }
-  override def update: Unit = println(controller.boardToString)
+
+  override def update(): Unit = println(controller.boardToString)
 }
