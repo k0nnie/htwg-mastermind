@@ -7,14 +7,14 @@ object GameStatus extends Enumeration {
   val map = Map[GameStatus, String](
     IDLE -> "",
     NEW -> "A new game was created",
-    SET -> "A cell was set",
+    SET -> "A peg was set",
     UNDO -> "Undone one round",
     REDO -> "Redone one round",
-    SOLVED -> "Game succesfully solved"
+    SOLVED -> "Game successfully solved"
   )
 
-  def message(gameStatus: GameStatus) = {
-    map(gameStatus)
-  }
+//  def message(gameStatus: GameStatus) = {
+//    map(gameStatus)
+//  }
 
 }
