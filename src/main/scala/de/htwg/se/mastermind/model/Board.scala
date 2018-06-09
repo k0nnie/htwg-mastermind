@@ -20,24 +20,24 @@ case class Board(rounds: Vector[Round], solution: Vector[Color]) {
     copy(rounds.updated(index, rounds(index).replacePegs(colVec, hints)), solution)
   }
 
-  def createHints(solution: Vector[Color], colVec: Vector[Color]): Vector[ColorHint] = {
-    var hints = Vector.empty[ColorHint]
+  def createHints(solution: Vector[Color], colVec: Vector[Color]): Vector[Hint] = {
+    var hints = Vector.empty[Hint]
     var hintSet = Set.empty[String]
 
     for {i <- colVec.indices} {
       if (solution(i).name == colVec(i).name) {
-        hints = ColorHint("rightColAndPos") +: hints
+        hints = Hint("rightColAndPos") +: hints
         hintSet = hintSet + colVec(i).name
       }
     }
     for {i <- colVec.indices} {
       if (!hintSet.contains(colVec(i).name) && solution.contains(colVec(i))) {
         hintSet = hintSet + colVec(i).name
-        hints = hints :+ ColorHint("rightCol")
+        hints = hints :+ Hint("rightCol")
       }
     }
     while (hints.size.<(Board.NumberOfPegs)) {
-      hints = hints :+ new ColorHint()
+      hints = hints :+ new Hint()
     }
     hints
   }

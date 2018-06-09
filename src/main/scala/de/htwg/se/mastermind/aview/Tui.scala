@@ -6,7 +6,7 @@ import de.htwg.se.mastermind.util.Observer
 
 class Tui(controller: Controller) extends Observer {
 
-  controller.add(this)
+//  controller.add(this)
 
   def processInputLine(input: String, index: Int): Boolean = {
 

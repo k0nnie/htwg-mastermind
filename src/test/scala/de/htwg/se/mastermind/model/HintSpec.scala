@@ -5,33 +5,33 @@ import org.scalatest.junit.JUnitRunner
 import org.scalatest.{Matchers, WordSpec}
 
 @RunWith(classOf[JUnitRunner])
-class ColorHintSpec extends WordSpec with Matchers {
+class HintSpec extends WordSpec with Matchers {
   "A ColorHint" when {
     "having a valid name" should {
-      val rightCol = ColorHint("rightCol")
+      val rightCol = Hint("rightCol")
       "be in the list of available colors" in {
-        rightCol.getAvailableColors should contain(rightCol.name)
+        rightCol.getAvailableHints should contain(rightCol.name)
       }
     }
     "is empty" should {
       "have zero as name" in {
-        new ColorHint().name should be("0")
+        new Hint().name should be("0")
       }
     }
     "is valid color and position" should {
-      val rightColAndPos = ColorHint("rightColAndPos")
+      val rightColAndPos = Hint("rightColAndPos")
       "be true" in {
         rightColAndPos.isValidColor(rightColAndPos.name)
       }
     }
     "is a valid color but wrong position" should {
-      val rightCol = ColorHint("rightCol")
+      val rightCol = Hint("rightCol")
       "be displayed as as right color hint" in {
         rightCol.toString should be("o")
       }
     }
     "not valid" should {
-      val notValidColor = ColorHint("notvalid")
+      val notValidColor = Hint("notvalid")
       "not be valid" in {
         notValidColor.isValidColor(notValidColor.name) should be(false)
       }

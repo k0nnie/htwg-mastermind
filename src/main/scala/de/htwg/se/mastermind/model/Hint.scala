@@ -1,11 +1,11 @@
 package de.htwg.se.mastermind.model
 
-case class ColorHint(name: String) {
+case class Hint(name: String) {
 
   def this() = this("0") // empty value
 
-  def getAvailableColors: Seq[String] = Seq(
-    "rightColAndPos", "rightCol", "0"
+  def getAvailableHints: Seq[String] = Seq(
+    "rightColAndPos", "rightCol"
   )
 
   override def toString: String = name match {
@@ -14,5 +14,5 @@ case class ColorHint(name: String) {
     case _ => " "
   }
 
-  def isValidColor(name: String) : Boolean = getAvailableColors.contains(name)
+  def isValidColor(name: String) : Boolean = getAvailableHints.contains(name)
 }

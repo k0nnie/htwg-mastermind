@@ -1,6 +1,7 @@
 package de.htwg.se.mastermind
 
 import de.htwg.se.mastermind.aview.Tui
+import de.htwg.se.mastermind.aview.gui.SwingGui
 import de.htwg.se.mastermind.controller.Controller
 import de.htwg.se.mastermind.model._
 import scala.io.StdIn._
@@ -9,7 +10,9 @@ object Mastermind {
 
   val controller = new Controller(new Board())
   val tui: Tui = new Tui(controller)
-  controller.notifyObservers()
+  val gui = new SwingGui(controller)
+//  controller.notifyObservers()
+  //controller.publish(new PegChanged)
 
   def main(args: Array[String]): Unit = {
     println("This is Mastermind.")

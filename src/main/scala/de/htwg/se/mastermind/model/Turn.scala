@@ -11,4 +11,18 @@ case class Turn(pegs: Vector[Peg[Color]]) {
     colVec.foreach(color => newPegs = newPegs :+ Peg(color))
     copy(newPegs)
   }
+
+  def isEmpty: Boolean = {
+    if (pegs.nonEmpty) {
+      false
+    }
+    true
+  }
+
+  def containsEmptyColor: Boolean = {
+    if (pegs.contains(Peg(new Color()))) {
+      return true
+    }
+    false
+  }
 }
