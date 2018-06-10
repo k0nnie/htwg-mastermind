@@ -25,16 +25,9 @@ class ControllerSpec extends WordSpec with Matchers {
       "print out this solution on console" in {
         controller.solutionToString() should be("solution: 5, 6, 7, 8")
       }
-      //      controller.add(observer)
-      //      "notify its Observer after creation" in {
-      //        controller.createEmptyBoard()
-      //        observer.updated should be(true)
-      //        controller.board.rounds.size should be(Board.NumberOfRounds)
-      //      }
       "notify its Observer after replacing a round" in {
         val colVec = Vector[Color](Color("1"), Color("1"), Color("1"), Color("1"))
         controller.checkInputAndSetRound(0, colVec)
-        //observer.updated should be(true)
         controller.board.rounds(0).turn.pegs.toString() should be("Vector(1, 1, 1, 1)")
       }
       "return false if game is not solved yet" in {
@@ -47,17 +40,35 @@ class ControllerSpec extends WordSpec with Matchers {
       "clear a round if needed" in {
         controller.clearRound(0).rounds(0).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
       }
-      //      "remove an observer" in {
-      //        controller.remove(observer)
-      //        controller.subscribers.contains(observer) should be(false)
-      //      }
-//      "adding a color on GUI" in {
-//        controller.clearRound(0)
-//        controller.clearRound(1)
-//        //val guess = Vector[Color](new Color(), new Color(), new Color(), new Color())
-//        controller.addColor(java.awt.Color.BLUE)
-//        controller.boardToString should be("Vector(2,  ,  ,  )")
-//      }
+      "adding a color on GUI" in {
+        controller.clearRound(0)
+        controller.clearRound(1)
+        controller.addColor(java.awt.Color.BLUE)
+        controller.board.rounds(2).turn.pegs.toString should be("Vector(2,  ,  ,  )")
+      }
+      "mapping a GUI color to color" in {
+        val guiColor = java.awt.Color.BLUE
+        val color = controller.mapFromGuiColor(guiColor)
+        color should be(Color("2"))
+      }
+      "mapping a color to GUI color" in {
+        val color = Color("2")
+        val guiColor = controller.mapToGuiColor(color)
+        guiColor should be(java.awt.Color.BLUE)
+      }
+      "getting a guessed color" in {
+        controller.getGuessColor(0,0).toString should be("java.awt.Color[r=255,g=175,b=175]")
+      }
+      "getting the color for a hint" in {
+        controller.getHintColor(0,0).toString should be("java.awt.Color[r=192,g=192,b=192]")
+      }
+      "solving a board" in {
+        controller.solve()
+        controller.gameSolved should be(true)
+      }
+      "give back a board as string" in {
+        controller.boardToString should startWith("\n+---------+---------+")
+      }
     }
   }
 }

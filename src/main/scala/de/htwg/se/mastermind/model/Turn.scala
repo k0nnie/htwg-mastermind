@@ -12,13 +12,6 @@ case class Turn(pegs: Vector[Peg[Color]]) {
     copy(newPegs)
   }
 
-  def isEmpty: Boolean = {
-    if (pegs.nonEmpty) {
-      false
-    }
-    true
-  }
-
   def containsEmptyColor: Boolean = {
     if (pegs.contains(Peg(new Color()))) {
       return true

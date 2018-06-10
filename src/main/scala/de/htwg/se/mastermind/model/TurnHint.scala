@@ -6,9 +6,16 @@ case class TurnHint(pegs: Vector[Peg[Hint]]) {
 
   val size: Int = pegs.size
 
-  def replaceHintColors(colVec: Vector[Hint]): TurnHint = {
+  def replaceHintColors(hintVec: Vector[Hint]): TurnHint = {
     var newPegs = Vector.empty[Peg[Hint]]
-    colVec.foreach(color => newPegs = newPegs :+ Peg(color))
+    hintVec.foreach(hint => newPegs = newPegs :+ Peg(hint))
+    copy(newPegs)
+  }
+
+  def hintVectorSolved: TurnHint = {
+    val solvedVec = Vector.fill(Board.NumberOfPegs)(Hint("rightColAndPos"))
+    var newPegs = Vector.empty[Peg[Hint]]
+    solvedVec.foreach(hint => newPegs = newPegs :+ Peg(hint))
     copy(newPegs)
   }
 }

@@ -24,10 +24,6 @@ class SwingGui(controller: Controller) extends MainFrame {
     }
 
     reactions += {
-//      case e: PegChanged => {
-//        //label.text = cellText(row, column)
-//        repaint
-//      }
       case MouseClicked(src, pt, mod, clicks, pops) =>
         controller.publish(ColorSelected(src.background))
         this.repaint()
@@ -77,40 +73,33 @@ class SwingGui(controller: Controller) extends MainFrame {
   menuBar = new MenuBar {
     contents += new Menu("File") {
       mnemonic = Key.F
-//      contents += new MenuItem(Action("New") { controller.createEmptyGrid(controller.gridSize) })
-//      contents += new MenuItem(Action("Random") { controller.createRandomGrid(controller.gridSize,controller.gridSize) })
-//      contents += new MenuItem(Action("Quit") { System.exit(0) })
+      contents += new MenuItem(Action("New") { controller.createEmptyBoard() })
+      contents += new MenuItem(Action("Quit") { System.exit(0) })
     }
     contents += new Menu("Edit") {
       mnemonic = Key.E
-//      contents += new MenuItem(Action("Undo") { controller.undo })
-//      contents += new MenuItem(Action("Redo") { controller.redo })
+      contents += new MenuItem(Action("Undo") { controller.undo() })
+      contents += new MenuItem(Action("Redo") { controller.redo() })
     }
     contents += new Menu("Solve") {
       mnemonic = Key.S
-//      contents += new MenuItem(Action("Solve") { controller.solve })
-    }
-    contents += new Menu("Highlight") {
-      mnemonic = Key.H
-//      for { index <- 0 to controller.gridSize } {
-//        contents += new MenuItem(Action(index.toString) { controller.highlight(index) })
-//      }
-    }
-    contents += new Menu("Options") {
-      mnemonic = Key.O
-//      contents += new MenuItem(Action("Show all candidates") { controller.toggleShowAllCandidates })
-//      contents += new MenuItem(Action("Size 1*1") { controller.resize(1) })
-//      contents += new MenuItem(Action("Size 4*4") { controller.resize(4) })
-//      contents += new MenuItem(Action("Size 9*9") { controller.resize(9) })
-
+      contents += new MenuItem(Action("Solve") { controller.solve() })
     }
   }
 
   visible = true
 
   reactions += {
-    //case event: PegChanged    => redraw()
+    case event: PegChanged    => redraw()
     case event: ColorSelected => redraw(event.color)
+  }
+
+  def redraw(): Unit = {
+    contents = new BorderPanel {
+      add(boardPanel, BorderPanel.Position.Center)
+      add(colorPickerPanel, BorderPanel.Position.South)
+    }
+    repaint()
   }
 
   def redraw(color: Color): Unit = {

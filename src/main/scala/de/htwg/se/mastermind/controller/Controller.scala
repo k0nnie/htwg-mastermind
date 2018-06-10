@@ -7,10 +7,6 @@ import scala.swing.Publisher
 
 class Controller(var board: Board) extends Publisher {
 
-  def isSet(index: Int): Boolean = {
-    board.rounds(index).turn.isEmpty
-  }
-
   val numberOfRounds: Int = Board.NumberOfRounds
   val numberOfPegs: Int = Board.NumberOfPegs
   val solution: Vector[Color] = board.solution
@@ -20,7 +16,6 @@ class Controller(var board: Board) extends Publisher {
 
   def createEmptyBoard(): Unit = {
     board = new Board()
-//    notifyObservers()
     publish(new PegChanged)
   }
 
@@ -41,9 +36,7 @@ class Controller(var board: Board) extends Publisher {
     }
     if (isValid) {
       undoManager.doStep(new SetCommand(index, colVec, this))
-//      notifyObservers()
-//      publish(new PegChanged)
-
+      publish(new PegChanged)
     } else {
       println("Wrong console input. Try again!")
       println("Available colors: 1, 2, 3, 4, 5, 6, 7, 8")
@@ -63,15 +56,13 @@ class Controller(var board: Board) extends Publisher {
 
   def undo(): Boolean = {
     undoManager.undoStep()
-//    notifyObservers()
-//    publish(new PegChanged)
+    publish(new PegChanged)
     false
   }
 
   def redo(): Boolean = {
     undoManager.redoStep()
-//    notifyObservers()
-//    publish(new PegChanged)
+    publish(new PegChanged)
     false
   }
 
@@ -83,13 +74,9 @@ class Controller(var board: Board) extends Publisher {
         if (board.rounds(rowIndex).turn.pegs(columnIndex).emptyColor) {
           colVec = colVec.updated(columnIndex, mapFromGuiColor(color))
           this.board = board.replaceRound(rowIndex, colVec)
-          println(board.rounds(rowIndex).turn.toString)
-          println(board.rounds(rowIndex).turnHint.toString)
-          //return (rowIndex, columnIndex)
           return
         } else {
           colVec = colVec.updated(columnIndex, board.rounds(rowIndex).turn.pegs(columnIndex).color)
-          println("row " + rowIndex + ", column " + columnIndex)
         }
       }
     }
@@ -102,11 +89,9 @@ class Controller(var board: Board) extends Publisher {
     for (i <- availableGUIColors.indices) {
       if (availableGUIColors(i).equals(color)) {
         foundColor = Color(colors(i))
-        println(foundColor)
         return foundColor
       }
     }
-    println(foundColor)
     foundColor
   }
 
@@ -127,7 +112,7 @@ class Controller(var board: Board) extends Publisher {
     val hints = new Hint().getAvailableHints
     var foundHint: java.awt.Color = java.awt.Color.LIGHT_GRAY
 
-    for (i <- hints.indices) { // available hints backend
+    for (i <- hints.indices) {
       if (hints(i).equals(hintColor.name.toString)) {
         foundHint = availableGUIHintColors(i)
         return foundHint
@@ -167,5 +152,11 @@ class Controller(var board: Board) extends Publisher {
       foundColor = mapHintToGuiHint(board.rounds(rowIndex).turnHint.pegs(columnIndex).color)
     }
     foundColor
+  }
+
+  def solve(): Unit = {
+    undoManager.doStep(new SolveCommand(this))
+    //gameStatus = SOLVED
+    publish(new PegChanged)
   }
 }

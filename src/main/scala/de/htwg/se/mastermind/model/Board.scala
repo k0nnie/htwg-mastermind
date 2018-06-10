@@ -64,6 +64,26 @@ case class Board(rounds: Vector[Round], solution: Vector[Color]) {
     val solutionString = "solution: " + solution.mkString(", ")
     solutionString
   }
+
+  def isSolved(rowIndex: Int): Boolean = {
+    var solved = false
+
+    var x: Vector[String] = Vector.empty[String]
+
+    if (rounds(rowIndex).turnHint.equals(rounds(rowIndex).turnHint.hintVectorSolved)) {
+      solved = true
+    }
+    solved
+  }
+
+  def isSolved: Boolean = {
+    for (i <- 0 until Board.NumberOfRounds) {
+      if (this.isSolved(i)) {
+        return true
+      }
+    }
+    false
+  }
 }
 
 object Board {
