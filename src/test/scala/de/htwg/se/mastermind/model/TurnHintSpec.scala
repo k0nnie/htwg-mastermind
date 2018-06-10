@@ -15,13 +15,13 @@ class TurnHintSpec extends WordSpec with Matchers {
       }
     }
     "set to a valid peg color and position" should {
-      val nonEmptyTurnHint = TurnHint(Vector(Peg[ColorHint](ColorHint("rightColAndPos"))))
+      val nonEmptyTurnHint = TurnHint(Vector(Peg[Hint](Hint("rightColAndPos"))))
       "return that vector" in {
         nonEmptyTurnHint.pegs.toString() should be("Vector(+)")
       }
     }
     "set to a valid color with wrong position" should {
-      val rightCol = TurnHint(Vector(Peg[ColorHint](ColorHint("rightCol"))))
+      val rightCol = TurnHint(Vector(Peg[Hint](Hint("rightCol"))))
       "return a \"o\"" in {
         rightCol.pegs.toString should be("Vector(o)")
       }

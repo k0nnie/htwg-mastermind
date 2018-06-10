@@ -1,12 +1,17 @@
 package de.htwg.se.mastermind.aview
 
-import de.htwg.se.mastermind.controller.Controller
+import de.htwg.se.mastermind.controller.{Controller, GameStatus, PegChanged}
 import de.htwg.se.mastermind.model.{Board, Color}
-import de.htwg.se.mastermind.util.Observer
 
-class Tui(controller: Controller) extends Observer {
+import scala.swing.Reactor
 
-  controller.add(this)
+class Tui(controller: Controller) extends Reactor {
+
+  listenTo(controller)
+
+  def numberOfPegs: Int = controller.numberOfPegs * 2
+
+  def numberOfRounds: Int = controller.numberOfRounds
 
   def processInputLine(input: String, index: Int): Boolean = {
 
@@ -25,11 +30,15 @@ class Tui(controller: Controller) extends Observer {
     if (index == Board.NumberOfRounds - 1) {
       println(controller.solutionToString())
     }
-    if (controller.isSolved(index)) {
-      controller.gameSolved(index)
-    }
     isValid
   }
 
-  override def update(): Unit = println(controller.boardToString)
+  reactions += {
+    case event: PegChanged => printTui()
+  }
+
+  def printTui(): Unit = {
+    println(controller.boardToString)
+    println(GameStatus.message(controller.gameStatus))
+  }
 }
