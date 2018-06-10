@@ -3,6 +3,7 @@ package de.htwg.se.mastermind.controller
 import de.htwg.se.mastermind.model
 import de.htwg.se.mastermind.model.Solver
 import de.htwg.se.mastermind.util.Command
+import de.htwg.se.mastermind.controller.GameStatus._
 
 class SolveCommand(controller: Controller) extends Command {
 
@@ -11,7 +12,7 @@ class SolveCommand(controller: Controller) extends Command {
   override def doStep(): Unit = {
     memento = controller.board
     val newBoard = new Solver(controller.board).solve
-    //controller.gameStatus = SOLVED
+    controller.gameStatus = SOLVED
     controller.board = newBoard
   }
 

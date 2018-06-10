@@ -25,13 +25,13 @@ object Mastermind {
     do {
       var validInput = true
 
-      while (validInput && index < Board.NumberOfRounds && !controller.gameSolved) {
+      while (validInput && index < Board.NumberOfRounds && !controller.roundIsSolved(index)) {
         input = readLine()
         validInput = tui.processInputLine(input, index)
         if (validInput) {
           index += 1
         }
       }
-    } while (input != "q" && index < Board.NumberOfRounds && !controller.gameSolved)
+    } while (input != "q" && index < Board.NumberOfRounds && !controller.roundIsSolved(index))
   }
 }

@@ -1,8 +1,6 @@
 package de.htwg.se.mastermind.controller
 
 import de.htwg.se.mastermind.controller.GameStatus._
-import de.htwg.se.mastermind.model.{Board, Color}
-import de.htwg.se.mastermind.util.{Observable, UndoManager}
 import de.htwg.se.mastermind.model.{Board, Color, Hint}
 import de.htwg.se.mastermind.util.UndoManager
 
@@ -10,13 +8,27 @@ import scala.swing.Publisher
 
 class Controller(var board: Board) extends Publisher {
 
+  var gameStatus: GameStatus = IDLE
+
+  private val undoManager = new UndoManager
   val numberOfRounds: Int = Board.NumberOfRounds
   val numberOfPegs: Int = Board.NumberOfPegs
   val solution: Vector[Color] = board.solution
 
-  var gameStatus: GameStatus = IDLE
-  var gameSolved = false
-  private val undoManager = new UndoManager
+  val availableGUIColors = Vector(
+    java.awt.Color.PINK,
+    java.awt.Color.BLUE,
+    java.awt.Color.CYAN,
+    java.awt.Color.GREEN,
+    java.awt.Color.YELLOW,
+    java.awt.Color.ORANGE,
+    java.awt.Color.RED,
+    java.awt.Color.MAGENTA)
+
+  val availableGUIHintColors = Vector(
+    java.awt.Color.BLACK,
+    java.awt.Color.WHITE
+  )
 
   def createEmptyBoard(): Unit = {
     board = new Board()
@@ -52,28 +64,7 @@ class Controller(var board: Board) extends Publisher {
 
   def solutionToString(): String = board.solutionToString
 
-  def gameSolved(index: Int): Unit = {
-    board.solutionToString
-    gameStatus = SOLVED
-    println("game solved after " + (index + 1) + " rounds!")
-    gameSolved = true
-  }
-
-  def isSolved(index: Int): Boolean = this.board.rounds(index).turnHint.pegs.toString().equals("Vector(+, +, +, +)")
-
-  def undo(): Boolean = {
-    undoManager.undoStep()
-    gameStatus = UNDO
-    publish(new PegChanged)
-    false
-  }
-
-  def redo(): Boolean = {
-    undoManager.redoStep()
-    gameStatus = REDO
-    publish(new PegChanged)
-    false
-  }
+  def roundIsSolved(index: Int): Boolean = this.board.rounds(index).turnHint.pegs.toString().equals("Vector(+, +, +, +)")
 
   def addColor(color: java.awt.Color): Unit = {
 
@@ -130,21 +121,6 @@ class Controller(var board: Board) extends Publisher {
     foundHint
   }
 
-  val availableGUIColors = Vector(
-    java.awt.Color.PINK,
-    java.awt.Color.BLUE,
-    java.awt.Color.CYAN,
-    java.awt.Color.GREEN,
-    java.awt.Color.YELLOW,
-    java.awt.Color.ORANGE,
-    java.awt.Color.RED,
-    java.awt.Color.MAGENTA)
-
-  val availableGUIHintColors = Vector(
-    java.awt.Color.BLACK,
-    java.awt.Color.WHITE
-  )
-
   def getGuessColor(rowIndex: Int, columnIndex: Int): java.awt.Color = {
     var foundColor: java.awt.Color = java.awt.Color.GRAY
 
@@ -163,9 +139,23 @@ class Controller(var board: Board) extends Publisher {
     foundColor
   }
 
+  def undo(): Boolean = {
+    undoManager.undoStep()
+    gameStatus = UNDO
+    publish(new PegChanged)
+    false
+  }
+
+  def redo(): Boolean = {
+    undoManager.redoStep()
+    gameStatus = REDO
+    publish(new PegChanged)
+    false
+  }
+
   def solve(): Unit = {
     undoManager.doStep(new SolveCommand(this))
-    //gameStatus = SOLVED
+    gameStatus = SOLVED
     publish(new PegChanged)
   }
 }

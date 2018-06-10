@@ -1,6 +1,6 @@
 package de.htwg.se.mastermind.controller.mastermind
 
-import de.htwg.se.mastermind.controller.Controller
+import de.htwg.se.mastermind.controller.{Controller, GameStatus}
 import de.htwg.se.mastermind.model.{Board, Color, Round}
 import de.htwg.se.mastermind.util.Observer
 import org.junit.runner.RunWith
@@ -30,12 +30,11 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.checkInputAndSetRound(0, colVec)
         controller.board.rounds(0).turn.pegs.toString() should be("Vector(1, 1, 1, 1)")
       }
-      "return false if game is not solved yet" in {
+      "return correctly if game is solved or not solved yet" in {
         val colVec = Vector[Color](Color("5"), Color("6"), Color("7"), Color("8"))
         controller.checkInputAndSetRound(1, colVec)
-        controller.gameSolved should be(false)
-        controller.gameSolved(1)
-        controller.gameSolved should be(true)
+        controller.roundIsSolved(0) should be(false)
+        controller.roundIsSolved(1) should be(true)
       }
       "clear a round if needed" in {
         controller.clearRound(0).rounds(0).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
@@ -62,12 +61,35 @@ class ControllerSpec extends WordSpec with Matchers {
       "getting the color for a hint" in {
         controller.getHintColor(0,0).toString should be("java.awt.Color[r=192,g=192,b=192]")
       }
-      "solving a board" in {
+      "solve a board" in {
         controller.solve()
-        controller.gameSolved should be(true)
+        controller.board.isSolved should be(true)
       }
       "give back a board as string" in {
         controller.boardToString should startWith("\n+---------+---------+")
+      }
+    }
+    "empty" should {
+      val controller = new Controller(new Board())
+      "handle undo/redo of solving a grid correctly" in {
+        controller.board.rounds(0).turn.containsEmptyColor should be(true)
+        controller.board.isSolved should be(false)
+        controller.solve()
+        controller.board.rounds(controller.numberOfRounds-1).turn.containsEmptyColor should be(false)
+        controller.board.isSolved should be(true)
+        controller.board.isSolved(controller.numberOfRounds-1) should be(true)
+        controller.undo()
+        controller.board.rounds(controller.numberOfRounds-1).turn.containsEmptyColor should be(true)
+        controller.board.isSolved should be(false)
+        controller.board.isSolved(controller.numberOfRounds-1) should be(false)
+        controller.redo()
+        controller.board.rounds(controller.numberOfRounds-1).turn.containsEmptyColor should be(false)
+        controller.board.isSolved should be(true)
+        controller.board.isSolved(controller.numberOfRounds-1) should be(true)
+      }
+      "print out a message of game status" in {
+        controller.createEmptyBoard()
+        GameStatus.message(controller.gameStatus) should be("A new game was created")
       }
     }
   }
