@@ -1,5 +1,8 @@
 package de.htwg.se.mastermind.controller
 
+import de.htwg.se.mastermind.controller.GameStatus._
+import de.htwg.se.mastermind.model.{Board, Color}
+import de.htwg.se.mastermind.util.{Observable, UndoManager}
 import de.htwg.se.mastermind.model.{Board, Color, Hint}
 import de.htwg.se.mastermind.util.UndoManager
 
@@ -11,11 +14,13 @@ class Controller(var board: Board) extends Publisher {
   val numberOfPegs: Int = Board.NumberOfPegs
   val solution: Vector[Color] = board.solution
 
+  var gameStatus: GameStatus = IDLE
   var gameSolved = false
   private val undoManager = new UndoManager
 
   def createEmptyBoard(): Unit = {
     board = new Board()
+    gameStatus = NEW
     publish(new PegChanged)
   }
 
@@ -27,6 +32,7 @@ class Controller(var board: Board) extends Publisher {
 
   def checkInputAndSetRound(index: Int, colVec: Vector[Color]): Boolean = {
     var isValid = true
+    gameStatus = SET
     val validNumOfChars = Board.NumberOfPegs
 
     for (color <- colVec) {
@@ -48,6 +54,7 @@ class Controller(var board: Board) extends Publisher {
 
   def gameSolved(index: Int): Unit = {
     board.solutionToString
+    gameStatus = SOLVED
     println("game solved after " + (index + 1) + " rounds!")
     gameSolved = true
   }
@@ -56,12 +63,14 @@ class Controller(var board: Board) extends Publisher {
 
   def undo(): Boolean = {
     undoManager.undoStep()
+    gameStatus = UNDO
     publish(new PegChanged)
     false
   }
 
   def redo(): Boolean = {
     undoManager.redoStep()
+    gameStatus = REDO
     publish(new PegChanged)
     false
   }
