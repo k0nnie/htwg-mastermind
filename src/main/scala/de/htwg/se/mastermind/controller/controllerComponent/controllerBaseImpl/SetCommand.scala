@@ -1,6 +1,6 @@
-package de.htwg.se.mastermind.controller
+package de.htwg.se.mastermind.controller.controllerComponent.controllerBaseImpl
 
-import de.htwg.se.mastermind.model.Color
+import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.Color
 import de.htwg.se.mastermind.util.Command
 
 class SetCommand(index: Int, colVec: Vector[Color], controller: Controller) extends Command {

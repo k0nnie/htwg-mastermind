@@ -1,7 +1,8 @@
 package de.htwg.se.mastermind.aview
 
-import de.htwg.se.mastermind.controller.{Controller, GameStatus, PegChanged}
-import de.htwg.se.mastermind.model.{Board, Color}
+import de.htwg.se.mastermind.controller.controllerComponent.{GameStatus, PegChanged}
+import de.htwg.se.mastermind.controller.controllerComponent.controllerBaseImpl.Controller
+import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.{Board, Color}
 
 import scala.swing.Reactor
 
@@ -21,6 +22,7 @@ class Tui(controller: Controller) extends Reactor {
       case "n" => controller.createEmptyBoard()
       case "z" => isValid = controller.undo()
       case "y" => isValid = controller.redo()
+      case "s" => isValid = controller.solve()
       case _ =>
         input.toList.filter(c => c != ' ').map(c => c.toString) match {
           case color1 :: color2 :: color3 :: color4 :: Nil => isValid = controller.checkInputAndSetRound(index, Vector(Color(color1), Color(color2), Color(color3), Color(color4)))

@@ -1,9 +1,11 @@
-package de.htwg.se.mastermind.model
+package de.htwg.se.mastermind.model.boardComponent.boardBaseImpl
+
+import de.htwg.se.mastermind.model.boardComponent.BoardInterface
 
 import scala.collection.immutable.VectorBuilder
 import scala.util.Random
 
-case class Board(rounds: Vector[Round], solution: Vector[Color]) {
+case class Board(rounds: Vector[Round], solution: Vector[Color])  extends BoardInterface {
 
   def this() = this(Vector.fill(Board.NumberOfRounds)(new Round()), Board.randomSolution)
 

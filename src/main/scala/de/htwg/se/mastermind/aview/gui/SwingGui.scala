@@ -2,7 +2,8 @@ package de.htwg.se.mastermind.aview.gui
 
 import scala.swing._
 import scala.swing.event._
-import de.htwg.se.mastermind.controller._
+import de.htwg.se.mastermind.controller.controllerComponent.{ColorSelected, PegChanged}
+import de.htwg.se.mastermind.controller.controllerComponent.controllerBaseImpl.Controller
 
 class SwingGui(controller: Controller) extends MainFrame {
   title = "HTWG Mastermind"

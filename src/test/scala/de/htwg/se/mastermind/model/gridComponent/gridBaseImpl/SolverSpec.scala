@@ -1,8 +1,10 @@
-package de.htwg.se.mastermind.model
+package de.htwg.se.mastermind.model.gridComponent.gridBaseImpl
 
+import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl
+import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.{Board, Color, Round, Solver}
 import org.junit.runner.RunWith
-import org.scalatest.{Matchers, WordSpec}
 import org.scalatest.junit.JUnitRunner
+import org.scalatest.{Matchers, WordSpec}
 
 @RunWith(classOf[JUnitRunner])
 class SolverSpec extends WordSpec with Matchers {
@@ -18,7 +20,7 @@ class SolverSpec extends WordSpec with Matchers {
   }
   "Board is not empty" should {
     val solution = Vector[Color](Color("1"), Color("2"), Color("5"), Color("6"))
-    val boardWithSolution = Board(Vector.fill(Board.NumberOfRounds)(new Round()), solution)
+    val boardWithSolution = boardBaseImpl.Board(Vector.fill(Board.NumberOfRounds)(new Round()), solution)
     val colVec = Vector[Color](Color("2"), Color("2"), Color("2"), Color("2"))
     val newBoard = boardWithSolution.replaceRound(0, colVec)
     "solve a board without any problems" in {

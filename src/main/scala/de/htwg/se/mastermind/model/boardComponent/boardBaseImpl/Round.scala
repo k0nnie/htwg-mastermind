@@ -1,4 +1,4 @@
-package de.htwg.se.mastermind.model
+package de.htwg.se.mastermind.model.boardComponent.boardBaseImpl
 
 case class Round(turn: Turn, turnHint: TurnHint) {
   def this() = this(new Turn(), new TurnHint())

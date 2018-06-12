@@ -1,12 +1,14 @@
-package de.htwg.se.mastermind.controller
+package de.htwg.se.mastermind.controller.controllerComponent.controllerBaseImpl
 
-import de.htwg.se.mastermind.controller.GameStatus._
-import de.htwg.se.mastermind.model.{Board, Color, Hint}
+import de.htwg.se.mastermind.controller.controllerComponent.GameStatus._
+import de.htwg.se.mastermind.controller.controllerComponent.{ControllerInterface, GameStatus, PegChanged}
+import de.htwg.se.mastermind.model.boardComponent.BoardInterface
+import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.{Board, Color, Hint}
 import de.htwg.se.mastermind.util.UndoManager
 
 import scala.swing.Publisher
 
-class Controller(var board: Board) extends Publisher {
+class Controller(var board: BoardInterface) extends ControllerInterface with Publisher {
 
   var gameStatus: GameStatus = IDLE
 
@@ -38,14 +40,13 @@ class Controller(var board: Board) extends Publisher {
 
   def boardToString: String = board.toString
 
-  def clearRound(index: Int): Board = {
+  def clearRound(index: Int): BoardInterface = {
     board.emptyRound(index)
   }
 
   def checkInputAndSetRound(index: Int, colVec: Vector[Color]): Boolean = {
     var isValid = true
     gameStatus = SET
-    val validNumOfChars = Board.NumberOfPegs
 
     for (color <- colVec) {
       if (!color.isValidColor) {
@@ -153,9 +154,13 @@ class Controller(var board: Board) extends Publisher {
     false
   }
 
-  def solve(): Unit = {
+  def solve(): Boolean = {
     undoManager.doStep(new SolveCommand(this))
     gameStatus = SOLVED
     publish(new PegChanged)
+    false
   }
+
+  def statusText: String = GameStatus.message(gameStatus)
+
 }

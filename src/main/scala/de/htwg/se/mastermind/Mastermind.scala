@@ -2,8 +2,9 @@ package de.htwg.se.mastermind
 
 import de.htwg.se.mastermind.aview.Tui
 import de.htwg.se.mastermind.aview.gui.SwingGui
-import de.htwg.se.mastermind.controller.{Controller, PegChanged}
-import de.htwg.se.mastermind.model._
+import de.htwg.se.mastermind.controller.controllerComponent.PegChanged
+import de.htwg.se.mastermind.controller.controllerComponent.controllerBaseImpl.Controller
+import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.Board
 
 import scala.io.StdIn._
 

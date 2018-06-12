@@ -1,7 +1,7 @@
-package de.htwg.se.mastermind.controller.mastermind
+package de.htwg.se.mastermind.controller.controllerComponent.controllerBaseImpl
 
-import de.htwg.se.mastermind.controller.{Controller, GameStatus}
-import de.htwg.se.mastermind.model.{Board, Color, Round}
+import de.htwg.se.mastermind.controller.controllerComponent.GameStatus
+import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.{Board, Color, Round}
 import de.htwg.se.mastermind.util.Observer
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner

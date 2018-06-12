@@ -1,7 +1,8 @@
 package de.htwg.se.mastermind.aview
 
-import de.htwg.se.mastermind.controller.Controller
-import de.htwg.se.mastermind.model.{Board, Color, Round}
+import de.htwg.se.mastermind.controller.controllerComponent.controllerBaseImpl.Controller
+import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl
+import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.{Board, Color, Round}
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{Matchers, WordSpec}
@@ -31,7 +32,7 @@ class TuiSpec extends WordSpec with Matchers {
     "display solution after last round" in {
       val solution = Vector[Color](Color("5"), Color("6"), Color("7"), Color("8"))
       val rounds = Vector.fill(Board.NumberOfRounds)(new Round())
-      val controller2 = new Controller(Board(rounds, solution))
+      val controller2 = new Controller(boardBaseImpl.Board(rounds, solution))
       val tui2 = new Tui(controller2)
       tui2.processInputLine("5678", Board.NumberOfRounds - 1)
       controller2.solutionToString() should be("solution: 5, 6, 7, 8")

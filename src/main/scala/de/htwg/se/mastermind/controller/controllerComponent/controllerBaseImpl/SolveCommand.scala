@@ -1,13 +1,13 @@
-package de.htwg.se.mastermind.controller
+package de.htwg.se.mastermind.controller.controllerComponent.controllerBaseImpl
 
-import de.htwg.se.mastermind.model
-import de.htwg.se.mastermind.model.Solver
+import de.htwg.se.mastermind.controller.controllerComponent.GameStatus._
+import de.htwg.se.mastermind.model.boardComponent.BoardInterface
+import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.{Board, Solver}
 import de.htwg.se.mastermind.util.Command
-import de.htwg.se.mastermind.controller.GameStatus._
 
 class SolveCommand(controller: Controller) extends Command {
 
-  var memento: model.Board = controller.board
+  var memento: BoardInterface = controller.board
 
   override def doStep(): Unit = {
     memento = controller.board
