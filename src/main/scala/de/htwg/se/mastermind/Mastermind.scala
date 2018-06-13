@@ -21,18 +21,11 @@ object Mastermind {
     println("Available colors: 1, 2, 3, 4, 5, 6, 7, 8")
     println("Each color occurs only once in a solution.")
     var input: String = ""
-    var index = 0
 
     do {
-      var validInput = true
-
-      while (validInput && index < Board.NumberOfRounds && !controller.roundIsSolved(index)) {
         input = readLine()
-        validInput = tui.processInputLine(input, index)
-        if (validInput) {
-          index += 1
-        }
-      }
-    } while (input != "q" && index < Board.NumberOfRounds && !controller.roundIsSolved(index))
+        tui.processInputLine(input)
+    }
+    while (input != "q")
   }
 }

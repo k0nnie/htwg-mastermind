@@ -37,7 +37,7 @@ class SwingGui(controller: Controller) extends MainFrame {
       }
       button.preferredSize_= (new Dimension(30, 30))
       button.enabled = false
-      button.background = controller.getGuessColor(rowIndex, columnIndex)//java.awt.Color.GRAY
+      button.background = controller.getGuessColor(rowIndex, columnIndex)
       contents += button
       listenTo(button)
     }
@@ -49,7 +49,7 @@ class SwingGui(controller: Controller) extends MainFrame {
       }
       button.preferredSize_=(new Dimension(20, 20))
       button.enabled = false
-      button.background = controller.getHintColor(rowIndex, columnIndex)//java.awt.Color.GRAY
+      button.background = controller.getHintColor(rowIndex, columnIndex)
       contents += button
       listenTo(button)
     }
@@ -104,7 +104,7 @@ class SwingGui(controller: Controller) extends MainFrame {
   }
 
   def redraw(color: Color): Unit = {
-    controller.addColor(color)
+    controller.set(controller.getCurrentRoundIndex, Vector(controller.mapFromGuiColor(color)))
     contents = new BorderPanel {
       add(boardPanel, BorderPanel.Position.Center)
       add(colorPickerPanel, BorderPanel.Position.South)

@@ -27,12 +27,12 @@ class ControllerSpec extends WordSpec with Matchers {
       }
       "notify its Observer after replacing a round" in {
         val colVec = Vector[Color](Color("1"), Color("1"), Color("1"), Color("1"))
-        controller.checkInputAndSetRound(0, colVec)
-        controller.board.rounds(0).turn.pegs.toString() should be("Vector(1, 1, 1, 1)")
+        controller.set(0, colVec)
+        controller.board.rounds(0).turn.pegs should be(Vector(1, 1, 1, 1))
       }
       "return correctly if game is solved or not solved yet" in {
         val colVec = Vector[Color](Color("5"), Color("6"), Color("7"), Color("8"))
-        controller.checkInputAndSetRound(1, colVec)
+        controller.set(1, colVec)
         controller.roundIsSolved(0) should be(false)
         controller.roundIsSolved(1) should be(true)
       }
@@ -42,7 +42,7 @@ class ControllerSpec extends WordSpec with Matchers {
       "adding a color on GUI" in {
         controller.clearRound(0)
         controller.clearRound(1)
-        controller.addColor(java.awt.Color.BLUE)
+        controller.set(2, Vector[Color](controller.mapFromGuiColor(java.awt.Color.BLUE)))
         controller.board.rounds(2).turn.pegs.toString should be("Vector(2,  ,  ,  )")
       }
       "mapping a GUI color to color" in {
@@ -67,6 +67,15 @@ class ControllerSpec extends WordSpec with Matchers {
       }
       "give back a board as string" in {
         controller.boardToString should startWith("\n+---------+---------+")
+      }
+      "give back current round index" in {
+        val colVec = Vector[Color](Color("1"), Color("1"), Color("1"), Color("1"))
+        controller.set(0, colVec)
+        controller.getCurrentRoundIndex should be (0)
+
+        controller.set(1, colVec)
+        //println(controller.board.rounds(1).turn.pegs.toString())
+        controller.getCurrentRoundIndex should be (0)
       }
     }
     "empty" should {

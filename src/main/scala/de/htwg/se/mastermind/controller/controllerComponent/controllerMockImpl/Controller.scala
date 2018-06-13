@@ -16,13 +16,18 @@ class Controller(var board: BoardInterface) extends ControllerInterface {
 
   override def clearRound(index: Int): BoardInterface = board.emptyRound(0)
 
-  override def checkInputAndSetRound(index: Int, colVec: Vector[Color]): Boolean = false
+  //override def checkInputAndSetRound(index: Int, colVec: Vector[Color]): Boolean = false
+  override def getCurrentRoundIndex: Int = 0
+
+  //override def checkValidInputAndSetRound(colVec: Vector[Color]): Unit = {}
+
+  override def set(roundIndex: Int, colors: Vector[Color]): Unit = {}
 
   override def solutionToString(): String = solutionToString()
 
   override def roundIsSolved(index: Int): Boolean = false
 
-  override def addColor(color: java.awt.Color): Unit = {}
+  //override def addColor(color: java.awt.Color): Unit = {}
 
   override def mapFromGuiColor(color: java.awt.Color): Color = Color("1")
 
@@ -34,11 +39,11 @@ class Controller(var board: BoardInterface) extends ControllerInterface {
 
   override def getHintColor(rowIndex: Int, columnIndex: Int): java.awt.Color = java.awt.Color.WHITE
 
-  override def undo(): Boolean = false
+  override def undo(): Unit = {}
 
-  override def redo(): Boolean = false
+  override def redo(): Unit = {}
 
-  override def solve(): Boolean = false
+  override def solve(): Unit = {}
 
   override def gameStatus: GameStatus = IDLE
 

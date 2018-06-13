@@ -9,4 +9,8 @@ case class Round(turn: Turn, turnHint: TurnHint) {
   def replacePegs(colVec: Vector[Color], hints: Vector[Hint]): Round = {
     copy(turn.replaceColors(colVec), turnHint.replaceHintColors(hints))
   }
+
+  def isSet: Boolean = {
+    !turn.containsEmptyColor
+  }
 }

@@ -5,14 +5,55 @@ import de.htwg.se.mastermind.model.boardComponent.BoardInterface
 import scala.collection.immutable.VectorBuilder
 import scala.util.Random
 
-case class Board(rounds: Vector[Round], solution: Vector[Color])  extends BoardInterface {
+case class Board(rounds: Vector[Round], solution: Vector[Color]) extends BoardInterface {
 
   def this() = this(Vector.fill(Board.NumberOfRounds)(new Round()), Board.randomSolution)
 
   def this(rounds: Vector[Round]) = this(rounds, Board.randomSolution)
 
+  def set(roundIndex: Int, colors: Vector[Color]): Board = {
+
+    var colVec = Vector.fill(Board.NumberOfPegs)(new Color())
+    val alreadySet = rounds(roundIndex).turn.pegs.filter(peg => !peg.emptyColor)
+
+    // undo command
+    if (alreadySet.size.equals(Board.NumberOfPegs)) {
+      val board = replaceRound(roundIndex, colVec)
+      return board
+    }
+
+    // redo command
+    if (colors.size.equals(Board.NumberOfPegs)) {
+      val board = replaceRound(roundIndex, colors)
+      return board
+    }
+
+    for (i <- alreadySet.indices) {
+      colVec = colVec.updated(i, alreadySet(i).color)
+    }
+
+    var x = 0
+    for (i <- alreadySet.size until Board.NumberOfPegs) while (x < colors.size) {
+      if (colVec.contains(new Color())) {
+        colVec = colVec.updated(i, colors(x))
+        x = x + 1
+      }
+    }
+
+    if (colVec.equals(colors)) { // empty round
+      val board = replaceRound(roundIndex, colVec)
+      return board
+    }
+    val board = replaceRound(roundIndex, colVec)
+    board
+  }
+
   def replaceRound(index: Int, colVec: Vector[Color]): Board = {
-    val hints = createHints(solution, colVec)
+    var hints = Vector[Hint](new Hint(), new Hint(), new Hint(), new Hint())
+
+    if (!colVec.contains(new Color())) {
+      hints = createHints(solution, colVec)
+    }
     copy(rounds.updated(index, rounds(index).replacePegs(colVec, hints)), solution)
   }
 
@@ -44,23 +85,23 @@ case class Board(rounds: Vector[Round], solution: Vector[Color])  extends BoardI
     hints
   }
 
-  override def toString: String = {
-    val lineSeparator = ("+-" + ("--" * Board.NumberOfPegs)) + "+-" + ("--" * Board.NumberOfPegs) + "+\n"
-    val line = ("| " + ("x " * Board.NumberOfPegs)) + ("| " + ("x " * Board.NumberOfPegs)) + "|\n"
-    var box = "\n" + (lineSeparator + line) * Board.NumberOfRounds + lineSeparator
-
-    for {
-      row <- 0 until Board.NumberOfRounds
-      col <- 0 until Board.NumberOfPegs * 2
-    } {
-      if (col < Board.NumberOfPegs) {
-        box = box.replaceFirst("x", rounds(row).turn.pegs(col).color.toString)
-      } else {
-        box = box.replaceFirst("x", rounds(row).turnHint.pegs(col - Board.NumberOfPegs).color.toString)
-      }
-    }
-    box
-  }
+//  override def toString: String = {
+//    val lineSeparator = ("+-" + ("--" * Board.NumberOfPegs)) + "+-" + ("--" * Board.NumberOfPegs) + "+\n"
+//    val line = ("| " + ("x " * Board.NumberOfPegs)) + ("| " + ("x " * Board.NumberOfPegs)) + "|\n"
+//    var box = "\n" + (lineSeparator + line) * Board.NumberOfRounds + lineSeparator
+//
+//    for {
+//      row <- 0 until Board.NumberOfRounds
+//      col <- 0 until Board.NumberOfPegs * 2
+//    } {
+//      if (col < Board.NumberOfPegs) {
+//        box = box.replaceFirst("x", rounds(row).turn.pegs(col).color.toString)
+//      } else {
+//        box = box.replaceFirst("x", rounds(row).turnHint.pegs(col - Board.NumberOfPegs).color.toString)
+//      }
+//    }
+//    box
+//  }
 
   def solutionToString: String = {
     val solutionString = "solution: " + solution.mkString(", ")
