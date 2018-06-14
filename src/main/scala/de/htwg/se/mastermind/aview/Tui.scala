@@ -10,10 +10,6 @@ class Tui(controller: Controller) extends Reactor {
 
   listenTo(controller)
 
-  def numberOfPegs: Int = controller.numberOfPegs * 2
-
-  def numberOfRounds: Int = controller.numberOfRounds
-
   def processInputLine(input: String): Unit = {
 
     input match {
