@@ -124,21 +124,18 @@ class Controller(var board: BoardInterface) extends ControllerInterface with Pub
     undoManager.undoStep()
     gameStatus = UNDO
     publish(new PegChanged)
-    println("currRoundIdx: " + getCurrentRoundIndex)
   }
 
   def redo(): Unit = {
     undoManager.redoStep()
     gameStatus = REDO
     publish(new PegChanged)
-    println("currRoundIdx: " + getCurrentRoundIndex)
   }
 
   def solve(): Unit = {
     undoManager.doStep(new SolveCommand(this))
     gameStatus = SOLVED
     publish(new PegChanged)
-    println("currRoundIdx: " + getCurrentRoundIndex)
   }
 
   def statusText: String = GameStatus.message(gameStatus)

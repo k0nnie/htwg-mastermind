@@ -13,39 +13,45 @@ case class Board(rounds: Vector[Round], solution: Vector[Color]) extends BoardIn
 
   def set(roundIndex: Int, colors: Vector[Color]): Board = {
 
-    var colVec = Vector.fill(Board.NumberOfPegs)(new Color())
-    val alreadySet = rounds(roundIndex).turn.pegs.filter(peg => !peg.emptyColor)
+    var newColVec = Vector.fill(Board.NumberOfPegs)(new Color())
+    val alreadySetPegs = rounds(roundIndex).turn.pegs.filter(peg => !peg.emptyColor)
 
-    // undo command
-    if (alreadySet.size.equals(Board.NumberOfPegs)) {
-      val board = replaceRound(roundIndex, colVec)
-      return board
-    }
-
-    // redo command
-    if (colors.size.equals(Board.NumberOfPegs)) {
-      val board = replaceRound(roundIndex, colors)
-      return board
-    }
-
-    for (i <- alreadySet.indices) {
-      colVec = colVec.updated(i, alreadySet(i).color)
+    for (i <- alreadySetPegs.indices) {
+      newColVec = newColVec.updated(i, alreadySetPegs(i).color)
     }
 
     var x = 0
-    for (i <- alreadySet.size until Board.NumberOfPegs) while (x < colors.size) {
-      if (colVec.contains(new Color())) {
-        colVec = colVec.updated(i, colors(x))
+    for (i <- alreadySetPegs.size until Board.NumberOfPegs) while (x < colors.size) {
+      if (newColVec.contains(new Color())) {
+        newColVec = newColVec.updated(i, colors(x))
         x = x + 1
       }
     }
 
-    if (colVec.equals(colors)) { // empty round
+    val board = replaceRound(roundIndex, newColVec)
+    board
+  }
+
+  def unsetRound(roundIndex: Int, colors: Vector[Color]): Board = {
+    var colVec = Vector.fill(Board.NumberOfPegs)(new Color())
+    val alreadySet = rounds(roundIndex).turn.pegs.filter(peg => !peg.emptyColor)
+
+    if (alreadySet.size.equals(Board.NumberOfPegs)) {
       val board = replaceRound(roundIndex, colVec)
       return board
     }
-    val board = replaceRound(roundIndex, colVec)
-    board
+    this
+  }
+
+  def setRound(roundIndex: Int, colors: Vector[Color]): Board = {
+    if (colors.size != 4) {
+      return this
+    }
+    if (colors.size.equals(Board.NumberOfPegs)) {
+      val board = replaceRound(roundIndex, colors)
+      return board
+    }
+    this
   }
 
   def replaceRound(index: Int, colVec: Vector[Color]): Board = {
@@ -85,23 +91,23 @@ case class Board(rounds: Vector[Round], solution: Vector[Color]) extends BoardIn
     hints
   }
 
-//  override def toString: String = {
-//    val lineSeparator = ("+-" + ("--" * Board.NumberOfPegs)) + "+-" + ("--" * Board.NumberOfPegs) + "+\n"
-//    val line = ("| " + ("x " * Board.NumberOfPegs)) + ("| " + ("x " * Board.NumberOfPegs)) + "|\n"
-//    var box = "\n" + (lineSeparator + line) * Board.NumberOfRounds + lineSeparator
-//
-//    for {
-//      row <- 0 until Board.NumberOfRounds
-//      col <- 0 until Board.NumberOfPegs * 2
-//    } {
-//      if (col < Board.NumberOfPegs) {
-//        box = box.replaceFirst("x", rounds(row).turn.pegs(col).color.toString)
-//      } else {
-//        box = box.replaceFirst("x", rounds(row).turnHint.pegs(col - Board.NumberOfPegs).color.toString)
-//      }
-//    }
-//    box
-//  }
+  override def toString: String = {
+    val lineSeparator = ("+-" + ("--" * Board.NumberOfPegs)) + "+-" + ("--" * Board.NumberOfPegs) + "+\n"
+    val line = ("| " + ("x " * Board.NumberOfPegs)) + ("| " + ("x " * Board.NumberOfPegs)) + "|\n"
+    var box = "\n" + (lineSeparator + line) * Board.NumberOfRounds + lineSeparator
+
+    for {
+      row <- 0 until Board.NumberOfRounds
+      col <- 0 until Board.NumberOfPegs * 2
+    } {
+      if (col < Board.NumberOfPegs) {
+        box = box.replaceFirst("x", rounds(row).turn.pegs(col).color.toString)
+      } else {
+        box = box.replaceFirst("x", rounds(row).turnHint.pegs(col - Board.NumberOfPegs).color.toString)
+      }
+    }
+    box
+  }
 
   def solutionToString: String = {
     val solutionString = "solution: " + solution.mkString(", ")

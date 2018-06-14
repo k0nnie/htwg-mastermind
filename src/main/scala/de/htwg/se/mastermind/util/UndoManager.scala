@@ -12,20 +12,32 @@ class UndoManager {
   def undoStep(): Unit = {
     undoStack match {
       case Nil =>
-      case head :: stack =>
-        head.undoStep()
+      case color1 :: color2 :: color3 :: color4 :: stack =>
+        color1.undoStep()
+        redoStack = color1 :: redoStack
+        color2.undoStep()
+        redoStack = color2 :: redoStack
+        color3.undoStep()
+        redoStack = color3 :: redoStack
+        color4.undoStep()
+        redoStack = color4 :: redoStack
         undoStack = stack
-        redoStack = head :: redoStack
     }
   }
 
   def redoStep(): Unit = {
     redoStack match {
       case Nil =>
-      case head :: stack =>
-        head.redoStep()
+      case color1 :: color2 :: color3 :: color4 :: stack =>
+        color1.undoStep()
+        undoStack = color1 :: undoStack
+        color2.undoStep()
+        undoStack = color2 :: undoStack
+        color3.undoStep()
+        undoStack = color3 :: undoStack
+        color4.undoStep()
         redoStack = stack
-        undoStack = head :: undoStack
+        undoStack = color4 :: undoStack
     }
   }
 }
