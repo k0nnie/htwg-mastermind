@@ -2,7 +2,7 @@ package de.htwg.se.mastermind.controller.controllerComponent.controllerBaseImpl
 
 import de.htwg.se.mastermind.controller.controllerComponent.GameStatus._
 import de.htwg.se.mastermind.model.boardComponent.BoardInterface
-import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.{Board, Solver}
+import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.Solver
 import de.htwg.se.mastermind.util.Command
 
 class SolveCommand(controller: Controller) extends Command {

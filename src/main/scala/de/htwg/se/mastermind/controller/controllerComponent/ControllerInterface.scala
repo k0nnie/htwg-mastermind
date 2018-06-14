@@ -2,7 +2,7 @@ package de.htwg.se.mastermind.controller.controllerComponent
 
 import de.htwg.se.mastermind.controller.controllerComponent.GameStatus._
 import de.htwg.se.mastermind.model.boardComponent.BoardInterface
-import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.{Board, Color, Hint}
+import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.{Color, Hint}
 
 import scala.swing.Publisher
 
