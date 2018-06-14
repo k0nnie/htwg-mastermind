@@ -32,26 +32,31 @@ case class Board(rounds: Vector[Round], solution: Vector[Color]) extends BoardIn
     board
   }
 
-  def unsetRound(roundIndex: Int, colors: Vector[Color]): Board = {
-    var colVec = Vector.fill(Board.NumberOfPegs)(new Color())
-    val alreadySet = rounds(roundIndex).turn.pegs.filter(peg => !peg.emptyColor)
+  def undoSetPeg(roundIndex: Int): Board = {
+    var newColVec = Vector.fill(Board.NumberOfPegs)(new Color())
+    var alreadySetPegs = rounds(roundIndex).turn.pegs.filter(peg => !peg.emptyColor)
 
-    if (alreadySet.size.equals(Board.NumberOfPegs)) {
-      val board = replaceRound(roundIndex, colVec)
-      return board
+    alreadySetPegs = alreadySetPegs.dropRight(1)
+
+    for (i <- alreadySetPegs.indices) {
+      newColVec = newColVec.updated(i, alreadySetPegs(i).color)
     }
-    this
+
+    val board = replaceRound(roundIndex, newColVec)
+    board
   }
 
-  def setRound(roundIndex: Int, colors: Vector[Color]): Board = {
-    if (colors.size != 4) {
-      return this
+  def redoSetPeg(roundIndex: Int, color: Vector[Color]): Board = {
+    var newColVec = Vector.fill(Board.NumberOfPegs)(new Color())
+    var alreadySetPegs = rounds(roundIndex).turn.pegs.filter(peg => !peg.emptyColor)
+
+    for (i <- alreadySetPegs.indices) {
+      newColVec = newColVec.updated(i, alreadySetPegs(i).color)
     }
-    if (colors.size.equals(Board.NumberOfPegs)) {
-      val board = replaceRound(roundIndex, colors)
-      return board
-    }
-    this
+    newColVec = newColVec.updated(alreadySetPegs.size, color(0))
+
+    val board = replaceRound(roundIndex, newColVec)
+    board
   }
 
   def replaceRound(index: Int, colVec: Vector[Color]): Board = {

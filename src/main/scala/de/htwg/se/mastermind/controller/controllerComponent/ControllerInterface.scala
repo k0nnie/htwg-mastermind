@@ -11,13 +11,10 @@ trait ControllerInterface extends Publisher{
   def createEmptyBoard(): Unit
   def boardToString: String
   def clearRound(index: Int): BoardInterface
-  //def checkInputAndSetRound(index: Int, colVec: Vector[Color]): Boolean
   def getCurrentRoundIndex: Int
-  //def checkValidInputAndSetRound(colVec: Vector[Color]): Unit
   def set(roundIndex: Int, colors: Vector[Color]): Unit
   def solutionToString(): String
   def roundIsSolved(index: Int): Boolean
-  //def addColor(color: java.awt.Color): Unit
   def mapFromGuiColor(color: java.awt.Color): Color
   def mapToGuiColor(color: Color): java.awt.Color
   def mapHintToGuiHint(hintColor: Hint): java.awt.Color

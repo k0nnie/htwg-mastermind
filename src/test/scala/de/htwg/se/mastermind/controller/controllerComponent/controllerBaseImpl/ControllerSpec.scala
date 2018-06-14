@@ -31,6 +31,7 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.set(0, Vector[Color](Color("1")))
         controller.set(0, Vector[Color](Color("1")))
         controller.board.rounds(0).turn.pegs.toString() should be("Vector(1, 1, 1, 1)")
+        controller.statusText should be("A peg was set")
       }
       "return correctly if game is solved or not solved yet" in {
         controller.set(1, Vector[Color](Color("5")))
@@ -100,14 +101,14 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.board.rounds(controller.numberOfRounds-1).turn.containsEmptyColor should be(false)
         controller.board.isSolved should be(true)
         controller.board.isSolved(controller.numberOfRounds-1) should be(true)
-//        controller.undo()
-//        controller.board.rounds(controller.numberOfRounds-1).turn.containsEmptyColor should be(true)
-//        controller.board.isSolved should be(false)
-//        controller.board.isSolved(controller.numberOfRounds-1) should be(false)
-//        controller.redo()
-//        controller.board.rounds(controller.numberOfRounds-1).turn.containsEmptyColor should be(false)
-//        controller.board.isSolved should be(true)
-//        controller.board.isSolved(controller.numberOfRounds-1) should be(true)
+        controller.undo()
+        controller.board.rounds(controller.numberOfRounds-1).turn.containsEmptyColor should be(true)
+        controller.board.isSolved should be(false)
+        controller.board.isSolved(controller.numberOfRounds-1) should be(false)
+        controller.redo()
+        controller.board.rounds(controller.numberOfRounds-1).turn.containsEmptyColor should be(false)
+        controller.board.isSolved should be(true)
+        controller.board.isSolved(controller.numberOfRounds-1) should be(true)
       }
       "print out a message of game status" in {
         controller.createEmptyBoard()

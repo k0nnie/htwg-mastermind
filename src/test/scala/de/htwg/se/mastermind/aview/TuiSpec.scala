@@ -26,11 +26,23 @@ class TuiSpec extends WordSpec with Matchers {
       tui.processInputLine("1")
       controller.board.rounds(0).turn.pegs.toString() should be("Vector(1, 1, 1, 1)")
       controller.undo()
+      controller.board.rounds(0).turn.pegs.toString() should be("Vector(1, 1, 1,  )")
+      controller.undo()
+      controller.board.rounds(0).turn.pegs.toString() should be("Vector(1, 1,  ,  )")
+      controller.undo()
+      controller.board.rounds(0).turn.pegs.toString() should be("Vector(1,  ,  ,  )")
+      controller.undo()
       controller.board.rounds(0).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
     }
     "redo a step back on input 'y'" in {
-//      controller.redo()
-//      controller.board.rounds(0).turn.pegs.toString() should be("Vector(1, 1, 1, 1)")
+      controller.redo()
+      controller.board.rounds(0).turn.pegs.toString() should be("Vector(1,  ,  ,  )")
+      controller.redo()
+      controller.board.rounds(0).turn.pegs.toString() should be("Vector(1, 1,  ,  )")
+      controller.redo()
+      controller.board.rounds(0).turn.pegs.toString() should be("Vector(1, 1, 1,  )")
+      controller.redo()
+      controller.board.rounds(0).turn.pegs.toString() should be("Vector(1, 1, 1, 1)")
     }
     "display solution after last round" in {
       val solution = Vector[Color](Color("5"), Color("6"), Color("7"), Color("8"))
@@ -50,6 +62,10 @@ class TuiSpec extends WordSpec with Matchers {
       controller.board.rounds(2).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
       tui.processInputLine("sss")
       controller.board.rounds(2).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
+    }
+    "have this params given" in {
+      controller.numberOfRounds should be(10)
+      controller.numberOfPegs should be(4)
     }
   }
 }
