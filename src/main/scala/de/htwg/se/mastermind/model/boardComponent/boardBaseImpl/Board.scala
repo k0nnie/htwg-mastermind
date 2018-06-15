@@ -1,16 +1,69 @@
-package de.htwg.se.mastermind.model
+package de.htwg.se.mastermind.model.boardComponent.boardBaseImpl
 
+import de.htwg.se.mastermind.model.boardComponent.BoardInterface
 import scala.collection.immutable.VectorBuilder
 import scala.util.Random
 
-case class Board(rounds: Vector[Round], solution: Vector[Color]) {
+case class Board(rounds: Vector[Round], solution: Vector[Color]) extends BoardInterface {
 
   def this() = this(Vector.fill(Board.NumberOfRounds)(new Round()), Board.randomSolution)
 
   def this(rounds: Vector[Round]) = this(rounds, Board.randomSolution)
 
+  def set(roundIndex: Int, colors: Vector[Color]): Board = {
+
+    var newColVec = Vector.fill(Board.NumberOfPegs)(new Color())
+    val alreadySetPegs = rounds(roundIndex).turn.pegs.filter(peg => !peg.emptyColor)
+
+    for (i <- alreadySetPegs.indices) {
+      newColVec = newColVec.updated(i, alreadySetPegs(i).color)
+    }
+
+    var x = 0
+    for (i <- alreadySetPegs.size until Board.NumberOfPegs) while (x < colors.size) {
+      if (newColVec.contains(new Color())) {
+        newColVec = newColVec.updated(i, colors(x))
+        x = x + 1
+      }
+    }
+
+    val board = replaceRound(roundIndex, newColVec)
+    board
+  }
+
+  def undoSetPeg(roundIndex: Int): Board = {
+    var newColVec = Vector.fill(Board.NumberOfPegs)(new Color())
+    var alreadySetPegs = rounds(roundIndex).turn.pegs.filter(peg => !peg.emptyColor)
+
+    alreadySetPegs = alreadySetPegs.dropRight(1)
+
+    for (i <- alreadySetPegs.indices) {
+      newColVec = newColVec.updated(i, alreadySetPegs(i).color)
+    }
+
+    val board = replaceRound(roundIndex, newColVec)
+    board
+  }
+
+  def redoSetPeg(roundIndex: Int, color: Vector[Color]): Board = {
+    var newColVec = Vector.fill(Board.NumberOfPegs)(new Color())
+    var alreadySetPegs = rounds(roundIndex).turn.pegs.filter(peg => !peg.emptyColor)
+
+    for (i <- alreadySetPegs.indices) {
+      newColVec = newColVec.updated(i, alreadySetPegs(i).color)
+    }
+    newColVec = newColVec.updated(alreadySetPegs.size, color(0))
+
+    val board = replaceRound(roundIndex, newColVec)
+    board
+  }
+
   def replaceRound(index: Int, colVec: Vector[Color]): Board = {
-    val hints = createHints(solution, colVec)
+    var hints = Vector[Hint](new Hint(), new Hint(), new Hint(), new Hint())
+
+    if (!colVec.contains(new Color())) {
+      hints = createHints(solution, colVec)
+    }
     copy(rounds.updated(index, rounds(index).replacePegs(colVec, hints)), solution)
   }
 

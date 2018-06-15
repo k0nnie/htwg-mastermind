@@ -1,4 +1,4 @@
-package de.htwg.se.mastermind.controller
+package de.htwg.se.mastermind.controller.controllerComponent
 
 object GameStatus extends Enumeration {
   type GameStatus = Value

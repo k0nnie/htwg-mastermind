@@ -1,4 +1,4 @@
-package de.htwg.se.mastermind.model
+package de.htwg.se.mastermind.model.boardComponent.boardBaseImpl
 
 import scala.util.Random
 

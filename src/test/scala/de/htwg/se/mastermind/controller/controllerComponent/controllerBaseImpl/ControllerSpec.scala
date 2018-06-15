@@ -1,7 +1,7 @@
-package de.htwg.se.mastermind.controller.mastermind
+package de.htwg.se.mastermind.controller.controllerComponent.controllerBaseImpl
 
-import de.htwg.se.mastermind.controller.{Controller, GameStatus}
-import de.htwg.se.mastermind.model.{Board, Color, Round}
+import de.htwg.se.mastermind.controller.controllerComponent.GameStatus
+import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.{Board, Color, Round}
 import de.htwg.se.mastermind.util.Observer
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
@@ -26,13 +26,18 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.solutionToString() should be("solution: 5, 6, 7, 8")
       }
       "notify its Observer after replacing a round" in {
-        val colVec = Vector[Color](Color("1"), Color("1"), Color("1"), Color("1"))
-        controller.checkInputAndSetRound(0, colVec)
+        controller.set(0, Vector[Color](Color("1")))
+        controller.set(0, Vector[Color](Color("1")))
+        controller.set(0, Vector[Color](Color("1")))
+        controller.set(0, Vector[Color](Color("1")))
         controller.board.rounds(0).turn.pegs.toString() should be("Vector(1, 1, 1, 1)")
+        controller.statusText should be("A peg was set")
       }
       "return correctly if game is solved or not solved yet" in {
-        val colVec = Vector[Color](Color("5"), Color("6"), Color("7"), Color("8"))
-        controller.checkInputAndSetRound(1, colVec)
+        controller.set(1, Vector[Color](Color("5")))
+        controller.set(1, Vector[Color](Color("6")))
+        controller.set(1, Vector[Color](Color("7")))
+        controller.set(1, Vector[Color](Color("8")))
         controller.roundIsSolved(0) should be(false)
         controller.roundIsSolved(1) should be(true)
       }
@@ -42,7 +47,7 @@ class ControllerSpec extends WordSpec with Matchers {
       "adding a color on GUI" in {
         controller.clearRound(0)
         controller.clearRound(1)
-        controller.addColor(java.awt.Color.BLUE)
+        controller.set(2, Vector[Color](controller.mapFromGuiColor(java.awt.Color.BLUE)))
         controller.board.rounds(2).turn.pegs.toString should be("Vector(2,  ,  ,  )")
       }
       "mapping a GUI color to color" in {
@@ -67,6 +72,24 @@ class ControllerSpec extends WordSpec with Matchers {
       }
       "give back a board as string" in {
         controller.boardToString should startWith("\n+---------+---------+")
+      }
+      "give back current round index" in {
+        var board2 = new Board()
+        val controller2 = new Controller(board2)
+
+        controller2.getCurrentRoundIndex should be (0)
+
+        controller2.set(0, Vector[Color](Color("1")))
+        controller2.set(0, Vector[Color](Color("1")))
+        controller2.set(0, Vector[Color](Color("1")))
+        controller2.set(0, Vector[Color](Color("1")))
+        controller2.getCurrentRoundIndex should be (1)
+
+        controller2.set(1, Vector[Color](Color("5")))
+        controller2.set(1, Vector[Color](Color("6")))
+        controller2.set(1, Vector[Color](Color("7")))
+        controller2.set(1, Vector[Color](Color("8")))
+        controller2.getCurrentRoundIndex should be (2)
       }
     }
     "empty" should {

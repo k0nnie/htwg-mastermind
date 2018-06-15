@@ -1,12 +1,14 @@
-package de.htwg.se.mastermind.controller
+package de.htwg.se.mastermind.controller.controllerComponent.controllerBaseImpl
 
-import de.htwg.se.mastermind.controller.GameStatus._
-import de.htwg.se.mastermind.model.{Board, Color, Hint}
+import de.htwg.se.mastermind.controller.controllerComponent.GameStatus._
+import de.htwg.se.mastermind.controller.controllerComponent.{ControllerInterface, GameStatus, PegChanged}
+import de.htwg.se.mastermind.model.boardComponent.BoardInterface
+import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.{Board, Color, Hint}
 import de.htwg.se.mastermind.util.UndoManager
 
 import scala.swing.Publisher
 
-class Controller(var board: Board) extends Publisher {
+class Controller(var board: BoardInterface) extends ControllerInterface with Publisher {
 
   var gameStatus: GameStatus = IDLE
 
@@ -38,48 +40,23 @@ class Controller(var board: Board) extends Publisher {
 
   def boardToString: String = board.toString
 
-  def clearRound(index: Int): Board = {
+  def clearRound(index: Int): BoardInterface = {
     board.emptyRound(index)
   }
 
-  def checkInputAndSetRound(index: Int, colVec: Vector[Color]): Boolean = {
-    var isValid = true
-    gameStatus = SET
-    val validNumOfChars = Board.NumberOfPegs
-
-    for (color <- colVec) {
-      if (!color.isValidColor) {
-        isValid = false
-      }
-    }
-    if (isValid) {
-      undoManager.doStep(new SetCommand(index, colVec, this))
-      publish(new PegChanged)
-    } else {
-      println("Wrong console input. Try again!")
-      println("Available colors: 1, 2, 3, 4, 5, 6, 7, 8")
-    }
-    isValid
+  def getCurrentRoundIndex: Int = {
+    val index = board.rounds.indices.iterator.find(index => !board.rounds(index).isSet).getOrElse(-1)
+    index
   }
 
   def solutionToString(): String = board.solutionToString
 
   def roundIsSolved(index: Int): Boolean = this.board.rounds(index).turnHint.pegs.toString().equals("Vector(+, +, +, +)")
 
-  def addColor(color: java.awt.Color): Unit = {
-
-    for (rowIndex <- 0 until this.numberOfRounds) {
-      var colVec = Vector[Color](new Color(), new Color(), new Color(), new Color())
-      for (columnIndex <- 0 until this.numberOfPegs) {
-        if (board.rounds(rowIndex).turn.pegs(columnIndex).emptyColor) {
-          colVec = colVec.updated(columnIndex, mapFromGuiColor(color))
-          this.board = board.replaceRound(rowIndex, colVec)
-          return
-        } else {
-          colVec = colVec.updated(columnIndex, board.rounds(rowIndex).turn.pegs(columnIndex).color)
-        }
-      }
-    }
+  def set(roundIndex: Int, colors: Vector[Color]): Unit = {
+    undoManager.doStep(new SetCommand(roundIndex,this, colors))
+    gameStatus = SET
+    publish(new PegChanged)
   }
 
   def mapFromGuiColor(color: java.awt.Color): Color = {
@@ -139,18 +116,16 @@ class Controller(var board: Board) extends Publisher {
     foundColor
   }
 
-  def undo(): Boolean = {
+  def undo(): Unit = {
     undoManager.undoStep()
     gameStatus = UNDO
     publish(new PegChanged)
-    false
   }
 
-  def redo(): Boolean = {
+  def redo(): Unit = {
     undoManager.redoStep()
     gameStatus = REDO
     publish(new PegChanged)
-    false
   }
 
   def solve(): Unit = {
@@ -158,4 +133,7 @@ class Controller(var board: Board) extends Publisher {
     gameStatus = SOLVED
     publish(new PegChanged)
   }
+
+  def statusText: String = GameStatus.message(gameStatus)
+
 }

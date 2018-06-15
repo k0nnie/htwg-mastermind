@@ -1,7 +1,7 @@
-package de.htwg.se.mastermind.model
+package de.htwg.se.mastermind.model.playerComponent
 
-import org.scalatest._
 import org.junit.runner.RunWith
+import org.scalatest._
 import org.scalatest.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
