@@ -123,6 +123,5 @@ class BoardSpec extends WordSpec with Matchers {
         boardWithEmptyFirstRound.rounds(0).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
       }
     }
-
   }
 }

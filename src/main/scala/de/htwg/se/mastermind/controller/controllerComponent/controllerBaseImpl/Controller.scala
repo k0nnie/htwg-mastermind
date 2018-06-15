@@ -101,10 +101,6 @@ class Controller(var board: BoardInterface) extends ControllerInterface with Pub
   def getGuessColor(rowIndex: Int, columnIndex: Int): java.awt.Color = {
     var foundColor: java.awt.Color = java.awt.Color.GRAY
 
-    if (rowIndex >= board.rounds.size || columnIndex >= board.rounds(rowIndex).turn.pegs.size) {
-      return foundColor
-    }
-
     if (!board.rounds(rowIndex).turn.pegs(columnIndex).emptyColor) {
       foundColor = mapToGuiColor(board.rounds(rowIndex).turn.pegs(columnIndex).color)
     }

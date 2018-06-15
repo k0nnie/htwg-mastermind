@@ -2,7 +2,7 @@ package de.htwg.se.mastermind.aview
 
 import de.htwg.se.mastermind.controller.controllerComponent.controllerBaseImpl.Controller
 import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl
-import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.{Board, Color, Round}
+import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.{Board, Color, Hint, Round}
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{Matchers, WordSpec}
@@ -66,6 +66,10 @@ class TuiSpec extends WordSpec with Matchers {
     "have this params given" in {
       controller.numberOfRounds should be(10)
       controller.numberOfPegs should be(4)
+    }
+    "map a hint to a GUI hint" in {
+      val hint = Hint("rightColAndPos")
+      controller.mapHintToGuiHint(hint).toString should be("java.awt.Color[r=0,g=0,b=0]")
     }
   }
 }
