@@ -1,4 +1,4 @@
-package de.htwg.se.mastermind.model
+package de.htwg.se.mastermind.model.boardComponent.boardBaseImpl
 
 import scala.util.Random
 
@@ -23,5 +23,10 @@ case class Color(name: String) {
     val random_index = rand.nextInt(colors.length)
     val result = colors(random_index)
     result.toString
+  }
+
+  def emptyColVec: Vector[Color] = {
+    val emptyColVec = for (i <- 1 to Board.NumberOfPegs) yield new Color()
+    emptyColVec.toVector
   }
 }

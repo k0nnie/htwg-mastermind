@@ -1,33 +1,38 @@
 package de.htwg.se.mastermind.aview
 
-import de.htwg.se.mastermind.controller.Controller
-import de.htwg.se.mastermind.model.{Board, Color}
-import de.htwg.se.mastermind.util.Observer
+import de.htwg.se.mastermind.controller.controllerComponent.{ColorSelected, GameStatus, PegChanged}
+import de.htwg.se.mastermind.controller.controllerComponent.controllerBaseImpl.Controller
+import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.Color
 
-class Tui(controller: Controller) extends Observer {
+import scala.swing.Reactor
 
-  controller.add(this)
+class Tui(controller: Controller) extends Reactor {
 
-  var isValid = true
+  listenTo(controller)
 
-  def processInputLine(input: String, index: Int): Boolean = {
-    //index + 1
+  def processInputLine(input: String): Unit = {
+
     input match {
-      case "n" => controller.createEmptyBoard()
       case "q" =>
+      case "n" => controller.createEmptyBoard()
+      case "z" => controller.undo()
+      case "y" => controller.redo()
+      case "s" => controller.solve()
       case _ =>
         input.toList.filter(c => c != ' ').map(c => c.toString) match {
-          case color1 :: color2 :: color3 :: color4 :: Nil => isValid = controller.checkInput(index, Vector(Color(color1), Color(color2), Color(color3), Color(color4)))
-          case _ => isValid = false
+          case color1 :: Nil => controller.set(controller.getCurrentRoundIndex, Vector[Color](Color(color1)))
+          case _ =>
         }
     }
-    if (index == Board.NumberOfRounds - 1) {
-      println(controller.solutionToString())
-    }
-    if (controller.isSolved(index)) {
-      controller.gameSolved(index)
-    }
-    isValid
   }
-  override def update: Unit = println(controller.boardToString)
+
+  reactions += {
+    case event: PegChanged => printTui()
+    case event: ColorSelected => printTui()
+  }
+
+  def printTui(): Unit = {
+    println(controller.boardToString)
+    println(GameStatus.message(controller.gameStatus))
+  }
 }
