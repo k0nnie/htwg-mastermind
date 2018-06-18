@@ -22,9 +22,6 @@ class ControllerSpec extends WordSpec with Matchers {
 
         override def update(): Unit = updated = true
       }
-      "print out this solution on console" in {
-        controller.solutionToString() should be("solution: 5, 6, 7, 8")
-      }
       "notify its Observer after replacing a round" in {
         controller.set(0, 1)
         controller.set(0, 1)

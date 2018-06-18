@@ -1,7 +1,5 @@
 package de.htwg.se.mastermind.controller.controllerComponent.controllerBaseImpl
 
-import java.awt
-
 import com.google.inject.name.Names
 import com.google.inject.{Guice, Inject, Injector}
 import net.codingwell.scalaguice.InjectorExtensions._
@@ -9,7 +7,6 @@ import de.htwg.se.mastermind.MastermindModule
 import de.htwg.se.mastermind.controller.controllerComponent.GameStatus._
 import de.htwg.se.mastermind.controller.controllerComponent.{ControllerInterface, GameStatus, PegChanged}
 import de.htwg.se.mastermind.model.boardComponent.BoardInterface
-import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.{Color, Hint}
 import de.htwg.se.mastermind.util.UndoManager
 
 import scala.swing.Publisher
@@ -17,8 +14,6 @@ import scala.swing.Publisher
 class Controller @Inject() (var board: BoardInterface) extends ControllerInterface with Publisher {
 
   var gameStatus: GameStatus = IDLE
-//  val numberOfRounds: Int = board.rounds.size
-//  val numberOfPegs: Int = board.solution.size
   private val undoManager = new UndoManager
   val injector: Injector = Guice.createInjector(new MastermindModule)
 
@@ -52,8 +47,6 @@ class Controller @Inject() (var board: BoardInterface) extends ControllerInterfa
   def boardToString: String = board.toString
 
   def getCurrentRoundIndex: Int = board.rounds.indices.iterator.find(index => !board.rounds(index).isSet).getOrElse(-1)
-
-  def solutionToString(): String = board.solutionToString
 
   def set(roundIndex: Int, colors: Int): Unit = {
     undoManager.doStep(new SetCommand(roundIndex,this, colors))

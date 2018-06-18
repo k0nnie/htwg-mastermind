@@ -104,11 +104,8 @@ class SwingGui(controller: ControllerInterface) extends MainFrame {
 
   def redraw(color: Color): Unit = {
     controller.set(controller.getCurrentRoundIndex, controller.mapFromGuiColor(color))
-    contents = new BorderPanel {
-      add(boardPanel, BorderPanel.Position.Center)
-      add(colorPickerPanel, BorderPanel.Position.South)
-    }
-    repaint()
+
+    redraw()
   }
 }
 

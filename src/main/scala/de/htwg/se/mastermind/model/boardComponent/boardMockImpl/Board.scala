@@ -17,8 +17,6 @@ class Board(var rounds: Vector[Round], var solution: Vector[Color]) extends Boar
 
   def createHints(solution: Vector[Color], colVec: Vector[Color]): Vector[Hint] = Vector[Hint](new Hint())
 
-  def solutionToString: String = "solution"
-
   def isSolved(rowIndex: Int): Boolean = false
 
   def isSolved: Boolean = false

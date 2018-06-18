@@ -10,7 +10,6 @@ trait BoardInterface {
   def undoSetPeg(roundIndex: Int): BoardInterface
   def redoSetPeg(roundIndex: Int, color: Int): BoardInterface
   def createHints(solution: Vector[Color], colVec: Vector[Color]): Vector[Hint]
-  def solutionToString: String
   def isSolved(rowIndex: Int): Boolean
   def isSolved: Boolean
   def solution: Vector[Color]

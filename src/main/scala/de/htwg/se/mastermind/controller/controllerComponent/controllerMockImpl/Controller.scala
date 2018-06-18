@@ -16,8 +16,6 @@ class Controller(var board: BoardInterface) extends ControllerInterface {
 
   override def set(roundIndex: Int, color: Int): Unit = {}
 
-  override def solutionToString(): String = solutionToString()
-
   override def mapFromGuiColor(color: java.awt.Color): Int = 1
 
   override def mapToGuiColor(color: Int): java.awt.Color = java.awt.Color.PINK

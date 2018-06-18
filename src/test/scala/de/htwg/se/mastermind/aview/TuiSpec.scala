@@ -44,17 +44,6 @@ class TuiSpec extends WordSpec with Matchers {
       controller.redo()
       controller.board.rounds(0).turn.pegs.toString() should be("Vector(1, 1, 1, 1)")
     }
-    "display solution after last round" in {
-      val solution = Vector[Color](Color("5"), Color("6"), Color("7"), Color("8"))
-      val rounds = Vector.fill(Board.NumberOfRounds)(new Round())
-      val controller2 = new Controller(boardBaseImpl.Board(rounds, solution))
-      val tui2 = new Tui(controller2)
-      tui2.processInputLine("5")
-      tui2.processInputLine("6")
-      tui2.processInputLine("7")
-      tui2.processInputLine("8")
-      controller2.solutionToString() should be("solution: 5, 6, 7, 8")
-    }
     "for now do nothing with wrong console input or more than one char" in {
       tui.processInputLine("s")
       controller.board.rounds(2).turn.pegs.toString() should be("Vector( ,  ,  ,  )")

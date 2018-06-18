@@ -9,7 +9,6 @@ trait ControllerInterface extends Publisher{
   def boardToString: String
   def getCurrentRoundIndex: Int
   def set(roundIndex: Int, colors: Int): Unit
-  def solutionToString(): String
   def mapFromGuiColor(color: java.awt.Color): Int
   def mapToGuiColor(color: Int): java.awt.Color
   def mapHintToGuiHint(hintColor: String): java.awt.Color

@@ -8,8 +8,6 @@ case class Board(rounds: Vector[Round], solution: Vector[Color]) extends BoardIn
 
   def this() = this(Vector.fill(Board.NumberOfRounds)(new Round()), Board.randomSolution)
 
-  def this(rounds: Vector[Round]) = this(rounds, Board.randomSolution)
-
   def set(roundIndex: Int, colors: Int): Board = {
     var newColVec = Vector.fill(Board.NumberOfPegs)(new Color())
     val alreadySetPegs = rounds(roundIndex).turn.pegs.filter(peg => !peg.emptyColor)
@@ -101,13 +99,11 @@ case class Board(rounds: Vector[Round], solution: Vector[Color]) extends BoardIn
     box
   }
 
-  def solutionToString: String = "solution: " + solution.mkString(", ") // can be removed
-
   def isSolved(rowIndex: Int): Boolean = rounds(rowIndex).turnHint.equals(rounds(rowIndex).turnHint.hintVectorSolved)
 
   def isSolved: Boolean = rounds.indices.exists(i => this.isSolved(i))
 
-  override def solve: BoardInterface = new Solver(this).solve
+  def solve: BoardInterface = new Solver(this).solve
 }
 
 object Board {

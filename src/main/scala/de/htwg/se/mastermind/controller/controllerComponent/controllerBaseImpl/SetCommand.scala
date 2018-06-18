@@ -1,6 +1,5 @@
 package de.htwg.se.mastermind.controller.controllerComponent.controllerBaseImpl
 
-import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.Color
 import de.htwg.se.mastermind.util.Command
 
 class SetCommand(roundIndex: Int, controller: Controller, colors: Int) extends Command {
