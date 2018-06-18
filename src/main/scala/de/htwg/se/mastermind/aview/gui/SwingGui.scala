@@ -2,16 +2,13 @@ package de.htwg.se.mastermind.aview.gui
 
 import scala.swing._
 import scala.swing.event._
-import de.htwg.se.mastermind.controller.controllerComponent.{ColorSelected, PegChanged}
-import de.htwg.se.mastermind.controller.controllerComponent.controllerBaseImpl.Controller
+import de.htwg.se.mastermind.controller.controllerComponent.{ColorSelected, ControllerInterface, PegChanged}
 
-class SwingGui(controller: Controller) extends MainFrame {
+class SwingGui(controller: ControllerInterface) extends MainFrame {
   title = "HTWG Mastermind"
   preferredSize = new Dimension(480, 640)
 
   listenTo(controller)
-
-  //val statusline = new TextField("status text", 20)
 
   def colorPickerPanel: FlowPanel = new FlowPanel {
     for {index <- 0 until controller.numberOfPegs * 2} {
@@ -80,7 +77,9 @@ class SwingGui(controller: Controller) extends MainFrame {
     contents += new Menu("Edit") {
       mnemonic = Key.E
       contents += new MenuItem(Action("Undo") { controller.undo() })
+
       contents += new MenuItem(Action("Redo") { controller.redo() })
+
     }
     contents += new Menu("Solve") {
       mnemonic = Key.S
@@ -112,3 +111,5 @@ class SwingGui(controller: Controller) extends MainFrame {
     repaint()
   }
 }
+
+

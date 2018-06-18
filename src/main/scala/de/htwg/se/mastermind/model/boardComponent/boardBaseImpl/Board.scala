@@ -137,6 +137,8 @@ case class Board(rounds: Vector[Round], solution: Vector[Color]) extends BoardIn
     }
     false
   }
+
+  override def solve: BoardInterface = new Solver(this).solve
 }
 
 object Board {

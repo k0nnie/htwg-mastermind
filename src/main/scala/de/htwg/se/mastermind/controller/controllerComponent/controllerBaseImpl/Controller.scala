@@ -1,21 +1,26 @@
 package de.htwg.se.mastermind.controller.controllerComponent.controllerBaseImpl
 
+import java.awt
+
+import com.google.inject.name.Names
+import com.google.inject.{Guice, Inject, Injector}
+import net.codingwell.scalaguice.InjectorExtensions._
+import de.htwg.se.mastermind.MastermindModule
 import de.htwg.se.mastermind.controller.controllerComponent.GameStatus._
 import de.htwg.se.mastermind.controller.controllerComponent.{ControllerInterface, GameStatus, PegChanged}
 import de.htwg.se.mastermind.model.boardComponent.BoardInterface
-import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.{Board, Color, Hint}
+import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.{Color, Hint}
 import de.htwg.se.mastermind.util.UndoManager
 
 import scala.swing.Publisher
 
-class Controller(var board: BoardInterface) extends ControllerInterface with Publisher {
+class Controller @Inject() (var board: BoardInterface) extends ControllerInterface with Publisher {
 
   var gameStatus: GameStatus = IDLE
-
+  val numberOfRounds: Int = board.rounds.size
+  val numberOfPegs: Int = board.solution.size
   private val undoManager = new UndoManager
-  val numberOfRounds: Int = Board.NumberOfRounds
-  val numberOfPegs: Int = Board.NumberOfPegs
-  val solution: Vector[Color] = board.solution
+  val injector: Injector = Guice.createInjector(new MastermindModule)
 
   val availableGUIColors = Vector(
     java.awt.Color.PINK,
@@ -32,17 +37,16 @@ class Controller(var board: BoardInterface) extends ControllerInterface with Pub
     java.awt.Color.WHITE
   )
 
+  val availableColors: Vector[String] = board.rounds(0).turn.pegs(0).color.getAvailableColors.toVector
+  val availableHints: Vector[String] = board.rounds(0).turnHint.pegs(0).color.getAvailableHints.toVector
+
   def createEmptyBoard(): Unit = {
-    board = new Board()
+    board = injector.instance[BoardInterface](Names.named("default"))
     gameStatus = NEW
     publish(new PegChanged)
   }
 
   def boardToString: String = board.toString
-
-  def clearRound(index: Int): BoardInterface = {
-    board.emptyRound(index)
-  }
 
   def getCurrentRoundIndex: Int = {
     val index = board.rounds.indices.iterator.find(index => !board.rounds(index).isSet).getOrElse(-1)
@@ -50,8 +54,6 @@ class Controller(var board: BoardInterface) extends ControllerInterface with Pub
   }
 
   def solutionToString(): String = board.solutionToString
-
-  def roundIsSolved(index: Int): Boolean = this.board.rounds(index).turnHint.pegs.toString().equals("Vector(+, +, +, +)")
 
   def set(roundIndex: Int, colors: Vector[Color]): Unit = {
     undoManager.doStep(new SetCommand(roundIndex,this, colors))
@@ -62,39 +64,39 @@ class Controller(var board: BoardInterface) extends ControllerInterface with Pub
   def mapFromGuiColor(color: java.awt.Color): Color = {
     val colors = new Color().getAvailableColors
     var foundColor: Color = new Color()
-
     for (i <- availableGUIColors.indices) {
       if (availableGUIColors(i).equals(color)) {
         foundColor = Color(colors(i))
         return foundColor
       }
     }
+
     foundColor
   }
 
   def mapToGuiColor(color: Color): java.awt.Color = {
     val colors = new Color().getAvailableColors
     var foundColor: java.awt.Color = java.awt.Color.GRAY
-
     for (i <- colors.indices) {
       if (colors(i). equals(color.toString)) {
         foundColor = availableGUIColors(i)
         return foundColor
       }
     }
+
     foundColor
   }
 
   def mapHintToGuiHint(hintColor: Hint): java.awt.Color = {
     val hints = new Hint().getAvailableHints
     var foundHint: java.awt.Color = java.awt.Color.LIGHT_GRAY
-
     for (i <- hints.indices) {
       if (hints(i).equals(hintColor.name.toString)) {
         foundHint = availableGUIHintColors(i)
         return foundHint
       }
     }
+
     foundHint
   }
 
@@ -108,6 +110,7 @@ class Controller(var board: BoardInterface) extends ControllerInterface with Pub
   }
 
   def getHintColor(rowIndex: Int, columnIndex: Int): java.awt.Color = {
+
     var foundColor: java.awt.Color = java.awt.Color.LIGHT_GRAY
 
     if (!board.rounds(rowIndex).turn.containsEmptyColor) {
@@ -135,5 +138,4 @@ class Controller(var board: BoardInterface) extends ControllerInterface with Pub
   }
 
   def statusText: String = GameStatus.message(gameStatus)
-
 }
