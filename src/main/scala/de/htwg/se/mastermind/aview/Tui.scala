@@ -1,12 +1,11 @@
 package de.htwg.se.mastermind.aview
 
-import de.htwg.se.mastermind.controller.controllerComponent.{ColorSelected, GameStatus, PegChanged}
-import de.htwg.se.mastermind.controller.controllerComponent.controllerBaseImpl.Controller
+import de.htwg.se.mastermind.controller.controllerComponent.{ColorSelected, ControllerInterface, GameStatus, PegChanged}
 import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.Color
 
 import scala.swing.Reactor
 
-class Tui(controller: Controller) extends Reactor {
+class Tui(controller: ControllerInterface) extends Reactor {
 
   listenTo(controller)
 

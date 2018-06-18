@@ -15,6 +15,7 @@ trait BoardInterface {
   def isSolved: Boolean
   def solution: Vector[Color]
   def rounds:Vector[Round]
+  def solve: BoardInterface
 }
 
 trait PegInterface {

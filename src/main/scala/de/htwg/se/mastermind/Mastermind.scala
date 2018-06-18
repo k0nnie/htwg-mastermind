@@ -1,18 +1,19 @@
 package de.htwg.se.mastermind
 
+import com.google.inject.{Guice, Injector}
 import de.htwg.se.mastermind.aview.Tui
 import de.htwg.se.mastermind.aview.gui.SwingGui
-import de.htwg.se.mastermind.controller.controllerComponent.PegChanged
-import de.htwg.se.mastermind.controller.controllerComponent.controllerBaseImpl.Controller
-import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.Board
+import de.htwg.se.mastermind.controller.controllerComponent.{ControllerInterface, PegChanged}
 
 import scala.io.StdIn._
 
 object Mastermind {
 
-  val controller = new Controller(new Board())
+  val injector: Injector = Guice.createInjector(new MastermindModule)
+  val controller: ControllerInterface = injector.getInstance(classOf[ControllerInterface])
   val tui: Tui = new Tui(controller)
   val gui = new SwingGui(controller)
+  controller.createEmptyBoard()
   controller.publish(new PegChanged)
 
   def main(args: Array[String]): Unit = {
@@ -23,8 +24,8 @@ object Mastermind {
     var input: String = ""
 
     do {
-        input = readLine()
-        tui.processInputLine(input)
+      input = readLine()
+      tui.processInputLine(input)
     }
     while (input != "q")
   }
