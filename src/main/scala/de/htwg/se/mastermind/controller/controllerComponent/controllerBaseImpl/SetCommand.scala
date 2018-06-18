@@ -6,7 +6,7 @@ class SetCommand(roundIndex: Int, controller: Controller, colors: Int) extends C
 
   override def doStep(): Unit = controller.board = controller.board.set(roundIndex, colors)
 
-  override def undoStep(): Unit = controller.board = controller.board.undoSetPeg(roundIndex)
+  override def undoStep(): Unit = controller.board = controller.board.undoPeg(roundIndex)
 
-  override def redoStep(): Unit = controller.board = controller.board.redoSetPeg(roundIndex, colors)
+  override def redoStep(): Unit = controller.board = controller.board.redoPeg(roundIndex, colors)
 }

@@ -21,7 +21,7 @@ case class Board(rounds: Vector[Round], solution: Vector[Color]) extends BoardIn
     replaceRound(roundIndex, newColVec)
   }
 
-  def undoSetPeg(roundIndex: Int): Board = {
+  def undoPeg(roundIndex: Int): Board = {
     var newColVec = Vector.fill(Board.NumberOfPegs)(new Color())
     var alreadySetPegs = rounds(roundIndex).turn.pegs.filter(peg => !peg.emptyColor)
 
@@ -31,7 +31,7 @@ case class Board(rounds: Vector[Round], solution: Vector[Color]) extends BoardIn
     replaceRound(roundIndex, newColVec)
   }
 
-  def redoSetPeg(roundIndex: Int, color: Int): Board = {
+  def redoPeg(roundIndex: Int, color: Int): Board = {
     var newColVec = Vector.fill(Board.NumberOfPegs)(new Color())
     var alreadySetPegs = rounds(roundIndex).turn.pegs.filter(peg => !peg.emptyColor)
 
@@ -50,13 +50,6 @@ case class Board(rounds: Vector[Round], solution: Vector[Color]) extends BoardIn
     if (!colVec.contains(new Color())) hints = createHints(solution, colVec)
 
     copy(rounds.updated(index, rounds(index).replacePegs(colVec, hints)), solution)
-  }
-
-  def emptyRound(index: Int): Board = {
-    var emptyColVec = for (i <- 1 to solution.size) yield new Color()
-    val hints = createHints(solution, emptyColVec.toVector)
-
-    copy(rounds.updated(index, rounds(index).replacePegs(emptyColVec.toVector, hints)), solution)
   }
 
   def createHints(solution: Vector[Color], colVec: Vector[Color]): Vector[Hint] = {
@@ -99,9 +92,7 @@ case class Board(rounds: Vector[Round], solution: Vector[Color]) extends BoardIn
     box
   }
 
-  def isSolved(rowIndex: Int): Boolean = rounds(rowIndex).turnHint.equals(rounds(rowIndex).turnHint.hintVectorSolved)
-
-  def isSolved: Boolean = rounds.indices.exists(i => this.isSolved(i))
+  def isSolved: Boolean = rounds.indices.exists(i => this.rounds(i).turnHint.equals(rounds(i).turnHint.hintVectorSolved))
 
   def solve: BoardInterface = new Solver(this).solve
 }

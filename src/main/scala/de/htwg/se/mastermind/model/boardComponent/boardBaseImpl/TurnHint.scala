@@ -15,6 +15,7 @@ case class TurnHint(pegs: Vector[Peg[Hint]]) {
   def hintVectorSolved: TurnHint = {
     val solvedVec = Vector.fill(Board.NumberOfPegs)(Hint("rightColAndPos"))
     var newPegs = Vector.empty[Peg[Hint]]
+
     solvedVec.foreach(hint => newPegs = newPegs :+ Peg(hint))
     copy(newPegs)
   }

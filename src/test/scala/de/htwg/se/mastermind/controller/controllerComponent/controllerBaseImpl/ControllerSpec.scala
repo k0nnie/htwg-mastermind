@@ -81,15 +81,12 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.solve()
         controller.board.rounds(controller.numberOfRounds-1).turn.containsEmptyColor should be(false)
         controller.board.isSolved should be(true)
-        controller.board.isSolved(controller.numberOfRounds-1) should be(true)
         controller.undo()
         controller.board.rounds(controller.numberOfRounds-1).turn.containsEmptyColor should be(true)
         controller.board.isSolved should be(false)
-        controller.board.isSolved(controller.numberOfRounds-1) should be(false)
         controller.redo()
         controller.board.rounds(controller.numberOfRounds-1).turn.containsEmptyColor should be(false)
         controller.board.isSolved should be(true)
-        controller.board.isSolved(controller.numberOfRounds-1) should be(true)
       }
       "print out a message of game status" in {
         controller.createEmptyBoard()
