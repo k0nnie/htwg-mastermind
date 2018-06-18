@@ -33,20 +33,7 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.board.rounds(0).turn.pegs.toString() should be("Vector(1, 1, 1, 1)")
         controller.statusText should be("A peg was set")
       }
-      "return correctly if game is solved or not solved yet" in {
-        controller.set(1, Vector[Color](Color("5")))
-        controller.set(1, Vector[Color](Color("6")))
-        controller.set(1, Vector[Color](Color("7")))
-        controller.set(1, Vector[Color](Color("8")))
-//        controller.roundIsSolved(0) should be(false)
-//        controller.roundIsSolved(1) should be(true)
-      }
-      "clear a round if needed" in {
-//        controller.clearRound(0).rounds(0).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
-      }
       "adding a color on GUI" in {
-//        controller.clearRound(0)
-//        controller.clearRound(1)
         controller.set(2, Vector[Color](controller.mapFromGuiColor(java.awt.Color.BLUE)))
         controller.board.rounds(2).turn.pegs.toString should be("Vector(2,  ,  ,  )")
       }
