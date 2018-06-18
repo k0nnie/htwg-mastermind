@@ -9,11 +9,11 @@ class Board(var rounds: Vector[Round], var solution: Vector[Color]) extends Boar
 
   def emptyRound(index: Int): BoardInterface = this
 
-  def set(roundIndex: Int, colors: Vector[Color]): BoardInterface = this
+  def set(roundIndex: Int, color: Int): BoardInterface = this
 
   def undoSetPeg(roundIndex: Int): BoardInterface = this
 
-  def redoSetPeg(roundIndex: Int, colors: Vector[Color]): BoardInterface = this
+  def redoSetPeg(roundIndex: Int, color: Int): BoardInterface = this
 
   def createHints(solution: Vector[Color], colVec: Vector[Color]): Vector[Hint] = Vector[Hint](new Hint())
 

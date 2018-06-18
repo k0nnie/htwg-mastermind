@@ -17,8 +17,8 @@ import scala.swing.Publisher
 class Controller @Inject() (var board: BoardInterface) extends ControllerInterface with Publisher {
 
   var gameStatus: GameStatus = IDLE
-  val numberOfRounds: Int = board.rounds.size
-  val numberOfPegs: Int = board.solution.size
+//  val numberOfRounds: Int = board.rounds.size
+//  val numberOfPegs: Int = board.solution.size
   private val undoManager = new UndoManager
   val injector: Injector = Guice.createInjector(new MastermindModule)
 
@@ -37,6 +37,9 @@ class Controller @Inject() (var board: BoardInterface) extends ControllerInterfa
     java.awt.Color.WHITE
   )
 
+  val numberOfRounds: Int = injector.instance[Int](Names.named("NumberOfRounds"))
+  val numberOfPegs: Int = injector.instance[Int](Names.named("NumberOfPegs"))
+
   val availableColors: Vector[String] = board.rounds(0).turn.pegs(0).color.getAvailableColors.toVector
   val availableHints: Vector[String] = board.rounds(0).turnHint.pegs(0).color.getAvailableHints.toVector
 
@@ -48,73 +51,57 @@ class Controller @Inject() (var board: BoardInterface) extends ControllerInterfa
 
   def boardToString: String = board.toString
 
-  def getCurrentRoundIndex: Int = {
-    val index = board.rounds.indices.iterator.find(index => !board.rounds(index).isSet).getOrElse(-1)
-    index
-  }
+  def getCurrentRoundIndex: Int = board.rounds.indices.iterator.find(index => !board.rounds(index).isSet).getOrElse(-1)
 
   def solutionToString(): String = board.solutionToString
 
-  def set(roundIndex: Int, colors: Vector[Color]): Unit = {
+  def set(roundIndex: Int, colors: Int): Unit = {
     undoManager.doStep(new SetCommand(roundIndex,this, colors))
     gameStatus = SET
     publish(new PegChanged)
   }
 
-  def mapFromGuiColor(color: java.awt.Color): Color = {
-    val colors = new Color().getAvailableColors
-    var foundColor: Color = new Color()
-    for (i <- availableGUIColors.indices) {
-      if (availableGUIColors(i).equals(color)) {
-        foundColor = Color(colors(i))
-        return foundColor
-      }
-    }
+  def mapFromGuiColor(color: java.awt.Color): Int = {
+    var foundColor: Int = 0
+    val idx = availableGUIColors.indices.toStream.find(i => availableGUIColors(i).equals(color)).getOrElse(-1)
+
+    if (idx != -1) foundColor = availableColors(idx).toInt
 
     foundColor
   }
 
-  def mapToGuiColor(color: Color): java.awt.Color = {
-    val colors = new Color().getAvailableColors
+  def mapToGuiColor(color: Int): java.awt.Color = {
     var foundColor: java.awt.Color = java.awt.Color.GRAY
-    for (i <- colors.indices) {
-      if (colors(i). equals(color.toString)) {
-        foundColor = availableGUIColors(i)
-        return foundColor
-      }
-    }
+    val idx = availableGUIColors.indices.toStream.find(i => availableColors(i).equals(color.toString)).getOrElse(-1)
+
+    if (idx != -1) foundColor = availableGUIColors(idx)
 
     foundColor
   }
 
-  def mapHintToGuiHint(hintColor: Hint): java.awt.Color = {
-    val hints = new Hint().getAvailableHints
+  def mapHintToGuiHint(hintColor: String): java.awt.Color = {
     var foundHint: java.awt.Color = java.awt.Color.LIGHT_GRAY
-    for (i <- hints.indices) {
-      if (hints(i).equals(hintColor.name.toString)) {
-        foundHint = availableGUIHintColors(i)
-        return foundHint
-      }
-    }
+    val idx = availableHints.indices.toStream.find(i => availableHints(i).equals(hintColor)).getOrElse(-1)
+
+    if (idx != -1) foundHint = availableGUIHintColors(idx)
 
     foundHint
   }
 
-  def getGuessColor(rowIndex: Int, columnIndex: Int): java.awt.Color = {
+  def guessColor(rowIndex: Int, columnIndex: Int): java.awt.Color = {
     var foundColor: java.awt.Color = java.awt.Color.GRAY
 
     if (!board.rounds(rowIndex).turn.pegs(columnIndex).emptyColor) {
-      foundColor = mapToGuiColor(board.rounds(rowIndex).turn.pegs(columnIndex).color)
+      foundColor = mapToGuiColor(board.rounds(rowIndex).turn.pegs(columnIndex).color.toString.toInt)
     }
     foundColor
   }
 
-  def getHintColor(rowIndex: Int, columnIndex: Int): java.awt.Color = {
-
+  def hintColor(rowIndex: Int, columnIndex: Int): java.awt.Color = {
     var foundColor: java.awt.Color = java.awt.Color.LIGHT_GRAY
 
     if (!board.rounds(rowIndex).turn.containsEmptyColor) {
-      foundColor = mapHintToGuiHint(board.rounds(rowIndex).turnHint.pegs(columnIndex).color)
+      foundColor = mapHintToGuiHint(board.rounds(rowIndex).turnHint.pegs(columnIndex).color.name)
     }
     foundColor
   }

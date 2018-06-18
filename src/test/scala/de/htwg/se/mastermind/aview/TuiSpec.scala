@@ -68,11 +68,11 @@ class TuiSpec extends WordSpec with Matchers {
       controller.numberOfPegs should be(4)
     }
     "map a hint to a GUI hint" in {
-      val hint = Hint("rightColAndPos")
+      val hint = "rightColAndPos"
       controller.mapHintToGuiHint(hint).toString should be("java.awt.Color[r=0,g=0,b=0]")
     }
     "get a guess color" in {
-      controller.getGuessColor(0,0).toString should be("java.awt.Color[r=255,g=175,b=175]")
+      controller.guessColor(0,0).toString should be("java.awt.Color[r=255,g=175,b=175]")
     }
   }
 }

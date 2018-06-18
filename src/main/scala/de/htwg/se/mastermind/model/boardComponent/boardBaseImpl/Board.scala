@@ -10,25 +10,17 @@ case class Board(rounds: Vector[Round], solution: Vector[Color]) extends BoardIn
 
   def this(rounds: Vector[Round]) = this(rounds, Board.randomSolution)
 
-  def set(roundIndex: Int, colors: Vector[Color]): Board = {
-
+  def set(roundIndex: Int, colors: Int): Board = {
     var newColVec = Vector.fill(Board.NumberOfPegs)(new Color())
     val alreadySetPegs = rounds(roundIndex).turn.pegs.filter(peg => !peg.emptyColor)
+    alreadySetPegs.indices.foreach(i => newColVec = newColVec.updated(i, alreadySetPegs(i).color))
 
-    for (i <- alreadySetPegs.indices) {
-      newColVec = newColVec.updated(i, alreadySetPegs(i).color)
+    if (newColVec.contains(new Color())) {
+      val i = newColVec.indexOf(new Color())
+      val color = Vector[Color](Color(colors.toString))
+      newColVec = newColVec.updated(i, color.head)
     }
-
-    var x = 0
-    for (i <- alreadySetPegs.size until Board.NumberOfPegs) while (x < colors.size) {
-      if (newColVec.contains(new Color())) {
-        newColVec = newColVec.updated(i, colors(x))
-        x = x + 1
-      }
-    }
-
-    val board = replaceRound(roundIndex, newColVec)
-    board
+    replaceRound(roundIndex, newColVec)
   }
 
   def undoSetPeg(roundIndex: Int): Board = {
@@ -36,41 +28,37 @@ case class Board(rounds: Vector[Round], solution: Vector[Color]) extends BoardIn
     var alreadySetPegs = rounds(roundIndex).turn.pegs.filter(peg => !peg.emptyColor)
 
     alreadySetPegs = alreadySetPegs.dropRight(1)
+    alreadySetPegs.indices.foreach(i => newColVec = newColVec.updated(i, alreadySetPegs(i).color))
 
-    for (i <- alreadySetPegs.indices) {
-      newColVec = newColVec.updated(i, alreadySetPegs(i).color)
-    }
-
-    val board = replaceRound(roundIndex, newColVec)
-    board
+    replaceRound(roundIndex, newColVec)
   }
 
-  def redoSetPeg(roundIndex: Int, color: Vector[Color]): Board = {
+  def redoSetPeg(roundIndex: Int, color: Int): Board = {
     var newColVec = Vector.fill(Board.NumberOfPegs)(new Color())
     var alreadySetPegs = rounds(roundIndex).turn.pegs.filter(peg => !peg.emptyColor)
 
-    for (i <- alreadySetPegs.indices) {
-      newColVec = newColVec.updated(i, alreadySetPegs(i).color)
-    }
-    newColVec = newColVec.updated(alreadySetPegs.size, color(0))
+    alreadySetPegs.indices.foreach(i => newColVec = newColVec.updated(i, alreadySetPegs(i).color))
 
-    val board = replaceRound(roundIndex, newColVec)
-    board
+    val colorVec = Vector[Color](Color(color.toString))
+
+    newColVec = newColVec.updated(alreadySetPegs.size, colorVec.head)
+
+    replaceRound(roundIndex, newColVec)
   }
 
   def replaceRound(index: Int, colVec: Vector[Color]): Board = {
     var hints = Vector[Hint](new Hint(), new Hint(), new Hint(), new Hint())
 
-    if (!colVec.contains(new Color())) {
-      hints = createHints(solution, colVec)
-    }
+    if (!colVec.contains(new Color())) hints = createHints(solution, colVec)
+
     copy(rounds.updated(index, rounds(index).replacePegs(colVec, hints)), solution)
   }
 
   def emptyRound(index: Int): Board = {
-    val colVec = new Color().emptyColVec
-    val hints = createHints(solution, colVec)
-    copy(rounds.updated(index, rounds(index).replacePegs(colVec, hints)), solution)
+    var emptyColVec = for (i <- 1 to solution.size) yield new Color()
+    val hints = createHints(solution, emptyColVec.toVector)
+
+    copy(rounds.updated(index, rounds(index).replacePegs(emptyColVec.toVector, hints)), solution)
   }
 
   def createHints(solution: Vector[Color], colVec: Vector[Color]): Vector[Hint] = {
@@ -101,7 +89,7 @@ case class Board(rounds: Vector[Round], solution: Vector[Color]) extends BoardIn
     var box = "\n" + (lineSeparator + line) * Board.NumberOfRounds + lineSeparator
 
     for {
-      row <- 0 until Board.NumberOfRounds
+      row <- rounds.indices
       col <- 0 until Board.NumberOfPegs * 2
     } {
       if (col < Board.NumberOfPegs) {
@@ -113,30 +101,11 @@ case class Board(rounds: Vector[Round], solution: Vector[Color]) extends BoardIn
     box
   }
 
-  def solutionToString: String = {
-    val solutionString = "solution: " + solution.mkString(", ")
-    solutionString
-  }
+  def solutionToString: String = "solution: " + solution.mkString(", ") // can be removed
 
-  def isSolved(rowIndex: Int): Boolean = {
-    var solved = false
+  def isSolved(rowIndex: Int): Boolean = rounds(rowIndex).turnHint.equals(rounds(rowIndex).turnHint.hintVectorSolved)
 
-    var x: Vector[String] = Vector.empty[String]
-
-    if (rounds(rowIndex).turnHint.equals(rounds(rowIndex).turnHint.hintVectorSolved)) {
-      solved = true
-    }
-    solved
-  }
-
-  def isSolved: Boolean = {
-    for (i <- 0 until Board.NumberOfRounds) {
-      if (this.isSolved(i)) {
-        return true
-      }
-    }
-    false
-  }
+  def isSolved: Boolean = rounds.indices.exists(i => this.isSolved(i))
 
   override def solve: BoardInterface = new Solver(this).solve
 }

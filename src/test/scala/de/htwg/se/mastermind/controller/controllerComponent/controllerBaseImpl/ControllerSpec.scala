@@ -26,32 +26,32 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.solutionToString() should be("solution: 5, 6, 7, 8")
       }
       "notify its Observer after replacing a round" in {
-        controller.set(0, Vector[Color](Color("1")))
-        controller.set(0, Vector[Color](Color("1")))
-        controller.set(0, Vector[Color](Color("1")))
-        controller.set(0, Vector[Color](Color("1")))
+        controller.set(0, 1)
+        controller.set(0, 1)
+        controller.set(0, 1)
+        controller.set(0, 1)
         controller.board.rounds(0).turn.pegs.toString() should be("Vector(1, 1, 1, 1)")
         controller.statusText should be("A peg was set")
       }
       "adding a color on GUI" in {
-        controller.set(2, Vector[Color](controller.mapFromGuiColor(java.awt.Color.BLUE)))
+        controller.set(2, controller.mapFromGuiColor(java.awt.Color.BLUE))
         controller.board.rounds(2).turn.pegs.toString should be("Vector(2,  ,  ,  )")
       }
       "mapping a GUI color to color" in {
         val guiColor = java.awt.Color.BLUE
         val color = controller.mapFromGuiColor(guiColor)
-        color should be(Color("2"))
+        color should be(2)
       }
       "mapping a color to GUI color" in {
-        val color = Color("2")
+        val color = 2
         val guiColor = controller.mapToGuiColor(color)
         guiColor should be(java.awt.Color.BLUE)
       }
       "getting a guessed color" in {
-        controller.getGuessColor(0,0).toString should be("java.awt.Color[r=255,g=175,b=175]")
+        controller.guessColor(0,0).toString should be("java.awt.Color[r=255,g=175,b=175]")
       }
       "getting the color for a hint" in {
-        controller.getHintColor(0,0).toString should be("java.awt.Color[r=192,g=192,b=192]")
+        controller.hintColor(0,0).toString should be("java.awt.Color[r=192,g=192,b=192]")
       }
       "solve a board" in {
         controller.solve()
@@ -63,19 +63,16 @@ class ControllerSpec extends WordSpec with Matchers {
       "give back current round index" in {
         var board2 = new Board()
         val controller2 = new Controller(board2)
-
         controller2.getCurrentRoundIndex should be (0)
-
-        controller2.set(0, Vector[Color](Color("1")))
-        controller2.set(0, Vector[Color](Color("1")))
-        controller2.set(0, Vector[Color](Color("1")))
-        controller2.set(0, Vector[Color](Color("1")))
+        controller2.set(0, 1)
+        controller2.set(0, 1)
+        controller2.set(0, 1)
+        controller2.set(0, 1)
         controller2.getCurrentRoundIndex should be (1)
-
-        controller2.set(1, Vector[Color](Color("5")))
-        controller2.set(1, Vector[Color](Color("6")))
-        controller2.set(1, Vector[Color](Color("7")))
-        controller2.set(1, Vector[Color](Color("8")))
+        controller2.set(1, 5)
+        controller2.set(1, 6)
+        controller2.set(1, 7)
+        controller2.set(1, 8)
         controller2.getCurrentRoundIndex should be (2)
       }
     }
