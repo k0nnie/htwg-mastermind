@@ -43,14 +43,6 @@ class BoardSpec extends WordSpec with Matchers {
         newRound.rounds(1).turnHint.pegs.toString() should be("Vector(+,  ,  ,  )")
       }
     }
-    "with rounds and solution constructor params" should {
-      val round = new Round()
-      val rounds = Vector(round, round, round, round)
-      val board = new Board(rounds)
-      "have four rounds" in {
-        board.rounds.size should be(4)
-      }
-    }
     "with default constructor" should {
       val round = new Round()
       val rounds = Vector(round, round, round, round)
@@ -98,15 +90,6 @@ class BoardSpec extends WordSpec with Matchers {
         newBoard.createHints(solution, colVec).toString() should be("Vector(+, +,  ,  )")
       }
     }
-    "played last round" should {
-      val solution = Vector[Color](Color("5"), Color("6"), Color("4"), Color("8"))
-      val boardWithSolution = boardBaseImpl.Board(Vector.fill(2)(new Round()), solution)
-      val colVec = Vector[Color](Color("5"), Color("6"), Color("4"), Color("8"))
-      boardWithSolution.replaceRound(1,colVec)
-      "display the solution" in {
-        boardWithSolution.solutionToString should be("solution: 5, 6, 4, 8")
-      }
-    }
     "solved before last round" should {
       val solution = Vector[Color](Color("1"), Color("2"), Color("3"), Color("4"))
       val boardWithSolution = boardBaseImpl.Board(Vector.fill(Board.NumberOfRounds)(new Round()), solution)
@@ -117,10 +100,6 @@ class BoardSpec extends WordSpec with Matchers {
       }
       "have four hints for right color and position" in {
         newBoard.createHints(solution, colVec).toString() should be("Vector(+, +, +, +)")
-      }
-      "give back an empty round if necessary" in {
-        val boardWithEmptyFirstRound = boardWithSolution.emptyRound(0)
-        boardWithEmptyFirstRound.rounds(0).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
       }
     }
   }

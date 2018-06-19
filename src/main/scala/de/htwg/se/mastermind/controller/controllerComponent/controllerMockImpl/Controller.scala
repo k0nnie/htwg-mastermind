@@ -3,7 +3,6 @@ package de.htwg.se.mastermind.controller.controllerComponent.controllerMockImpl
 import de.htwg.se.mastermind.controller.controllerComponent.GameStatus._
 import de.htwg.se.mastermind.controller.controllerComponent.{ControllerInterface, GameStatus}
 import de.htwg.se.mastermind.model.boardComponent.BoardInterface
-import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.{Color, Hint}
 
 class Controller(var board: BoardInterface) extends ControllerInterface {
 
@@ -15,20 +14,17 @@ class Controller(var board: BoardInterface) extends ControllerInterface {
 
   override def getCurrentRoundIndex: Int = 0
 
-  override def set(roundIndex: Int, colors: Vector[Color]): Unit = {}
+  override def set(roundIndex: Int, color: Int): Unit = {}
 
+  override def mapFromGuiColor(color: java.awt.Color): Int = 1
 
-  override def solutionToString(): String = solutionToString()
+  override def mapToGuiColor(color: Int): java.awt.Color = java.awt.Color.PINK
 
-  override def mapFromGuiColor(color: java.awt.Color): Color = Color("1")
+  override def mapHintToGuiHint(hintColor: String): java.awt.Color = java.awt.Color.BLACK
 
-  override def mapToGuiColor(color: Color): java.awt.Color = java.awt.Color.PINK
+  override def guessColor(rowIndex: Int, columnIndex: Int): java.awt.Color = java.awt.Color.PINK
 
-  override def mapHintToGuiHint(hintColor: Hint): java.awt.Color = java.awt.Color.BLACK
-
-  override def getGuessColor(rowIndex: Int, columnIndex: Int): java.awt.Color = java.awt.Color.PINK
-
-  override def getHintColor(rowIndex: Int, columnIndex: Int): java.awt.Color = java.awt.Color.WHITE
+  override def hintColor(rowIndex: Int, columnIndex: Int): java.awt.Color = java.awt.Color.WHITE
 
   override def undo(): Unit = {}
 

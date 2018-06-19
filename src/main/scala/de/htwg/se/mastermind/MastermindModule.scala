@@ -7,7 +7,6 @@ import de.htwg.se.mastermind.controller.controllerComponent._
 import de.htwg.se.mastermind.model.boardComponent.BoardInterface
 import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.Board
 
-
 class MastermindModule extends AbstractModule with ScalaModule {
 
   val numberOfRounds: Int = 10
