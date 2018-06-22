@@ -4,8 +4,7 @@ import de.htwg.se.mastermind.model.boardComponent.BoardInterface
 
 case class Board(rounds: Vector[Round], solution: Vector[Color], offset: Int) extends BoardInterface {
 
-  def this(numberOfPegs: Int, numberOfRounds: Int) = this(Vector.fill(numberOfRounds)(new Round(numberOfPegs)), Board.randomSolution(numberOfPegs), 0)
-
+  def this(numberOfPegs: Int, numberOfRounds: Int) = this(Vector.fill(numberOfRounds)(new Round(Board.checkNumOfPegs(numberOfPegs))), Board.randomSolution(Board.checkNumOfPegs(numberOfPegs)), 0)
   def numOfRounds: Int = rounds.size
   def numOfPegs: Int = solution.size
 
@@ -102,9 +101,14 @@ case class Board(rounds: Vector[Round], solution: Vector[Color], offset: Int) ex
 
 object Board {
 
-  def randomSolution(numberOfPegs: Int): Vector[Color] = addColorRec(numberOfPegs)
+  def checkNumOfPegs(numberOfPegs: Int): Int = numberOfPegs match {
+    case x if x <= 8 => x
+    case x => 8
+  }
 
-  def addColorRec(numberOfPegs: Int): Vector[Color] = {
+  def randomSolution(numberOfPegs: Int): Vector[Color] = addColor(numberOfPegs)
+
+  def addColor(numberOfPegs: Int): Vector[Color] = {
     val newSet = Set.empty[Color]
     addColorToSet(newSet, numberOfPegs).toVector
   }
