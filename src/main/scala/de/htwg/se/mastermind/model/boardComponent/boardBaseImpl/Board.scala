@@ -9,12 +9,13 @@ case class Board(rounds: Vector[Round], solution: Vector[Color], offset: Int) ex
   def numOfPegs: Int = solution.size
 
   def set(roundIndex: Int, colors: Int): Board = {
-    var newColVec = Vector.fill(numOfPegs)(new Color())
+    val unsetColor = new Color()
+    var newColVec = Vector.fill(numOfPegs)(unsetColor)
     val alreadySetPegs = rounds(roundIndex).turn.pegs.filter(peg => !peg.emptyColor)
     alreadySetPegs.indices.foreach(i => newColVec = newColVec.updated(i, alreadySetPegs(i).color))
 
-    if (newColVec.contains(new Color())) {
-      val i = newColVec.indexOf(new Color())
+    if (newColVec.contains(unsetColor)) {
+      val i = newColVec.indexOf(unsetColor)
       val color = Vector[Color](Color(colors.toString))
       newColVec = newColVec.updated(i, color.head)
     }
