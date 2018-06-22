@@ -92,6 +92,25 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.createEmptyBoard()
         GameStatus.message(controller.gameStatus) should be("A new game was created")
       }
+
+
+    }
+    "resizing board" should {
+      val controller = new Controller(new Board(4, 10))
+      "resize board correctly" in {
+        controller.board.rounds.size should be(10)
+        controller.board.rounds(0).turnSize should be(4)
+        controller.resize(6, 8)
+        controller.board.rounds.size should be(8)
+        controller.board.rounds(0).turnSize should be(6)
+        controller.resize(4, 12)
+        controller.board.rounds.size should be(12)
+        controller.board.rounds(0).turnSize should be(4)
+        controller.resize(7, 7)
+        controller.board.rounds.size should be(12)
+        controller.board.rounds(0).turnSize should be(4)
+
+      }
     }
   }
 }
