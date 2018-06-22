@@ -1,7 +1,6 @@
 package de.htwg.se.mastermind.aview
 
 import de.htwg.se.mastermind.controller.controllerComponent.controllerBaseImpl.Controller
-import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl
 import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.{Board, Color, Hint, Round}
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
@@ -10,13 +9,12 @@ import org.scalatest.{Matchers, WordSpec}
 @RunWith(classOf[JUnitRunner])
 class TuiSpec extends WordSpec with Matchers {
   "A Mastermind Tui" should {
-    //val controller = new Controller(new Board())
-    val controller = new Controller(new Board(10,4))
+    val board = new Board(4,10)
+    val controller = new Controller(board)
     val tui = new Tui(controller)
     "create and empty Mastermind on input 'n'" in {
       tui.processInputLine("n")
-      //controller.board.rounds should be(new Board().rounds)
-      controller.board.rounds should be(new Board(10,4).rounds)
+      controller.board.rounds should be(board.rounds)
     }
     "set a turn on input '1'" in {
       tui.processInputLine("1")

@@ -1,8 +1,6 @@
 package de.htwg.se.mastermind.model.boardComponent.boardBaseImpl
 
 import de.htwg.se.mastermind.model.boardComponent.BoardInterface
-import scala.collection.immutable.VectorBuilder
-import scala.util.Random
 
 case class Board(rounds: Vector[Round], solution: Vector[Color], offset: Int) extends BoardInterface {
 
@@ -104,19 +102,22 @@ case class Board(rounds: Vector[Round], solution: Vector[Color], offset: Int) ex
 
 object Board {
 
-  def randomSolution(numberOfPegs: Int): Vector[Color] = {
-    val random = new Random
-    var colors = new VectorBuilder[Color]
-    var set = Set.empty[String]
+  def randomSolution(numberOfPegs: Int): Vector[Color] = addColorRec(numberOfPegs)
 
-    do {
-      val color = Color(new Color().randomColorString())
-      if (!set.contains(color.name)) {
-        colors += color
-        set += color.name
-      }
-    } while (set.size < numberOfPegs)
+  def addColorRec(numberOfPegs: Int): Vector[Color] = {
+    val newSet = Set.empty[Color]
+    addColorToSet(newSet, numberOfPegs).toVector
+  }
 
-    colors.result()
+  def addColorToSet(set: Set[Color], numberOfPegs: Int): Set[Color] = {
+    var newSet = set
+    val color = Color(new Color().randomColorString())
+
+    if (newSet.size.equals(numberOfPegs)) {
+      newSet
+    } else {
+      newSet += color
+      addColorToSet(newSet, numberOfPegs)
+    }
   }
 }
