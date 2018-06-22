@@ -44,6 +44,12 @@ class ControllerSpec extends WordSpec with Matchers {
         val guiColor = controller.mapToGuiColor(color)
         guiColor should be(java.awt.Color.BLUE)
       }
+      "not mapping a wrong color to GUI color" in {
+        val color = 9
+        val guiColor = controller.mapToGuiColor(color)
+        guiColor should be(java.awt.Color.GRAY)
+
+      }
       "getting a guessed color" in {
         controller.guessColor(0,0).toString should be("java.awt.Color[r=255,g=175,b=175]")
       }
