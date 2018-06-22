@@ -2,7 +2,7 @@ package de.htwg.se.mastermind.controller.controllerComponent
 
 object GameStatus extends Enumeration {
   type GameStatus = Value
-  val IDLE, SET, NEW, UNDO, REDO, SOLVED = Value
+  val IDLE, SET, NEW, UNDO, REDO, SOLVED, RESIZE = Value
 
   val map: Map[GameStatus, String] = Map[GameStatus, String](
     IDLE -> "",
@@ -10,7 +10,8 @@ object GameStatus extends Enumeration {
     SET -> "A peg was set",
     UNDO -> "Undone one round",
     REDO -> "Redone one round",
-    SOLVED -> "Game successfully solved"
+    SOLVED -> "Game successfully solved",
+    RESIZE -> "Game resized"
   )
 
   def message(gameStatus: GameStatus): String = {

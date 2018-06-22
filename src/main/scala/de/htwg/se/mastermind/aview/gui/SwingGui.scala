@@ -2,16 +2,16 @@ package de.htwg.se.mastermind.aview.gui
 
 import scala.swing._
 import scala.swing.event._
-import de.htwg.se.mastermind.controller.controllerComponent.{ColorSelected, ControllerInterface, PegChanged}
+import de.htwg.se.mastermind.controller.controllerComponent.{BoardSizeChanged, ColorSelected, ControllerInterface, PegChanged}
 
 class SwingGui(controller: ControllerInterface) extends MainFrame {
   title = "HTWG Mastermind"
-  preferredSize = new Dimension(480, 640)
+  preferredSize = new Dimension(520, 640)
 
   listenTo(controller)
 
   def colorPickerPanel: FlowPanel = new FlowPanel {
-    for {index <- 0 until controller.numberOfPegs * 2} {
+    for {index <- controller.availableGUIColors.indices} {
       val button = new Button("") {
       }
       button.preferredSize_=(new Dimension(30, 30))
@@ -85,6 +85,12 @@ class SwingGui(controller: ControllerInterface) extends MainFrame {
       mnemonic = Key.S
       contents += new MenuItem(Action("Solve") { controller.solve() })
     }
+    contents += new Menu("Options") {
+      mnemonic = Key.O
+      contents += new MenuItem(Action("easy") { controller.resize(4, 12) })
+      contents += new MenuItem(Action("normal") { controller.resize(4, 10) })
+      contents += new MenuItem(Action("hard") { controller.resize(6, 8) })
+    }
   }
 
   visible = true
@@ -92,6 +98,7 @@ class SwingGui(controller: ControllerInterface) extends MainFrame {
   reactions += {
     case event: PegChanged    => redraw()
     case event: ColorSelected => redraw(event.color)
+    case event: BoardSizeChanged => redraw()
   }
 
   def redraw(): Unit = {
@@ -104,7 +111,6 @@ class SwingGui(controller: ControllerInterface) extends MainFrame {
 
   def redraw(color: Color): Unit = {
     controller.set(controller.getCurrentRoundIndex, controller.mapFromGuiColor(color))
-
     redraw()
   }
 }

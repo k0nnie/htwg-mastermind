@@ -5,7 +5,7 @@ import com.google.inject.{Guice, Inject, Injector}
 import net.codingwell.scalaguice.InjectorExtensions._
 import de.htwg.se.mastermind.MastermindModule
 import de.htwg.se.mastermind.controller.controllerComponent.GameStatus._
-import de.htwg.se.mastermind.controller.controllerComponent.{ControllerInterface, GameStatus, PegChanged}
+import de.htwg.se.mastermind.controller.controllerComponent.{BoardSizeChanged, ControllerInterface, GameStatus, PegChanged}
 import de.htwg.se.mastermind.model.boardComponent.BoardInterface
 import de.htwg.se.mastermind.util.UndoManager
 
@@ -32,17 +32,33 @@ class Controller @Inject() (var board: BoardInterface) extends ControllerInterfa
     java.awt.Color.WHITE
   )
 
-  val numberOfRounds: Int = injector.instance[Int](Names.named("NumberOfRounds"))
-  val numberOfPegs: Int = injector.instance[Int](Names.named("NumberOfPegs"))
-
-  val availableColors: Vector[String] = board.rounds(0).turn.pegs(0).color.getAvailableColors.toVector
-  val availableHints: Vector[String] = board.rounds(0).turnHint.pegs(0).color.getAvailableHints.toVector
+  def numberOfRounds: Int = board.rounds.size
+  def numberOfPegs: Int = board.solution.size
 
   def createEmptyBoard(): Unit = {
-    board = injector.instance[BoardInterface](Names.named("default"))
+    board.rounds.size match {
+      case 12 => board = injector.instance[BoardInterface](Names.named("easy"))
+      case 10 => board = injector.instance[BoardInterface](Names.named("normal"))
+      case 8 => board = injector.instance[BoardInterface](Names.named("hard"))
+      case _ =>
+    }
     gameStatus = NEW
     publish(new PegChanged)
   }
+
+  def resize(newNumberOfPegs: Int, newNumberOfRounds: Int): Unit = {
+    newNumberOfRounds match {
+      case 12 => board = injector.instance[BoardInterface](Names.named("easy"))
+      case 10 => board = injector.instance[BoardInterface](Names.named("normal"))
+      case 8 => board = injector.instance[BoardInterface](Names.named("hard"))
+      case _ =>
+    }
+    gameStatus = RESIZE
+    publish(BoardSizeChanged(numberOfPegs, numberOfRounds))
+  }
+
+  val availableColors:  Vector[String] = board.rounds(0).turn.pegs(0).color.getAvailableColors.toVector
+  val availableHints: Vector[String] = board.rounds(0).turnHint.pegs(0).color.getAvailableHints.toVector
 
   def boardToString: String = board.toString
 

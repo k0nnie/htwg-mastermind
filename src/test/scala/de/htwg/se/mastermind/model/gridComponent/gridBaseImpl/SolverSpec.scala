@@ -11,7 +11,8 @@ class SolverSpec extends WordSpec with Matchers {
 
   "A Solver" when {
     "a board is empty" should {
-      val emptyBoard = new Board()
+      //val emptyBoard = new Board()
+      val emptyBoard = new Board(4, 10)
       "solve a board without any problems" in {
         val solvedBoard = new Solver(emptyBoard).solve
         solvedBoard.isSolved should be(true)
@@ -20,7 +21,7 @@ class SolverSpec extends WordSpec with Matchers {
   }
   "Board is not empty" should {
     val solution = Vector[Color](Color("1"), Color("2"), Color("5"), Color("6"))
-    val boardWithSolution = boardBaseImpl.Board(Vector.fill(Board.NumberOfRounds)(new Round()), solution)
+    val boardWithSolution = boardBaseImpl.Board(Vector.fill(solution.size)(new Round(4)), solution, 0)
     val colVec = Vector[Color](Color("2"), Color("2"), Color("2"), Color("2"))
     val newBoard = boardWithSolution.replaceRound(0, colVec)
     "solve a board without any problems" in {
