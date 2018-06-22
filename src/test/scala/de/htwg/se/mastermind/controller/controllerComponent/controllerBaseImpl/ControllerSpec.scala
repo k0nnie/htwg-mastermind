@@ -12,7 +12,7 @@ class ControllerSpec extends WordSpec with Matchers {
   "A Controller" when {
     "observed by an Observer" should {
       val solution = Vector[Color](Color("5"), Color("6"))
-      val rounds = Vector.fill(5)(new Round(2))
+      val rounds = Vector.fill(6)(new Round(2))
       val board = Board(rounds, solution, 0)
       val controller = new Controller(board)
       val observer = new Observer {
