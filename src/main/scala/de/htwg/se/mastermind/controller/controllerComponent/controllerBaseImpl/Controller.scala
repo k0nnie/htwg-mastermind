@@ -35,14 +35,6 @@ class Controller @Inject() (var board: BoardInterface) extends ControllerInterfa
   def numberOfRounds: Int = board.rounds.size
   def numberOfPegs: Int = board.solution.size
 
-//  var numberOfRounds: Int = board.rounds.size
-//  var numberOfPegs: Int = board.solution.size
-//
-//  def updateNumOfRoundsAndPegs(board: BoardInterface): Unit = {
-//    numberOfRounds = board.rounds.size
-//    numberOfPegs = board.solution.size
-//  }
-
   def createEmptyBoard(): Unit = {
     board.rounds.size match {
       case 12 => board = injector.instance[BoardInterface](Names.named("easy"))

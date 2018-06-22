@@ -1,6 +1,6 @@
 package de.htwg.se.mastermind
 
-import com.google.inject.{AbstractModule, Singleton}
+import com.google.inject.AbstractModule
 import com.google.inject.name.Names
 import net.codingwell.scalaguice.ScalaModule
 import de.htwg.se.mastermind.controller.controllerComponent.{ControllerInterface, _}

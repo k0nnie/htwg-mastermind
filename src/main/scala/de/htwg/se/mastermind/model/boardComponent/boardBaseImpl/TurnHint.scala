@@ -2,8 +2,6 @@ package de.htwg.se.mastermind.model.boardComponent.boardBaseImpl
 
 case class TurnHint(pegs: Vector[Peg[Hint]]) {
 
-  //def this() = this(Vector.fill(Board.NumberOfPegs)(new Peg[Hint](new Hint())))
-
   def this(numberOfPegs: Int) = this(Vector.fill(numberOfPegs)(new Peg[Hint](new Hint())))
 
   def size: Int = pegs.size

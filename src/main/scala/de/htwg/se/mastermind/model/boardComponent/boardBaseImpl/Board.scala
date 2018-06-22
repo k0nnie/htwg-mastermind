@@ -3,12 +3,8 @@ package de.htwg.se.mastermind.model.boardComponent.boardBaseImpl
 import de.htwg.se.mastermind.model.boardComponent.BoardInterface
 import scala.collection.immutable.VectorBuilder
 import scala.util.Random
-import com.google.inject.Singleton
 
-@Singleton
 case class Board(rounds: Vector[Round], solution: Vector[Color], offset: Int) extends BoardInterface {
-
-  //def this() = this(Vector.fill(Board.NumberOfRounds)(new Round()), Board.randomSolution)
 
   def this(numberOfPegs: Int, numberOfRounds: Int) = this(Vector.fill(numberOfRounds)(new Round(numberOfPegs)), Board.randomSolution(numberOfPegs), 0)
 
@@ -108,9 +104,6 @@ case class Board(rounds: Vector[Round], solution: Vector[Color], offset: Int) ex
 
 object Board {
 
-//  val NumberOfPegs = 4
-//  val NumberOfRounds = 10
-
   def randomSolution(numberOfPegs: Int): Vector[Color] = {
     val random = new Random
     var colors = new VectorBuilder[Color]
@@ -126,20 +119,4 @@ object Board {
 
     colors.result()
   }
-
-//  def randomSolution: Vector[Color] = {
-//    val random = new Random
-//    var colors = new VectorBuilder[Color]
-//    var set = Set.empty[String]
-//
-//    do {
-//      val color = Color(new Color().randomColorString())
-//      if (!set.contains(color.name)) {
-//        colors += color
-//        set += color.name
-//      }
-//    } while (set.size < NumberOfPegs)
-//
-//    colors.result()
-//  }
 }
