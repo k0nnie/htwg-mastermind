@@ -18,6 +18,8 @@ class Board(var rounds: Vector[Round], var solution: Vector[Color]) extends Boar
   def isSolved: Boolean = false
 
   def solve: BoardInterface = this
+
+  def createEmptyBoard(newNumberOfPegs: Int, newNumberOfRounds: Int): BoardInterface = this
 }
 
 object EmptyPeg extends PegInterface {

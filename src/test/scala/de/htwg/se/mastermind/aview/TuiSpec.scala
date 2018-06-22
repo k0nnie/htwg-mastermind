@@ -10,11 +10,13 @@ import org.scalatest.{Matchers, WordSpec}
 @RunWith(classOf[JUnitRunner])
 class TuiSpec extends WordSpec with Matchers {
   "A Mastermind Tui" should {
-    val controller = new Controller(new Board())
+    //val controller = new Controller(new Board())
+    val controller = new Controller(new Board(10,4))
     val tui = new Tui(controller)
     "create and empty Mastermind on input 'n'" in {
       tui.processInputLine("n")
-      controller.board.rounds should be(new Board().rounds)
+      //controller.board.rounds should be(new Board().rounds)
+      controller.board.rounds should be(new Board(10,4).rounds)
     }
     "set a turn on input '1'" in {
       tui.processInputLine("1")

@@ -13,6 +13,7 @@ trait BoardInterface {
   def solution: Vector[Color]
   def rounds: Vector[Round]
   def solve: BoardInterface
+  def createEmptyBoard(newNumberOfPegs: Int, newNumberOfRounds: Int): BoardInterface
 }
 
 trait PegInterface {

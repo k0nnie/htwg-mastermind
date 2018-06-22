@@ -10,7 +10,8 @@ import org.scalatest.{Matchers, WordSpec}
 class BoardSpec extends WordSpec with Matchers {
   "A Board is the playingfield of Mastermind. A Board" when {
     "newly created" should {
-      val emptyBoard = new Board()
+      //val emptyBoard = new Board()
+      val emptyBoard = new Board(4,10)
       "contain a solution" in {
         emptyBoard.solution.nonEmpty should be(true)
       }
@@ -19,7 +20,8 @@ class BoardSpec extends WordSpec with Matchers {
       }
     }
     "played first round" should {
-      val emptyBoard = new Board()
+      //val emptyBoard = new Board()
+      val emptyBoard = new Board(4, 10)
       val colVec = Vector[Color](Color("3"), Color("3"), Color("3"), Color("3"))
       val nonEmptyBoard = emptyBoard.replaceRound(0, colVec)
       "be replaced with a round with a vector of 4 pegs for a given round" in {
@@ -28,7 +30,8 @@ class BoardSpec extends WordSpec with Matchers {
     }
     "called with a given solution" should {
       val solution = Vector[Color](Color("1"), Color("2"), Color("5"), Color("6"))
-      val boardWithSolution = boardBaseImpl.Board(Vector.fill(Board.NumberOfRounds)(new Round()), solution)
+      //val boardWithSolution = boardBaseImpl.Board(Vector.fill(Board.NumberOfRounds)(new Round()), solution)
+      val boardWithSolution = boardBaseImpl.Board(Vector.fill(10)(new Round(4)), solution, 0)
       val colVec = Vector[Color](Color("2"), Color("2"), Color("2"), Color("2"))
       val newBoard = boardWithSolution.replaceRound(0, colVec)
       "have this solution" in {
@@ -44,10 +47,11 @@ class BoardSpec extends WordSpec with Matchers {
       }
     }
     "with default constructor" should {
-      val round = new Round()
+      //val round = new Round()
+      val round = new Round(4)
       val rounds = Vector(round, round, round, round)
       val solution = Vector[Color](Color("1"), Color("2"), Color("3"), Color("4"))
-      val board = boardBaseImpl.Board(rounds, solution)
+      val board = boardBaseImpl.Board(rounds, solution, 0)
       "have four rounds" in {
         board.rounds.size should be(4)
       }
@@ -56,14 +60,15 @@ class BoardSpec extends WordSpec with Matchers {
       }
     }
     "printed on console" should {
-      val board = new Board()
+      //val board = new Board()
+      val board = new Board(4, 10)
       "start with this output" in {
         board.toString.startsWith("\n+---------+---------+") should be(true)
       }
     }
     "tested for game logic" should {
       val solution = Vector[Color](Color("5"), Color("6"), Color("4"), Color("8"))
-      val boardWithSolution = boardBaseImpl.Board(Vector.fill(8)(new Round()), solution)
+      val boardWithSolution = boardBaseImpl.Board(Vector.fill(8)(new Round(4)), solution, 0)
       "give back these hints when one color and position is guessed correctly" in {
         val colVec = Vector[Color](Color("5"), Color("5"), Color("5"), Color("5"))
         val newBoard = boardWithSolution.replaceRound(0, colVec)
@@ -92,7 +97,7 @@ class BoardSpec extends WordSpec with Matchers {
     }
     "solved before last round" should {
       val solution = Vector[Color](Color("1"), Color("2"), Color("3"), Color("4"))
-      val boardWithSolution = boardBaseImpl.Board(Vector.fill(Board.NumberOfRounds)(new Round()), solution)
+      val boardWithSolution = boardBaseImpl.Board(Vector.fill(solution.size)(new Round(4)), solution, 0)
       val colVec = Vector[Color](Color("1"), Color("2"), Color("3"), Color("4"))
       val newBoard = boardWithSolution.replaceRound(0, colVec)
       "have this solution" in {

@@ -12,8 +12,10 @@ class ControllerSpec extends WordSpec with Matchers {
   "A Controller" when {
     "observed by an Observer" should {
       val solution = Vector[Color](Color("5"), Color("6"), Color("7"), Color("8"))
-      val rounds = Vector.fill(Board.NumberOfRounds)(new Round())
-      val board = Board(rounds, solution)
+      //val rounds = Vector.fill(Board.NumberOfRounds)(new Round())
+      val rounds = Vector.fill(solution.size)(new Round(4))
+      //val board = Board(rounds, solution)
+      val board = Board(rounds, solution, 0)
       val controller = new Controller(board)
       val observer = new Observer {
         var updated: Boolean = false
@@ -58,7 +60,8 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.boardToString should startWith("\n+---------+---------+")
       }
       "give back current round index" in {
-        var board2 = new Board()
+        //var board2 = new Board()
+        var board2 = new Board(4,10)
         val controller2 = new Controller(board2)
         controller2.getCurrentRoundIndex should be (0)
         controller2.set(0, 1)
@@ -74,7 +77,8 @@ class ControllerSpec extends WordSpec with Matchers {
       }
     }
     "empty" should {
-      val controller = new Controller(new Board())
+      //val controller = new Controller(new Board())
+      val controller = new Controller(new Board(4, 10))
       "handle undo/redo of solving a grid correctly" in {
         controller.board.rounds(0).turn.containsEmptyColor should be(true)
         controller.board.isSolved should be(false)

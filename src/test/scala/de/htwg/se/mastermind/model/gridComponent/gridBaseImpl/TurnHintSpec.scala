@@ -10,7 +10,8 @@ class TurnHintSpec extends WordSpec with Matchers {
 
   "A TurHint " when {
     "empty " should {
-      val emptyTurnHint = new TurnHint()
+      //val emptyTurnHint = new TurnHint()
+      val emptyTurnHint = new TurnHint(4)
       "have a vector with four empty pegs" in {
         emptyTurnHint.pegs.toString() should be("Vector( ,  ,  ,  )")
       }

@@ -14,7 +14,6 @@ object Mastermind {
   val tui: Tui = new Tui(controller)
   val gui = new SwingGui(controller)
   controller.createEmptyBoard()
-  controller.publish(new PegChanged)
 
   def main(args: Array[String]): Unit = {
     println("This is Mastermind.")
