@@ -109,7 +109,37 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.resize(7, 7)
         controller.board.rounds.size should be(12)
         controller.board.rounds(0).turnSize should be(4)
+        controller.resize(4, 10)
+        controller.board.rounds.size should be(10)
+        controller.board.rounds(0).turnSize should be(4)
 
+      }
+
+    }
+    "create empty board" should {
+      val controller = new Controller(new Board(4, 10))
+      "create default empty board correctly" in {
+        controller.createEmptyBoard()
+        controller.board.rounds.size should be(10)
+        controller.board.rounds(0).turnSize should be(4)
+      }
+      val controllerEasy = new Controller(new Board(4, 12))
+      "create easy empty board correctly" in {
+        controllerEasy.createEmptyBoard()
+        controllerEasy.board.rounds.size should be(12)
+        controllerEasy.board.rounds(0).turnSize should be(4)
+      }
+      val controllerHard = new Controller(new Board(6, 8))
+      "create hard empty board correctly" in {
+        controllerHard.createEmptyBoard()
+        controllerHard.board.rounds.size should be(8)
+        controllerHard.board.rounds(0).turnSize should be(6)
+      }
+      val controllerNA = new Controller(new Board(7, 7))
+      "create not allowed empty board correctly" in {
+        controllerNA.createEmptyBoard()
+        controllerNA.board.rounds.size should be(7)
+        controllerNA.board.rounds(0).turnSize should be(7)
       }
     }
   }
