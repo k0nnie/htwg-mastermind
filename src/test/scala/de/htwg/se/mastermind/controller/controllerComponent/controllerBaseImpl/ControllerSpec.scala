@@ -63,6 +63,12 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.set(4, 6)
         controller.hintColor(4,0).toString should be("java.awt.Color[r=0,g=0,b=0]")
       }
+      "get the default color if turn is not completely set" in {
+        controller.set(5, 5)
+        controller.board.rounds(5).turn.pegs.toString should be("Vector(5,  )")
+        controller.hintColor(5,0).toString should be("java.awt.Color[r=192,g=192,b=192]")
+        controller.hintColor(5,1).toString should be("java.awt.Color[r=192,g=192,b=192]")
+      }
       "solve a board" in {
         controller.solve()
         controller.board.isSolved should be(true)
