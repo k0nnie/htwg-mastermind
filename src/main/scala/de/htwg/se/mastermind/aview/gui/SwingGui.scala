@@ -71,25 +71,47 @@ class SwingGui(controller: ControllerInterface) extends MainFrame {
   menuBar = new MenuBar {
     contents += new Menu("File") {
       mnemonic = Key.F
-      contents += new MenuItem(Action("New") { controller.createEmptyBoard() })
-      contents += new MenuItem(Action("Quit") { System.exit(0) })
+      contents += new MenuItem(Action("New") {
+        controller.createEmptyBoard()
+      })
+      contents += new MenuItem(Action("Save") {
+        controller.save()
+      })
+      contents += new MenuItem(Action("Load") {
+        controller.load()
+      })
+      contents += new MenuItem(Action("Quit") {
+        System.exit(0)
+      })
     }
     contents += new Menu("Edit") {
       mnemonic = Key.E
-      contents += new MenuItem(Action("Undo") { controller.undo() })
+      contents += new MenuItem(Action("Undo") {
+        controller.undo()
+      })
 
-      contents += new MenuItem(Action("Redo") { controller.redo() })
+      contents += new MenuItem(Action("Redo") {
+        controller.redo()
+      })
 
     }
     contents += new Menu("Solve") {
       mnemonic = Key.S
-      contents += new MenuItem(Action("Solve") { controller.solve() })
+      contents += new MenuItem(Action("Solve") {
+        controller.solve()
+      })
     }
     contents += new Menu("Options") {
       mnemonic = Key.O
-      contents += new MenuItem(Action("easy") { controller.resize(4, 12) })
-      contents += new MenuItem(Action("normal") { controller.resize(4, 10) })
-      contents += new MenuItem(Action("hard") { controller.resize(6, 8) })
+      contents += new MenuItem(Action("easy") {
+        controller.resize(4, 12)
+      })
+      contents += new MenuItem(Action("normal") {
+        controller.resize(4, 10)
+      })
+      contents += new MenuItem(Action("hard") {
+        controller.resize(6, 8)
+      })
     }
   }
 

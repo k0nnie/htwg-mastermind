@@ -6,6 +6,7 @@ import net.codingwell.scalaguice.ScalaModule
 import de.htwg.se.mastermind.controller.controllerComponent.{ControllerInterface, _}
 import de.htwg.se.mastermind.model.boardComponent.BoardInterface
 import de.htwg.se.mastermind.model.boardComponent.boardAdvancedImpl.Board
+import de.htwg.se.mastermind.model.fileIoComponent._
 
 class MastermindModule extends AbstractModule with ScalaModule {
 
@@ -20,5 +21,9 @@ class MastermindModule extends AbstractModule with ScalaModule {
     bind[BoardInterface].annotatedWithName("hard").toInstance(new Board(6, 8))
     bind[BoardInterface].to[Board]
     bind[ControllerInterface].to[controllerBaseImpl.Controller]
+
+    // file IO XML / JSON
+    //bind[FileIOInterface].to[fileIoXmlImpl.FileIO]
+    bind[FileIOInterface].to[fileIoJsonImpl.FileIO]
   }
 }

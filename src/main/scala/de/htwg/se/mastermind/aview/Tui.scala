@@ -18,6 +18,8 @@ class Tui(controller: ControllerInterface) extends Reactor {
       case "+" => controller.resize(6, 8)
       case "-" => controller.resize(4, 12)
       case "*" => controller.resize(4, 10)
+      case "w" => controller.save()
+      case "r" => controller.load()
       case _ =>
         input.toList.filter(c => c != ' ').map(c => c.toString) match {
           case color1 :: Nil => controller.set(controller.getCurrentRoundIndex, color1.toInt)

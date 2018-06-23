@@ -3,7 +3,7 @@ package de.htwg.se.mastermind
 import com.google.inject.{Guice, Injector}
 import de.htwg.se.mastermind.aview.Tui
 import de.htwg.se.mastermind.aview.gui.SwingGui
-import de.htwg.se.mastermind.controller.controllerComponent.{ControllerInterface, PegChanged}
+import de.htwg.se.mastermind.controller.controllerComponent.ControllerInterface
 
 import scala.io.StdIn._
 

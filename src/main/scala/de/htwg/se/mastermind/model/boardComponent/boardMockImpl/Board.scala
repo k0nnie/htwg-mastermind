@@ -1,7 +1,7 @@
 package de.htwg.se.mastermind.model.boardComponent.boardMockImpl
 
 import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.{Color, Hint, Peg, Round}
-import de.htwg.se.mastermind.model.boardComponent.{BoardInterface, PegInterface}
+import de.htwg.se.mastermind.model.boardComponent.BoardInterface
 
 class Board(var rounds: Vector[Round], var solution: Vector[Color]) extends BoardInterface {
 
@@ -20,11 +20,4 @@ class Board(var rounds: Vector[Round], var solution: Vector[Color]) extends Boar
   def solve: BoardInterface = this
 
   def createEmptyBoard(newNumberOfPegs: Int, newNumberOfRounds: Int): BoardInterface = this
-}
-
-object EmptyPeg extends PegInterface {
-
-  override def emptyColor: Boolean = true
-
-  override def updateColor(color: Color): Peg[Color] = Peg(new Color())
 }
