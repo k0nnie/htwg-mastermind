@@ -26,7 +26,7 @@ class FileIO extends FileIOInterface {
       case 8 => board = injector.instance[BoardInterface](Names.named("hard"))
       case _ =>
     }
-    for (index <- 0 until numberOfRounds) {
+    for (index <- 0 until numberOfRounds * numberOfPegs) {
       val roundIdx = (json \\ "roundIdx")(index).as[Int]
       val pegIdx = (json \\ "pegIdx")(index).as[Int]
       var color = 0
