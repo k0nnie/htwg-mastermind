@@ -38,6 +38,11 @@ class ControllerSpec extends WordSpec with Matchers {
         val color = controller.mapFromGuiColor(guiColor)
         color should be(2)
       }
+      "not mapping a non-GUI color" in {
+        val guiColor = java.awt.Color.DARK_GRAY
+        val color = controller.mapFromGuiColor(guiColor)
+        color should be(0)
+      }
       "mapping a color to GUI color" in {
         val color = 2
         val guiColor = controller.mapToGuiColor(color)
@@ -105,6 +110,8 @@ class ControllerSpec extends WordSpec with Matchers {
         GameStatus.message(controller.gameStatus) should be("A new game was created")
       }
       "stop setting pegs when number of rounds is too big" in {
+        controller.getCurrentRoundIndex should be(0)
+        controller.numberOfRounds should be(2)
         var testVal = ""
         try {
           controller.set(20, 1)
