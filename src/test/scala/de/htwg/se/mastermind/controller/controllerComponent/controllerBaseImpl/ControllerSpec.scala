@@ -104,6 +104,15 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.createEmptyBoard()
         GameStatus.message(controller.gameStatus) should be("A new game was created")
       }
+      "stop setting pegs when number of rounds is too big" in {
+        var testVal = ""
+        try {
+          controller.set(20, 1)
+        } catch {
+          case e: IndexOutOfBoundsException => testVal = "do nothing in this case"
+        }
+        testVal should be("do nothing in this case")
+      }
     }
     "resizing board" should {
       val controller = new Controller(new Board(4, 10))
