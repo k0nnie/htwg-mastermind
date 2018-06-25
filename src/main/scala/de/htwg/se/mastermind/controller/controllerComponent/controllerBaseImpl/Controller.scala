@@ -68,9 +68,11 @@ class Controller @Inject() (var board: BoardInterface) extends ControllerInterfa
   def getCurrentRoundIndex: Int = board.rounds.indices.iterator.find(index => !board.rounds(index).isSet).getOrElse(-1)
 
   def set(roundIndex: Int, colors: Int): Unit = {
-    undoManager.doStep(new SetCommand(roundIndex,this, colors))
-    gameStatus = SET
-    publish(new PegChanged)
+    if (roundIndex != -1) {
+      undoManager.doStep(new SetCommand(roundIndex,this, colors))
+      gameStatus = SET
+      publish(new PegChanged)
+    }
   }
 
   def mapFromGuiColor(color: java.awt.Color): Int = {
