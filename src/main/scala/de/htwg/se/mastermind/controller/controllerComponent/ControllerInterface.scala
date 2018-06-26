@@ -24,6 +24,8 @@ trait ControllerInterface extends Publisher{
   def numberOfRounds: Int
   def availableGUIColors: Vector[java.awt.Color]
   def resize(numberOfPegs: Int, numberOfRounds: Int): Unit
+  def save(): Unit
+  def load(): Unit
 }
 
 

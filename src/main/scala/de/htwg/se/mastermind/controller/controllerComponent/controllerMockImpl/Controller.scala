@@ -44,4 +44,8 @@ class Controller(var board: BoardInterface) extends ControllerInterface {
 
   override def resize(numberOfPegs: Int, numberOfRounds: Int): Unit = {}
 
+  override def save(): Unit = {}
+
+  override def load(): Unit = {}
+
 }

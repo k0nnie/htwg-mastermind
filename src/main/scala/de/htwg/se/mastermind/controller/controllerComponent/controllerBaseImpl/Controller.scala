@@ -7,6 +7,7 @@ import de.htwg.se.mastermind.MastermindModule
 import de.htwg.se.mastermind.controller.controllerComponent.GameStatus._
 import de.htwg.se.mastermind.controller.controllerComponent.{BoardSizeChanged, ControllerInterface, GameStatus, PegChanged}
 import de.htwg.se.mastermind.model.boardComponent.BoardInterface
+import de.htwg.se.mastermind.model.fileIoComponent.FileIOInterface
 import de.htwg.se.mastermind.util.UndoManager
 
 import scala.swing.Publisher
@@ -16,6 +17,8 @@ class Controller @Inject() (var board: BoardInterface) extends ControllerInterfa
   var gameStatus: GameStatus = IDLE
   private val undoManager = new UndoManager
   val injector: Injector = Guice.createInjector(new MastermindModule)
+  val fileIo: FileIOInterface = injector.instance[FileIOInterface]
+
 
   val availableGUIColors = Vector(
     java.awt.Color.PINK,
@@ -65,9 +68,11 @@ class Controller @Inject() (var board: BoardInterface) extends ControllerInterfa
   def getCurrentRoundIndex: Int = board.rounds.indices.iterator.find(index => !board.rounds(index).isSet).getOrElse(-1)
 
   def set(roundIndex: Int, colors: Int): Unit = {
-    undoManager.doStep(new SetCommand(roundIndex,this, colors))
-    gameStatus = SET
-    publish(new PegChanged)
+    if (roundIndex != -1) {
+      undoManager.doStep(new SetCommand(roundIndex,this, colors))
+      gameStatus = SET
+      publish(new PegChanged)
+    }
   }
 
   def mapFromGuiColor(color: java.awt.Color): Int = {
@@ -134,4 +139,17 @@ class Controller @Inject() (var board: BoardInterface) extends ControllerInterfa
   }
 
   def statusText: String = GameStatus.message(gameStatus)
+
+  def save(): Unit = {
+    fileIo.write(board)
+    gameStatus = SAVED
+    publish(new PegChanged)
+  }
+
+  def load(): Unit = {
+    board = fileIo.read
+    gameStatus = LOADED
+    publish(new PegChanged)
+  }
+
 }

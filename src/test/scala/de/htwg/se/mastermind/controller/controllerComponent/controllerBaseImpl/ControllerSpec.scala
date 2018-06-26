@@ -1,6 +1,7 @@
 package de.htwg.se.mastermind.controller.controllerComponent.controllerBaseImpl
 
 import de.htwg.se.mastermind.controller.controllerComponent.GameStatus
+import de.htwg.se.mastermind.controller.controllerComponent.GameStatus._
 import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.{Board, Color, Round}
 import de.htwg.se.mastermind.util.Observer
 import org.junit.runner.RunWith
@@ -36,6 +37,11 @@ class ControllerSpec extends WordSpec with Matchers {
         val guiColor = java.awt.Color.BLUE
         val color = controller.mapFromGuiColor(guiColor)
         color should be(2)
+      }
+      "not mapping a non-GUI color" in {
+        val guiColor = java.awt.Color.DARK_GRAY
+        val color = controller.mapFromGuiColor(guiColor)
+        color should be(0)
       }
       "mapping a color to GUI color" in {
         val color = 2
@@ -103,6 +109,17 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.createEmptyBoard()
         GameStatus.message(controller.gameStatus) should be("A new game was created")
       }
+      "stop setting pegs when number of rounds is too big" in {
+        controller.getCurrentRoundIndex should be(0)
+        controller.numberOfRounds should be(2)
+        var testVal = ""
+        try {
+          controller.set(20, 1)
+        } catch {
+          case e: IndexOutOfBoundsException => testVal = "do nothing in this case"
+        }
+        testVal should be("do nothing in this case")
+      }
     }
     "resizing board" should {
       val controller = new Controller(new Board(4, 10))
@@ -130,6 +147,14 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.board.rounds.size should be(10)
         controller.board.rounds(0).turnSize should be(4)
       }
+      "save a board" in {
+        controller.save()
+        controller.gameStatus should be(SAVED)
+      }
+      "reload a saved board" in {
+        controller.load()
+        controller.gameStatus should be(LOADED)
+      }
       val controllerEasy = new Controller(new Board(4, 12))
       "create easy empty board correctly" in {
         controllerEasy.createEmptyBoard()
@@ -143,7 +168,7 @@ class ControllerSpec extends WordSpec with Matchers {
         controllerHard.board.rounds(0).turnSize should be(6)
       }
       val controllerNA = new Controller(new Board(7, 7))
-      "create not offered empty board correctly" in {
+      "create with not available size an empty board correctly" in {
         controllerNA.createEmptyBoard()
         controllerNA.board.rounds.size should be(7)
         controllerNA.board.rounds(0).turnSize should be(7)

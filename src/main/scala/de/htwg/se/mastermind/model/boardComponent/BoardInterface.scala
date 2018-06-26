@@ -15,8 +15,3 @@ trait BoardInterface {
   def solve: BoardInterface
   def createEmptyBoard(newNumberOfPegs: Int, newNumberOfRounds: Int): BoardInterface
 }
-
-trait PegInterface {
-  def updateColor(color: Color): Peg[Color]
-  def emptyColor: Boolean
-}

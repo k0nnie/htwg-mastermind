@@ -116,6 +116,15 @@ class BoardSpec extends WordSpec with Matchers {
         board = board.set(0, 5)
         board.rounds(0).turn.pegs.toString should be("Vector(5, 5,  ,  )")
       }
+      "return true if peg with given round and column is empty" in {
+        var board = boardWithSolution.set(0, 5)
+        board.rounds(0).turn.pegs(1).emptyColor should be(true)
+      }
+      "return false if peg with given round and column is empty" in {
+        var board = boardWithSolution.set(0, 5)
+        board.rounds(0).turn.pegs(0).emptyColor should be(false)
+      }
+
     }
   }
 }
