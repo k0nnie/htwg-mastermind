@@ -10,7 +10,7 @@ import de.htwg.se.mastermind.controller.controllerComponent.GameStatus._
 @RunWith(classOf[JUnitRunner])
 class TuiSpec extends WordSpec with Matchers {
   "A Mastermind Tui" should {
-    val board = new Board(4,10)
+    val board = new Board(4, 10)
     val controller = new Controller(board)
     val tui = new Tui(controller)
     "create and empty Mastermind on input 'n'" in {
@@ -64,7 +64,7 @@ class TuiSpec extends WordSpec with Matchers {
       controller.mapHintToGuiHint(hint).toString should be("java.awt.Color[r=0,g=0,b=0]")
     }
     "get a guess color" in {
-      controller.guessColor(0,0).toString should be("java.awt.Color[r=255,g=175,b=175]")
+      controller.guessColor(0, 0).toString should be("java.awt.Color[r=255,g=175,b=175]")
     }
     "solve a board on input 's'" in {
       controller.board.isSolved should be(false)

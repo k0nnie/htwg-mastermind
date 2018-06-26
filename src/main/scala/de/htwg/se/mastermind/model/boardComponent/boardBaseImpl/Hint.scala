@@ -14,5 +14,5 @@ case class Hint(name: String) {
     case _ => " "
   }
 
-  def isValidColor(name: String) : Boolean = getAvailableHints.contains(name)
+  def isValidColor(name: String): Boolean = getAvailableHints.contains(name)
 }

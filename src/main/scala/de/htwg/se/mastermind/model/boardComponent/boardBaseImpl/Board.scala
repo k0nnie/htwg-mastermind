@@ -5,7 +5,9 @@ import de.htwg.se.mastermind.model.boardComponent.BoardInterface
 case class Board(rounds: Vector[Round], solution: Vector[Color], offset: Int) extends BoardInterface {
 
   def this(numberOfPegs: Int, numberOfRounds: Int) = this(Vector.fill(numberOfRounds)(new Round(Board.checkNumOfPegs(numberOfPegs))), Board.randomSolution(Board.checkNumOfPegs(numberOfPegs)), 0)
+
   def numOfRounds: Int = rounds.size
+
   def numOfPegs: Int = solution.size
 
   def set(roundIndex: Int, colors: Int): Board = {
