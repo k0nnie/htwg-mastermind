@@ -124,6 +124,18 @@ class BoardSpec extends WordSpec with Matchers {
         var board = boardWithSolution.set(0, 5)
         board.rounds(0).turn.pegs(0).emptyColor should be(false)
       }
+      "do nothing if index is -1 (index is out of bounds)" in {
+        var board = new Board(1, 1)
+        board.rounds(0).turn.pegs.toString() should be("Vector( )")
+        var testVal = ""
+        try {
+          board = boardWithSolution.set(-1, 5)
+        } catch {
+          case e: IndexOutOfBoundsException => testVal = "do nothing in this case"
+        }
+        testVal should be("do nothing in this case")
+        board.rounds(0).turn.pegs.toString() should be("Vector( )")
+      }
 
     }
   }
