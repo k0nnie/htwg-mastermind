@@ -32,7 +32,7 @@ class SwingGui(controller: ControllerInterface) extends MainFrame {
     for {columnIndex <- 0 until controller.numberOfPegs} {
       val button = Button("") {
       }
-      button.preferredSize_= (new Dimension(30, 30))
+      button.preferredSize_=(new Dimension(30, 30))
       button.enabled = false
       button.background = controller.guessColor(rowIndex, columnIndex)
       contents += button
@@ -118,7 +118,7 @@ class SwingGui(controller: ControllerInterface) extends MainFrame {
   visible = true
 
   reactions += {
-    case event: PegChanged    => redraw()
+    case event: PegChanged => redraw()
     case event: ColorSelected => redraw(event.color)
     case event: BoardSizeChanged => redraw()
   }

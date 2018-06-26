@@ -12,7 +12,7 @@ import de.htwg.se.mastermind.util.UndoManager
 
 import scala.swing.Publisher
 
-class Controller @Inject() (var board: BoardInterface) extends ControllerInterface with Publisher {
+class Controller @Inject()(var board: BoardInterface) extends ControllerInterface with Publisher {
 
   var gameStatus: GameStatus = IDLE
   private val undoManager = new UndoManager
@@ -36,6 +36,7 @@ class Controller @Inject() (var board: BoardInterface) extends ControllerInterfa
   )
 
   def numberOfRounds: Int = board.rounds.size
+
   def numberOfPegs: Int = board.solution.size
 
   def createEmptyBoard(): Unit = {
@@ -60,7 +61,7 @@ class Controller @Inject() (var board: BoardInterface) extends ControllerInterfa
     publish(BoardSizeChanged(numberOfPegs, numberOfRounds))
   }
 
-  val availableColors:  Vector[String] = board.rounds(0).turn.pegs(0).color.getAvailableColors.toVector
+  val availableColors: Vector[String] = board.rounds(0).turn.pegs(0).color.getAvailableColors.toVector
   val availableHints: Vector[String] = board.rounds(0).turnHint.pegs(0).color.getAvailableHints.toVector
 
   def boardToString: String = board.toString
@@ -69,7 +70,7 @@ class Controller @Inject() (var board: BoardInterface) extends ControllerInterfa
 
   def set(roundIndex: Int, colors: Int): Unit = {
     if (roundIndex != -1) {
-      undoManager.doStep(new SetCommand(roundIndex,this, colors))
+      undoManager.doStep(new SetCommand(roundIndex, this, colors))
       gameStatus = SET
       publish(new PegChanged)
     }

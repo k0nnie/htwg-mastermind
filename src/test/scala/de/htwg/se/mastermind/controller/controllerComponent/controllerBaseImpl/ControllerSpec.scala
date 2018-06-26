@@ -54,26 +54,26 @@ class ControllerSpec extends WordSpec with Matchers {
         guiColor should be(java.awt.Color.GRAY)
       }
       "get a guessed color" in {
-        controller.guessColor(0,0).toString should be("java.awt.Color[r=255,g=175,b=175]")
+        controller.guessColor(0, 0).toString should be("java.awt.Color[r=255,g=175,b=175]")
       }
       "get the default color if there is no hint" in {
-        controller.hintColor(0,0).toString should be("java.awt.Color[r=192,g=192,b=192]")
+        controller.hintColor(0, 0).toString should be("java.awt.Color[r=192,g=192,b=192]")
       }
       "get the right hint color (black) if a peg has right color and position" in {
         controller.set(3, 5)
         controller.set(3, 5)
-        controller.hintColor(3,0).toString should be("java.awt.Color[r=0,g=0,b=0]")
+        controller.hintColor(3, 0).toString should be("java.awt.Color[r=0,g=0,b=0]")
       }
       "get the right hint color (white) if a peg has right color and wrong position" in {
         controller.set(4, 1)
         controller.set(4, 6)
-        controller.hintColor(4,0).toString should be("java.awt.Color[r=0,g=0,b=0]")
+        controller.hintColor(4, 0).toString should be("java.awt.Color[r=0,g=0,b=0]")
       }
       "get the default color if turn is not completely set" in {
         controller.set(5, 5)
         controller.board.rounds(5).turn.pegs.toString should be("Vector(5,  )")
-        controller.hintColor(5,0).toString should be("java.awt.Color[r=192,g=192,b=192]")
-        controller.hintColor(5,1).toString should be("java.awt.Color[r=192,g=192,b=192]")
+        controller.hintColor(5, 0).toString should be("java.awt.Color[r=192,g=192,b=192]")
+        controller.hintColor(5, 1).toString should be("java.awt.Color[r=192,g=192,b=192]")
       }
       "solve a board" in {
         controller.solve()
@@ -83,11 +83,11 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.boardToString should startWith("\n+-----+-----+")
       }
       "give back current round index" in {
-        var board2 = new Board(1,2)
+        var board2 = new Board(1, 2)
         val controller2 = new Controller(board2)
-        controller2.getCurrentRoundIndex should be (0)
+        controller2.getCurrentRoundIndex should be(0)
         controller2.set(0, 1)
-        controller2.getCurrentRoundIndex should be (1)
+        controller2.getCurrentRoundIndex should be(1)
       }
     }
     "empty" should {
@@ -96,13 +96,13 @@ class ControllerSpec extends WordSpec with Matchers {
         controller.board.rounds(0).turn.containsEmptyColor should be(true)
         controller.board.isSolved should be(false)
         controller.solve()
-        controller.board.rounds(controller.numberOfRounds-1).turn.containsEmptyColor should be(false)
+        controller.board.rounds(controller.numberOfRounds - 1).turn.containsEmptyColor should be(false)
         controller.board.isSolved should be(true)
         controller.undo()
-        controller.board.rounds(controller.numberOfRounds-1).turn.containsEmptyColor should be(true)
+        controller.board.rounds(controller.numberOfRounds - 1).turn.containsEmptyColor should be(true)
         controller.board.isSolved should be(false)
         controller.redo()
-        controller.board.rounds(controller.numberOfRounds-1).turn.containsEmptyColor should be(false)
+        controller.board.rounds(controller.numberOfRounds - 1).turn.containsEmptyColor should be(false)
         controller.board.isSolved should be(true)
       }
       "print out a message of game status" in {

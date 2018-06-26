@@ -17,7 +17,7 @@ case class Color(name: String) {
     case value => value
   }
 
-  def randomColorString() : String = {
+  def randomColorString(): String = {
     val colors = this.getAvailableColors
     val rand = new Random(System.currentTimeMillis())
     val random_index = rand.nextInt(colors.length)

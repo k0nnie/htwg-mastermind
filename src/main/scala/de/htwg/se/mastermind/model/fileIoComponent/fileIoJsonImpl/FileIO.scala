@@ -11,12 +11,14 @@ import play.api.libs.json._
 import scala.io.Source
 import java.io._
 
+import play.api.libs.json.Json._
+
 class FileIO extends FileIOInterface {
 
   override def read: BoardInterface = {
     var board: BoardInterface = null
     val source: String = Source.fromFile("board.json").getLines.mkString
-    val json: JsValue = Json.parse(source)
+    val json: JsValue = parse(source)
     val numberOfRounds = (json \ "board" \ "numberOfRounds").get.toString.toInt
     val numberOfPegs = (json \ "board" \ "numberOfPegs").get.toString.toInt
     val injector = Guice.createInjector(new MastermindModule)
@@ -27,11 +29,11 @@ class FileIO extends FileIOInterface {
       case _ =>
     }
     for (index <- 0 until numberOfRounds * numberOfPegs) {
-      val roundIdx = (json \\ "roundIdx")(index).as[Int]
-      val pegIdx = (json \\ "pegIdx")(index).as[Int]
+      val roundIdx = (json \\ "roundIdx") (index).as[Int]
+      val pegIdx = (json \\ "pegIdx") (index).as[Int]
       var color = 0
-      val emptyColor = (json \\ "emptyColor")(index).as[Boolean]
-      if (!emptyColor) color = (json \\ "color")(index).as[String].toInt
+      val emptyColor = (json \\ "emptyColor") (index).as[Boolean]
+      if (!emptyColor) color = (json \\ "color") (index).as[String].toInt
       board = board.set(roundIdx, color)
     }
     board
@@ -39,23 +41,21 @@ class FileIO extends FileIOInterface {
 
   override def write(board: BoardInterface): Unit = {
     val pw = new PrintWriter(new File("board.json"))
-    pw.write(Json.prettyPrint(boardToJson(board)))
+    pw.write(prettyPrint(boardToJson(board)))
     pw.close()
   }
 
   def boardToJson(board: BoardInterface): JsObject = {
-    Json.obj(
-      "board" -> Json.obj(
-        "numberOfRounds" -> JsNumber(board.rounds.size),
+    obj("board" ->
+      obj("numberOfRounds" -> JsNumber(board.rounds.size),
         "numberOfPegs" -> JsNumber(board.solution.size),
-        "pegs" -> Json.toJson(
+        "pegs" -> toJson(
           for {roundIdx <- board.rounds.indices
                pegIdx <- board.solution.indices} yield {
-            Json.obj(
-              "roundIdx" -> JsNumber(roundIdx),
+            obj("roundIdx" -> JsNumber(roundIdx),
               "pegIdx" -> JsNumber(pegIdx),
-              "color" -> Json.toJson(board.rounds(roundIdx).turn.pegs(pegIdx).color.toString),
-              "emptyColor" -> Json.toJson(board.rounds(roundIdx).turn.pegs(pegIdx).emptyColor)
+              "color" -> toJson(board.rounds(roundIdx).turn.pegs(pegIdx).color.toString),
+              "emptyColor" -> toJson(board.rounds(roundIdx).turn.pegs(pegIdx).emptyColor)
             )
           }
         )
