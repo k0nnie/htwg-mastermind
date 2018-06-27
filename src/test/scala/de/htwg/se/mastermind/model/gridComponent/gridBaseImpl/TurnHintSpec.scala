@@ -1,6 +1,6 @@
 package de.htwg.se.mastermind.model.gridComponent.gridBaseImpl
 
-import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.{Hint, Peg, TurnHint}
+import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.{Hint, Peg, Turn, TurnHint}
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{Matchers, WordSpec}
@@ -10,7 +10,7 @@ class TurnHintSpec extends WordSpec with Matchers {
 
   "A TurHint " when {
     "empty " should {
-      val emptyTurnHint = new TurnHint()
+      val emptyTurnHint = new TurnHint(4)
       "have a vector with four empty pegs" in {
         emptyTurnHint.pegs.toString() should be("Vector( ,  ,  ,  )")
       }
@@ -27,11 +27,5 @@ class TurnHintSpec extends WordSpec with Matchers {
         rightCol.pegs.toString should be("Vector(o)")
       }
     }
-//    "replace pegs " should {
-//      val turn = new Turn(4)
-//      "replace empty pegs" in {
-//        turn.replacePegs(Vector(Color("g"), Color("b"), Color("y"), Color("p"))) should be("Vector(Color(g), Color(b), Color(y), Color(p))")
-//      }
-//    }
   }
 }

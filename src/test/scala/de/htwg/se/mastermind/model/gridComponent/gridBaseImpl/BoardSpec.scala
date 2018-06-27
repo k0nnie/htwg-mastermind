@@ -10,16 +10,25 @@ import org.scalatest.{Matchers, WordSpec}
 class BoardSpec extends WordSpec with Matchers {
   "A Board is the playingfield of Mastermind. A Board" when {
     "newly created" should {
-      val emptyBoard = new Board()
+      val emptyBoard = new Board(4,10)
       "contain a solution" in {
         emptyBoard.solution.nonEmpty should be(true)
       }
       "have a solution of 4 random pegs" in {
         emptyBoard.solution.size should be(4)
       }
+      "check number of pegs" in {
+        Board.checkNumOfPegs(4) should be(4)
+        Board.checkNumOfPegs(5) should be(5)
+        Board.checkNumOfPegs(6) should be(6)
+        Board.checkNumOfPegs(7) should be(7)
+        Board.checkNumOfPegs(8) should be(8)
+        Board.checkNumOfPegs(9) should be(8)
+        Board.checkNumOfPegs(10) should be(8)
+      }
     }
     "played first round" should {
-      val emptyBoard = new Board()
+      val emptyBoard = new Board(4, 10)
       val colVec = Vector[Color](Color("3"), Color("3"), Color("3"), Color("3"))
       val nonEmptyBoard = emptyBoard.replaceRound(0, colVec)
       "be replaced with a round with a vector of 4 pegs for a given round" in {
@@ -28,7 +37,7 @@ class BoardSpec extends WordSpec with Matchers {
     }
     "called with a given solution" should {
       val solution = Vector[Color](Color("1"), Color("2"), Color("5"), Color("6"))
-      val boardWithSolution = boardBaseImpl.Board(Vector.fill(Board.NumberOfRounds)(new Round()), solution)
+      val boardWithSolution = boardBaseImpl.Board(Vector.fill(10)(new Round(4)), solution, 0)
       val colVec = Vector[Color](Color("2"), Color("2"), Color("2"), Color("2"))
       val newBoard = boardWithSolution.replaceRound(0, colVec)
       "have this solution" in {
@@ -43,19 +52,11 @@ class BoardSpec extends WordSpec with Matchers {
         newRound.rounds(1).turnHint.pegs.toString() should be("Vector(+,  ,  ,  )")
       }
     }
-    "with rounds and solution constructor params" should {
-      val round = new Round()
-      val rounds = Vector(round, round, round, round)
-      val board = new Board(rounds)
-      "have four rounds" in {
-        board.rounds.size should be(4)
-      }
-    }
     "with default constructor" should {
-      val round = new Round()
+      val round = new Round(4)
       val rounds = Vector(round, round, round, round)
       val solution = Vector[Color](Color("1"), Color("2"), Color("3"), Color("4"))
-      val board = boardBaseImpl.Board(rounds, solution)
+      val board = boardBaseImpl.Board(rounds, solution, 0)
       "have four rounds" in {
         board.rounds.size should be(4)
       }
@@ -64,14 +65,14 @@ class BoardSpec extends WordSpec with Matchers {
       }
     }
     "printed on console" should {
-      val board = new Board()
+      val board = new Board(4, 10)
       "start with this output" in {
         board.toString.startsWith("\n+---------+---------+") should be(true)
       }
     }
     "tested for game logic" should {
       val solution = Vector[Color](Color("5"), Color("6"), Color("4"), Color("8"))
-      val boardWithSolution = boardBaseImpl.Board(Vector.fill(8)(new Round()), solution)
+      val boardWithSolution = boardBaseImpl.Board(Vector.fill(8)(new Round(4)), solution, 0)
       "give back these hints when one color and position is guessed correctly" in {
         val colVec = Vector[Color](Color("5"), Color("5"), Color("5"), Color("5"))
         val newBoard = boardWithSolution.replaceRound(0, colVec)
@@ -98,18 +99,9 @@ class BoardSpec extends WordSpec with Matchers {
         newBoard.createHints(solution, colVec).toString() should be("Vector(+, +,  ,  )")
       }
     }
-    "played last round" should {
-      val solution = Vector[Color](Color("5"), Color("6"), Color("4"), Color("8"))
-      val boardWithSolution = boardBaseImpl.Board(Vector.fill(2)(new Round()), solution)
-      val colVec = Vector[Color](Color("5"), Color("6"), Color("4"), Color("8"))
-      boardWithSolution.replaceRound(1,colVec)
-      "display the solution" in {
-        boardWithSolution.solutionToString should be("solution: 5, 6, 4, 8")
-      }
-    }
     "solved before last round" should {
       val solution = Vector[Color](Color("1"), Color("2"), Color("3"), Color("4"))
-      val boardWithSolution = boardBaseImpl.Board(Vector.fill(Board.NumberOfRounds)(new Round()), solution)
+      var boardWithSolution = boardBaseImpl.Board(Vector.fill(solution.size)(new Round(4)), solution, 0)
       val colVec = Vector[Color](Color("1"), Color("2"), Color("3"), Color("4"))
       val newBoard = boardWithSolution.replaceRound(0, colVec)
       "have this solution" in {
@@ -118,9 +110,31 @@ class BoardSpec extends WordSpec with Matchers {
       "have four hints for right color and position" in {
         newBoard.createHints(solution, colVec).toString() should be("Vector(+, +, +, +)")
       }
-      "give back an empty round if necessary" in {
-        val boardWithEmptyFirstRound = boardWithSolution.emptyRound(0)
-        boardWithEmptyFirstRound.rounds(0).turn.pegs.toString() should be("Vector( ,  ,  ,  )")
+      "set pegs correctly" in {
+        var board = boardWithSolution.set(0, 5)
+        board.rounds(0).turn.pegs.toString should be("Vector(5,  ,  ,  )")
+        board = board.set(0, 5)
+        board.rounds(0).turn.pegs.toString should be("Vector(5, 5,  ,  )")
+      }
+      "return true if peg with given round and column is empty" in {
+        var board = boardWithSolution.set(0, 0)
+        board.rounds(0).turn.pegs(0).emptyColor should be(true)
+      }
+      "return false if peg with given round and column is empty" in {
+        var board = boardWithSolution.set(0, 5)
+        board.rounds(0).turn.pegs(0).emptyColor should be(false)
+      }
+      "do nothing if index is -1 (index is out of bounds)" in {
+        var board = new Board(1, 1)
+        board.rounds(0).turn.pegs.toString() should be("Vector( )")
+        var testVal = ""
+        try {
+          board = boardWithSolution.set(-1, 5)
+        } catch {
+          case e: IndexOutOfBoundsException => testVal = "do nothing in this case"
+        }
+        testVal should be("do nothing in this case")
+        board.rounds(0).turn.pegs.toString() should be("Vector( )")
       }
     }
   }

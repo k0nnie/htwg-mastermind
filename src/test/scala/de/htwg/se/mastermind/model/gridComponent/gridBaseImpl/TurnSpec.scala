@@ -10,7 +10,7 @@ class TurnSpec extends WordSpec with Matchers {
 
   "A Turn " when {
     "empty " should {
-      val emptyTurn = new Turn()
+      val emptyTurn = new Turn(4)
       "have a vector with four empty pegs" in {
         emptyTurn.pegs.toString() should be("Vector( ,  ,  ,  )")
       }

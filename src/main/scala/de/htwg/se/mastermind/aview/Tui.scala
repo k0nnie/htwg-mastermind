@@ -1,26 +1,31 @@
 package de.htwg.se.mastermind.aview
 
-import de.htwg.se.mastermind.controller.controllerComponent.{ColorSelected, GameStatus, PegChanged}
-import de.htwg.se.mastermind.controller.controllerComponent.controllerBaseImpl.Controller
-import de.htwg.se.mastermind.model.boardComponent.boardBaseImpl.Color
+import com.typesafe.scalalogging.Logger
+import de.htwg.se.mastermind.controller.controllerComponent._
 
 import scala.swing.Reactor
 
-class Tui(controller: Controller) extends Reactor {
+class Tui(controller: ControllerInterface) extends Reactor {
 
   listenTo(controller)
+  val logger = Logger("Mastermind TUI")
 
   def processInputLine(input: String): Unit = {
 
     input match {
-      case "q" =>
+      case "q" => System.exit(0)
       case "n" => controller.createEmptyBoard()
       case "z" => controller.undo()
       case "y" => controller.redo()
       case "s" => controller.solve()
+      case "+" => controller.resize(6, 8)
+      case "-" => controller.resize(4, 12)
+      case "*" => controller.resize(4, 10)
+      case "w" => controller.save()
+      case "r" => controller.load()
       case _ =>
         input.toList.filter(c => c != ' ').map(c => c.toString) match {
-          case color1 :: Nil => controller.set(controller.getCurrentRoundIndex, Vector[Color](Color(color1)))
+          case color1 :: Nil => controller.set(controller.getCurrentRoundIndex, color1.toInt)
           case _ =>
         }
     }
@@ -28,11 +33,12 @@ class Tui(controller: Controller) extends Reactor {
 
   reactions += {
     case event: PegChanged => printTui()
-    case event: ColorSelected => printTui()
+    case event: ColorSelected =>
+    case event: BoardSizeChanged => printTui()
   }
 
   def printTui(): Unit = {
-    println(controller.boardToString)
-    println(GameStatus.message(controller.gameStatus))
+    logger.info(controller.boardToString)
+    logger.info(GameStatus.message(controller.gameStatus))
   }
 }

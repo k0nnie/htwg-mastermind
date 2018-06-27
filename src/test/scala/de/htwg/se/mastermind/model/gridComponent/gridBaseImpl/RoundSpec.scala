@@ -10,7 +10,7 @@ class RoundSpec extends WordSpec with Matchers {
 
   "A Round " when {
     "empty " should {
-      val emptyRound = Round(new Turn(), new TurnHint())
+      val emptyRound = Round(new Turn(4), new TurnHint(4))
       "have an empty turn" in {
         emptyRound.turn.pegs.toString() should be("Vector( ,  ,  ,  )")
       }
